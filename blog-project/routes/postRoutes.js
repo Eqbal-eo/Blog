@@ -36,14 +36,6 @@ router.get('/select-edit', (req, res) => { // صفحة اختيار التدوي
     });
 });
 
-router.get('/edit/:id', (req, res) => { // صفحة تعديل التدوينة
-    const postId = req.params.id;
-    db.query('SELECT * FROM posts WHERE id = ?', [postId], (err, results) => {
-        if (err || results.length === 0) return res.send('لم يتم العثور على التدوينة');
-        res.render('edit-post', { post: results[0] });
-    });
-});
-
 router.post('/edit/:id', (req, res) => { // تنفيذ عملية تعديل التدوينة
     const postId = req.params.id;
     const { title, content } = req.body;
@@ -63,14 +55,6 @@ router.get('/select-delete', (req, res) => { // صفحة اختيار التدو
     });
 });
 
-router.get('/delete/:id', (req, res) => { // تنفيذ عملية حذف التدوينة
-    const postId = req.params.id;
-
-    db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
-        if (err) return res.send('فشل الحذف');
-        res.redirect('/dashboard');
-    });
-});
 
 router.post('/delete/:id', (req, res) => {
     const postId = req.params.id;

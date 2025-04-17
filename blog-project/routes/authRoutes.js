@@ -88,8 +88,8 @@ router.post('/register', async (req, res) => {
     });
 });
 
-// راوتر dashboard (اضفه في authRoutes.js أو ملف منفصل):
-router.get('/dashboard', (req, res) => {
+// صفحة لوحة التحكم (GET)
+router.get('/dashboard', (req, res) => { 
     if (!req.session.user) return res.redirect('/login');
 
     const query = 'SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC';
