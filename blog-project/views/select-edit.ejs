@@ -1,0 +1,9 @@
+<h2>اختر تدوينة لتعديلها</h2>
+<ul>
+    <% posts.forEach(post => { %>
+        <li>
+            <a href="/posts/edit/<%= post.id %>"><%= post.title %></a>
+        </li>
+    <% }) %>
+</ul>
+<p><a href="/dashboard">العودة إلى لوحة التحكم</a></p>

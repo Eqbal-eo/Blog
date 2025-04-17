@@ -1,0 +1,10 @@
+<h2>اختر تدوينة لحذفها</h2>
+<ul>
+    <% posts.forEach(post => { %>
+        <li>
+            <%= post.title %> - 
+            <a href="/posts/delete/<%= post.id %>" onclick="return confirm('هل أنت متأكد من حذف هذه التدوينة؟')">🗑️ حذف</a>
+        </li>
+    <% }) %>
+</ul>
+<p><a href="/dashboard">العودة إلى لوحة التحكم</a></p>

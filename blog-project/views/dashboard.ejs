@@ -1,0 +1,30 @@
+<div style="direction: rtl; text-align: right;">
+
+    <h2>مرحبًا <%= user.username %></h2>
+
+    <div style="margin-bottom: 20px;">
+        <a href="/posts/create" class="btn">➕ إنشاء تدوينة جديدة</a>
+        <a href="/posts/select-edit" class="btn">✏️ تعديل تدوينة</a>
+        <a href="/posts/select-delete" class="btn">🗑️ حذف تدوينة</a>
+        <a href="/logout" class="btn btn-danger">تسجيل الخروج</a>
+
+    </div>
+
+    <h2>تدويناتك</h2>
+
+    <% if (posts.length === 0) { %>
+        <p>لا توجد تدوينات بعد.</p>
+    <% } else { %>
+        <ul>
+            <% posts.forEach(post => { %>
+                <li>
+                    <h3><%= post.title %></h3>
+                    <p><%= post.content %></p>
+                    <small>بتاريخ: <%= post.created_at.toLocaleString() %></small>
+                    <hr>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
+
+</div>
