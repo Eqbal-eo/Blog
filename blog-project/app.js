@@ -46,6 +46,3 @@ app.get('/dashboard', (req, res) => {
 
 const postRoutes = require('./routes/postRoutes'); // ملف مسارات التدوينات
 app.use('/posts', postRoutes);
-
-
-

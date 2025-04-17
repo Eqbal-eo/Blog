@@ -72,6 +72,15 @@ router.get('/delete/:id', (req, res) => { // تنفيذ عملية حذف الت
     });
 });
 
+router.post('/delete/:id', (req, res) => {
+    const postId = req.params.id;
+    db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
+        if (err) return res.send('فشل الحذف');
+        res.redirect('/posts/select-delete');
+    });
+});
+
+
 module.exports = router;
 // هذا هو ملف مسارات التدوينات، حيث يتم تعريف المسارات الخاصة بإنشاء التدوينات
 // مثل صفحة إنشاء التدوينة وتنفيذ عملية إنشاء التدوينة
