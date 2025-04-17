@@ -1,30 +1,71 @@
-<div style="direction: rtl; text-align: right;">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة التحكم</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .post-content {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
 
-    <h2>مرحبًا <%= user.username %></h2>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">لوحة التحكم</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div style="margin-bottom: 20px;">
-        <a href="/posts/create" class="btn">➕ إنشاء تدوينة جديدة</a>
-        <a href="/posts/select-edit" class="btn">✏️ تعديل تدوينة</a>
-        <a href="/posts/select-delete" class="btn">🗑️ حذف تدوينة</a>
-        <a href="/logout" class="btn btn-danger">تسجيل الخروج</a>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto mb-1 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/create">➕ إنشاء تدوينة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/select-edit">✏️ تعديل تدوينة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/select-delete">🗑️ حذف تدوينة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <!-- محتوى الصفحة -->
+    <div class="container">
+        <h2 class="mb-4">مرحبًا <%= user.username %> 👋</h2>
+
+        <h4 class="mb-3">📌 تدويناتك</h4>
+
+        <% if (posts.length === 0) { %>
+            <div class="alert alert-info">لا توجد تدوينات بعد.</div>
+        <% } else { %>
+            <% posts.forEach(post => { %>
+                <div class="post-content">
+                    <h5><%= post.title %></h5>
+                    <p><%= post.content %></p>
+                    <small class="text-muted">بتاريخ: <%= post.created_at.toLocaleString() %></small>
+                </div>
+            <% }); %>
+        <% } %>
     </div>
 
-    <h2>تدويناتك</h2>
-
-    <% if (posts.length === 0) { %>
-        <p>لا توجد تدوينات بعد.</p>
-    <% } else { %>
-        <ul>
-            <% posts.forEach(post => { %>
-                <li>
-                    <h3><%= post.title %></h3>
-                    <p><%= post.content %></p>
-                    <small>بتاريخ: <%= post.created_at.toLocaleString() %></small>
-                    <hr>
-                </li>
-            <% }); %>
-        </ul>
-    <% } %>
-
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
