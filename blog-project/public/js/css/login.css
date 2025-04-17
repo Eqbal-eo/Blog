@@ -1,0 +1,14 @@
+body {
+    font-family: 'Tajawal', sans-serif;
+  }
+  .card {
+    border-radius: 15px;
+  }
+  .btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+  }
+  .btn-dark:hover {
+    background-color: #23272b;
+    border-color: #1d2124;
+  }

@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
 const authRoutes = require('./routes/authRoutes');
 
+
 const app = express();
 const PORT = 3000;
 
@@ -45,5 +46,6 @@ app.get('/dashboard', (req, res) => {
 
 const postRoutes = require('./routes/postRoutes'); // ملف مسارات التدوينات
 app.use('/posts', postRoutes);
+
 
 
