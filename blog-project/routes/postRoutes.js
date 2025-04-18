@@ -63,7 +63,7 @@ router.get('/select-delete', (req, res) => { // صفحة اختيار التدو
 
 router.post('/delete/:id', (req, res) => { // تنفيذ عملية حذف التدوينة
     const postId = req.params.id;
-    db.query('DELETE FROM posts WHERE id = ? AND user_id = ?', [postId], (err) => {
+    db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
         if (err) return res.send('فشل الحذف');
         res.redirect('/posts/select-delete');
     });

@@ -1,0 +1,33 @@
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.post-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    direction: rtl;
+    text-align: right;
+    border: color-mix(in hsl shorter hue, color percentage, color percentage) solid #ccc;
+    /* إضافة إطار حول التدوينة */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    /* إضافة ظل ناعم حول الإطار */
+}
+
+/* تخصيص blockquote */
+.post-content blockquote {
+    border-right: px solid #ccc;
+    padding-right: 15px;
+    margin-right: 0;
+    margin-left: 0;
+    direction: rtl;
+    text-align: right;
+}
+
+/* إزالة الحد الأيسر الافتراضي */
+.post-content blockquote[dir="rtl"] {
+    border-left: none;
+    border-right: 5px solid #ccc;
+}

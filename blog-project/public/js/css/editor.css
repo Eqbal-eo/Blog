@@ -1,0 +1,45 @@
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.form-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#editor {
+    height: 300px;
+}
+
+.ql-editor {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tajawal', sans-serif;
+    /* إضافة خط المحرر */
+
+}
+
+.ql-toolbar {
+    direction: ltr !important;
+}
+
+#editor {
+    height: 200px;
+    background-color: white;
+}
+
+.ql-container {
+    direction: ltr !important;
+}
+
+.ql-editor blockquote {
+    border-left: none !important;
+    border-right: 4px solid #ccc !important;
+    padding-left: 0 !important;
+    padding-right: 16px !important;
+    direction: rtl;
+    text-align: right;
+}

@@ -38,19 +38,3 @@ h2 {
   margin-top: 50px;
   /* إضافة مسافة للمحتوى ليظهر أسفل */
 }
-#editor {
-  height: 300px;
-}
-
-.ql-editor {
-  text-align: left !important;
-}
-
-.ql-toolbar {
-  direction: ltr !important;
-}
-
-.ql-container {
-  direction: ltr !important;
-}
-
