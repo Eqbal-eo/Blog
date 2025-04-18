@@ -36,9 +36,9 @@ app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
 
-app.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
+app.get('/dashboard', (req, res) => { 
+    if (!req.session.user) {// تحقق من تسجيل الدخول
+        return res.redirect('/login'); // إذا لم يكن المستخدم مسجلاً الدخول، إعادة توجيه إلى صفحة تسجيل الدخول
     }
 
     res.render('dashboard', { user: req.session.user });
@@ -46,3 +46,4 @@ app.get('/dashboard', (req, res) => {
 
 const postRoutes = require('./routes/postRoutes'); // ملف مسارات التدوينات
 app.use('/posts', postRoutes);
+

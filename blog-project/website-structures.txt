@@ -1,4 +1,4 @@
-my-blog-project/
+blog-project/
 ├── app.js                        # نقطة البداية للتطبيق، يحتوي على إعدادات Express
 ├── db/
 │   └── db.js                     # ملف الاتصال بقاعدة البيانات
@@ -9,8 +9,7 @@ my-blog-project/
 │   └── authController.js         # التحكم في المصادقة (تسجيل الدخول، الخروج)
 ├── views/
 │   ├── create-post.ejs           # صفحة إنشاء تدوينة جديدة
-│   ├── dashboard.ejs             # لوحة التحكم للمستخدم
-│   ├── edit-post.ejs             # صفحة تعديل التدوينة
+│   ├── dashboard.ejs             # لوحة التحكم للمستخدم   
 │   ├── login.ejs                 # صفحة تسجيل الدخول
 │   ├── register.ejs              # صفحة تسجيل حساب جديد
 │   ├── select-delete.ejs         # صفحة اختيار التدوينة لحذفها
@@ -18,9 +17,6 @@ my-blog-project/
 ├── public/
 │   └── css/
 │       └── login.css             # CSS لصفحة تسجيل الدخول
-│   └── js/
-│       └── login.js              # JavaScript لصفحة تسجيل الدخول
-│   └── images/                   # مجلد لتخزين الصور (إذا كان مطلوبًا)
 ├── uploads/                      # مجلد لتخزين الملفات المرفوعة (مثل الصور)
 ├── package.json                  # ملف إعدادات npm مع التبعيات
 └── package-lock.json             # قفل الإصدارات لجميع التبعيات

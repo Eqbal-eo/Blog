@@ -30,17 +30,23 @@ router.post('/create', (req, res) => {
 router.get('/select-edit', (req, res) => { // صفحة اختيار التدوينة للتعديل
     if (!req.session.user) return res.redirect('/login');
 
-    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => {
+    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => { // استعلام لجلب التدوينات الخاصة بالمستخدم
         if (err) return res.send('حدث خطأ');
-        res.render('select-edit', { posts });
+        res.render('select-edit', { posts }); // تمرير التدوينات إلى الصفحة
     });
 });
 
 router.post('/edit/:id', (req, res) => { // تنفيذ عملية تعديل التدوينة
-    const postId = req.params.id;
-    const { title, content } = req.body;
-
-    db.query('UPDATE posts SET title = ?, content = ? WHERE id = ?', [title, content, postId], (err) => {
+    const postId = req.params.id; // الحصول على معرف التدوينة من الرابط
+    if (!req.session.user) return res.redirect('/login'); // تحقق من تسجيل الدخول
+    const { title, content } = req.body;    // الحصول على عنوان ومحتوى التدوينة من النموذج
+    // تحقق من وجود الحقول
+    if (!title || !content) {
+        return res.send('يرجى إدخال جميع الحقول'); // إذا كانت الحقول فارغة، إظهار رسالة خطأ
+    }
+    // استعلام لتحديث التدوينة في قاعدة البيانات
+    // استخدام معرف المستخدم للتحقق من ملكية التدوينة
+    db.query('UPDATE posts SET title = ?, content = ? WHERE id = ?', [title, content, postId], (err) => { // تنفيذ الاستعلام
         if (err) return res.send('فشل التعديل');
         res.redirect('/dashboard');
     });
@@ -55,16 +61,13 @@ router.get('/select-delete', (req, res) => { // صفحة اختيار التدو
     });
 });
 
-
-router.post('/delete/:id', (req, res) => {
+router.post('/delete/:id', (req, res) => { // تنفيذ عملية حذف التدوينة
     const postId = req.params.id;
-    db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
+    db.query('DELETE FROM posts WHERE id = ? AND user_id = ?', [postId], (err) => {
         if (err) return res.send('فشل الحذف');
         res.redirect('/posts/select-delete');
     });
 });
 
-
 module.exports = router;
-// هذا هو ملف مسارات التدوينات، حيث يتم تعريف المسارات الخاصة بإنشاء التدوينات
-// مثل صفحة إنشاء التدوينة وتنفيذ عملية إنشاء التدوينة
+// هذا هو ملف مسارات التدوينات (postRoutes.js) الذي يتعامل مع إنشاء وتعديل وحذف التدوينات في التطبيق.

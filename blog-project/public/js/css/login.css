@@ -1,33 +1,56 @@
 body {
-    font-family: 'Tajawal', sans-serif;
-  }
-  .card {
-    border-radius: 15px;
-  }
-  .btn-dark {
-    background-color: #343a40;
-    border-color: #343a40;
-  }
-  .btn-dark:hover {
-    background-color: #23272b;
-    border-color: #1d2124;
-  }
-  h1 {
-    font-family: 'Tajawal', sans-serif;
-    font-size: 2.5rem;
-    color: #004085;
-    text-align: center;
-    margin-top: 50px; /* إضافة مسافة من الأعلى */
-  }
+  font-family: 'Tajawal', sans-serif;
+}
 
-  h2 {
-    font-family: 'Tajawal', sans-serif;
-    font-size: 1.75rem;
-    color: #5a5a5a;
-    text-align: center;
-    margin-top: 5px; /* إضافة مسافة من الأعلى */
-  }
+.card {
+  border-radius: 15px;
+}
 
-  .container {
-    margin-top: 50px; /* إضافة مسافة للمحتوى ليظهر أسفل */
-  }
+.btn-dark {
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
+.btn-dark:hover {
+  background-color: #23272b;
+  border-color: #1d2124;
+}
+
+h1 {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 2.5rem;
+  color: #004085;
+  text-align: center;
+  margin-top: 50px;
+  /* إضافة مسافة من الأعلى */
+}
+
+h2 {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1.75rem;
+  color: #5a5a5a;
+  text-align: center;
+  margin-top: 5px;
+  /* إضافة مسافة من الأعلى */
+}
+
+.container {
+  margin-top: 50px;
+  /* إضافة مسافة للمحتوى ليظهر أسفل */
+}
+#editor {
+  height: 300px;
+}
+
+.ql-editor {
+  text-align: left !important;
+}
+
+.ql-toolbar {
+  direction: ltr !important;
+}
+
+.ql-container {
+  direction: ltr !important;
+}
+
