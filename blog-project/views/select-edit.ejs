@@ -32,14 +32,13 @@
                         <a class="nav-link text-white" href="/posts/select-delete">🗑️ حذف تدوينة</a>
                     </li>
                 </ul>
-            
+
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
                     </li>
                 </ul>
             </div>
-            
         </div>
     </nav>
 
@@ -99,20 +98,20 @@
                 placeholder: 'اكتب محتوى التدوينة هنا...',
                 modules: {
                     toolbar: [
-                    [{ 'header': '1' }, { 'header': '2' }],
-                    [{ 'size': ['small', false, 'large', 'huge'] }], // أضف هذا السطر
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    ['bold', 'italic', 'underline'],
-                    ['link'],
-                    [{ 'align': [] }],
-                    ['blockquote', 'code-block'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    ['clean'],
-                    [{ 'direction': 'rtl' }, { 'direction': 'ltr' }]
-                ]
+                        [{ 'header': '1' }, { 'header': '2' }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['bold', 'italic', 'underline'],
+                        ['link'],
+                        [{ 'align': [] }],
+                        ['blockquote', 'code-block'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['clean'],
+                        [{ 'direction': 'rtl' }, { 'direction': 'ltr' }]
+                    ]
                 }
             });
-            //
+
             postSelector.addEventListener('change', function () {
                 const selectedIndex = this.options[this.selectedIndex].dataset.index;
                 const post = posts[selectedIndex];
@@ -126,12 +125,19 @@
                 contentInput.value = quill.root.innerHTML;
             });
 
-          
-        
+            quill.on('text-change', function () {
+                const editor = document.querySelector('.ql-editor');
+                const text = quill.getText().trim();
+                const arabicRegex = /[\u0600-\u06FF]/; // تحديد النص العربي
 
-        // تعيين الحجم الافتراضي للنص داخل المحرر عند بدء الكتابة
-        document.querySelector('.ql-editor').style.fontSize = '18px';
-
+                if (arabicRegex.test(text)) {
+                    editor.style.direction = 'rtl';
+                    editor.style.textAlign = 'right';
+                } else {
+                    editor.style.direction = 'ltr';
+                    editor.style.textAlign = 'left';
+                }
+            });
         </script>
     <% } %>
 </body>

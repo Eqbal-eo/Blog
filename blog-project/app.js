@@ -13,7 +13,7 @@ app.use(session({
     secret: 'mySecretKey',
     resave: false,
     saveUninitialized: true
-})); 
+}));
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
@@ -36,7 +36,7 @@ app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
 
-app.get('/dashboard', (req, res) => { 
+app.get('/dashboard', (req, res) => {
     if (!req.session.user) {// تحقق من تسجيل الدخول
         return res.redirect('/login'); // إذا لم يكن المستخدم مسجلاً الدخول، إعادة توجيه إلى صفحة تسجيل الدخول
     }
