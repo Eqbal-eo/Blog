@@ -13,7 +13,7 @@ app.use(session({
     secret: 'mySecretKey',
     resave: false,
     saveUninitialized: true
-}));
+})); 
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');

@@ -10,16 +10,11 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-#editor {
-    height: 300px;
-}
 
 .ql-editor {
     direction: rtl;
     text-align: right;
     font-family: 'Tajawal', sans-serif;
-    /* إضافة خط المحرر */
-
 }
 
 .ql-toolbar {
@@ -31,10 +26,6 @@ body {
     background-color: white;
 }
 
-.ql-container {
-    direction: ltr !important;
-}
-
 .ql-editor blockquote {
     border-left: none !important;
     border-right: 4px solid #ccc !important;
@@ -42,4 +33,16 @@ body {
     padding-right: 16px !important;
     direction: rtl;
     text-align: right;
+}
+
+.ql-editor ul,
+.ql-editor ol {
+    padding-right: 1.5em;
+    /* شوية مساحة داخلية على اليمين */
+    padding-left: 0 !important;
+    /* منع المسافة على اليسار */
+    direction: rtl;
+    text-align: right;
+    list-style-position: inside;
+    /* حتى يجي الترقيم/النقطة جوّا */
 }
