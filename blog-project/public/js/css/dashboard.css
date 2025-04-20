@@ -5,7 +5,7 @@ body {
 
 .post-content {
     background-color: #fff;
-    padding: 20px;
+    padding: 5px;
     border-radius: 15px;
     margin-bottom: 20px;
     direction: rtl;
@@ -30,4 +30,17 @@ body {
 .post-content blockquote[dir="rtl"] {
     border-left: none;
     border-right: 5px solid #ccc;
+}
+.toggle-content {
+    color: #6c757d; /* لون النص الرمادي */
+    background-color: transparent; /* خلفية شفافة */
+    border: none; /* إزالة الحدود */
+    font-size: 1rem; /* حجم الخط */
+    text-decoration: underline; /* إضافة خط تحت النص */
+    padding: 0; /* إزالة الحشوة */
+}
+
+.toggle-content:hover {
+    color: #007BFF; /* تغيير اللون عند المرور بالفأرة */
+    text-decoration: underline; /* إبقاء الخط تحت النص عند المرور */
 }

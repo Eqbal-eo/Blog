@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <title>إنشاء تدوينة</title>
@@ -8,18 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="/js/css/editor.css">
-
 </head>
-
 <body>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="/dashboard">لوحة التحكم</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav me-auto mb-1 mb-lg-0">
                     <li class="nav-item">
@@ -35,11 +32,13 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link text-white" href="/settings">الإعدادات</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
 
@@ -56,6 +55,13 @@
                     <label for="editor" class="form-label">محتوى التدوينة</label>
                     <div id="editor"></div>
                     <input type="hidden" name="content" id="content">
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">حالة التدوينة</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="published">منشورة</option>
+                        <option value="draft">مسودة</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">نشر التدوينة</button>
                 <a href="/dashboard" class="btn btn-secondary ms-2">إلغاء</a>
@@ -86,49 +92,16 @@
             }
         });
 
-        // الدالة لاكتشاف اللغة بناءً على النص
-        function detectLanguage(text) {
-            const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
-            return arabicRegex.test(text) ? 'rtl' : 'ltr';
-        }
-
-        // تغيير اتجاه الكتابة في المحرر بناءً على النص
-        function changeTextDirection() {
-            const text = quill.getText().trim();
-            const direction = detectLanguage(text);
-            const editor = document.querySelector('.ql-editor');
-            editor.style.direction = direction;
-            editor.style.textAlign = direction === 'rtl' ? 'right' : 'left';
-        }
-
-        // تعديل اتجاه الكتابة عند تغيير النص
-        quill.on('text-change', changeTextDirection);
-
-        // تعيين الاتجاه الافتراضي بناءً على اللغة
-        window.onload = function () {
-            const lang = document.documentElement.lang; // الحصول على اللغة
-            const direction = lang === 'ar' ? 'rtl' : 'ltr';
-            const editor = document.querySelector('.ql-editor');
-            editor.style.direction = direction;
-            editor.style.textAlign = direction === 'rtl' ? 'right' : 'left';
-        };
-
-        // تعيين الحجم الافتراضي للنص داخل المحرر عند بدء الكتابة
-        document.querySelector('.ql-editor').style.fontSize = '18px';
-
-        // دالة لإرسال المحتوى إلى الخادم عند إرسال النموذج
+        // إرسال المحتوى عند إرسال النموذج
         function handleFormSubmit() {
             const contentInput = document.getElementById('content');
             let html = quill.root.innerHTML;
 
-            // أضف dir="auto" تلقائيًا إلى كل blockquote
             html = html.replace(/<blockquote>/g, '<blockquote dir="auto">');
 
             contentInput.value = html.trim();
             return true;
         }
     </script>
-
 </body>
-
 </html>

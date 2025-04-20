@@ -10,15 +10,18 @@ router.get('/create', (req, res) => {
 
 // تنفيذ عملية إنشاء التدوينة
 router.post('/create', (req, res) => {
-    const { title, content } = req.body;
+    const { title, content, status } = req.body;  // إضافة الحقل status
     const userId = req.session.user.id;
 
     if (!title || !content) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    const query = 'INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)';
-    db.query(query, [title, content, userId], (err) => {
+    // إذا لم يتم إرسال حالة النشر، سيتم تعيينها كـ "منشورة" افتراضيًا
+    const postStatus = status || 'published'; 
+
+    const query = 'INSERT INTO posts (title, content, user_id, status) VALUES (?, ?, ?, ?)';
+    db.query(query, [title, content, userId, postStatus], (err) => {
         if (err) {
             console.error('خطأ في إدخال التدوينة:', err);
             return res.send('حدث خطأ');
@@ -27,32 +30,36 @@ router.post('/create', (req, res) => {
     });
 });
 
-router.get('/select-edit', (req, res) => { // صفحة اختيار التدوينة للتعديل
+// عرض التدوينات الخاصة بالمستخدم مع حالة النشر
+router.get('/select-edit', (req, res) => { 
     if (!req.session.user) return res.redirect('/login');
 
-    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => { // استعلام لجلب التدوينات الخاصة بالمستخدم
+    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => { 
         if (err) return res.send('حدث خطأ');
-        res.render('select-edit', { posts }); // تمرير التدوينات إلى الصفحة
+        res.render('select-edit', { posts });
     });
 });
 
-router.post('/edit/:id', (req, res) => { // تنفيذ عملية تعديل التدوينة
-    const postId = req.params.id; // الحصول على معرف التدوينة من الرابط
-    if (!req.session.user) return res.redirect('/login'); // تحقق من تسجيل الدخول
-    const { title, content } = req.body;    // الحصول على عنوان ومحتوى التدوينة من النموذج
-    // تحقق من وجود الحقول
+// تنفيذ عملية تعديل التدوينة
+router.post('/edit/:id', (req, res) => { 
+    const postId = req.params.id;
+    if (!req.session.user) return res.redirect('/login'); 
+    const { title, content, status } = req.body; 
+
     if (!title || !content) {
-        return res.send('يرجى إدخال جميع الحقول'); // إذا كانت الحقول فارغة، إظهار رسالة خطأ
+        return res.send('يرجى إدخال جميع الحقول');
     }
-    // استعلام لتحديث التدوينة في قاعدة البيانات
-    // استخدام معرف المستخدم للتحقق من ملكية التدوينة
-    db.query('UPDATE posts SET title = ?, content = ? WHERE id = ?', [title, content, postId], (err) => { // تنفيذ الاستعلام
+
+    const postStatus = status || 'published'; // إذا لم يتم إرسال حالة النشر، سيتم تعيينها كـ "منشورة" افتراضيًا
+
+    db.query('UPDATE posts SET title = ?, content = ?, status = ? WHERE id = ?', [title, content, postStatus, postId], (err) => {
         if (err) return res.send('فشل التعديل');
         res.redirect('/dashboard');
     });
 });
 
-router.get('/select-delete', (req, res) => { // صفحة اختيار التدوينة للحذف
+// صفحة اختيار التدوينة للحذف
+router.get('/select-delete', (req, res) => {
     if (!req.session.user) return res.redirect('/login');
 
     db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => {
@@ -61,7 +68,8 @@ router.get('/select-delete', (req, res) => { // صفحة اختيار التدو
     });
 });
 
-router.post('/delete/:id', (req, res) => { // تنفيذ عملية حذف التدوينة
+// تنفيذ عملية حذف التدوينة
+router.post('/delete/:id', (req, res) => { 
     const postId = req.params.id;
     db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
         if (err) return res.send('فشل الحذف');
@@ -70,4 +78,3 @@ router.post('/delete/:id', (req, res) => { // تنفيذ عملية حذف ال�
 });
 
 module.exports = router;
-// هذا هو ملف مسارات التدوينات (postRoutes.js) الذي يتعامل مع إنشاء وتعديل وحذف التدوينات في التطبيق.

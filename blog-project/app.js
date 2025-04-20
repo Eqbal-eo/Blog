@@ -2,8 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
-const authRoutes = require('./routes/authRoutes');
 
+// استدعاء الراوتات
+const authRoutes = require('./routes/authRoutes');
+const mainRoutes = require('./routes/mainRoutes');
+const postRoutes = require('./routes/postRoutes');
 
 const app = express();
 const PORT = 3000;
@@ -26,24 +29,14 @@ app.use(express.json());
 
 // مسارات التطبيق
 app.use(authRoutes);
+app.use('/', mainRoutes);
+app.use('/posts', postRoutes);
 
-// الصفحة الرئيسية
+// الصفحة الرئيسية (يمكن حذفه إذا كانت موجودة ضمن mainRoutes)
 app.get('/', (req, res) => {
-    res.send('Hello, Blog!');
+    res.render('home'); 
 });
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
-
-app.get('/dashboard', (req, res) => {
-    if (!req.session.user) {// تحقق من تسجيل الدخول
-        return res.redirect('/login'); // إذا لم يكن المستخدم مسجلاً الدخول، إعادة توجيه إلى صفحة تسجيل الدخول
-    }
-
-    res.render('dashboard', { user: req.session.user });
-});
-
-const postRoutes = require('./routes/postRoutes'); // ملف مسارات التدوينات
-app.use('/posts', postRoutes);
-

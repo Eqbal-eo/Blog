@@ -35,6 +35,7 @@
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <li class="nav-item"><a class="nav-link text-white" href="/settings">الإعدادات</a></li>
                         <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
                     </li>
                 </ul>
@@ -73,6 +74,14 @@
                         <input type="hidden" name="content" id="contentInput">
                     </div>
 
+                    <div class="mb-3">
+                        <label for="status" class="form-label">حالة التدوينة</label>
+                        <select id="status" name="status" class="form-select" required>
+                            <option value="draft">مسودة</option>
+                            <option value="published">منشورة</option>
+                        </select>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                     <a href="/dashboard" class="btn btn-secondary">العودة</a>
                 </form>
@@ -91,6 +100,7 @@
             const postSelector = document.getElementById('postSelector');
             const titleInput = document.getElementById('title');
             const contentInput = document.getElementById('contentInput');
+            const statusSelect = document.getElementById('status');
             const form = document.getElementById('editForm');
 
             const quill = new Quill('#editor', {
@@ -118,6 +128,7 @@
 
                 titleInput.value = post.title;
                 quill.root.innerHTML = post.content;
+                statusSelect.value = post.status; // Set the status based on the post
                 form.action = `/posts/edit/${post.id}`;
             });
 
