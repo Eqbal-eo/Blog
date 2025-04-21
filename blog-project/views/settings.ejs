@@ -107,15 +107,24 @@
         .btn-success:hover {
             background-color: #218838;
         }
+
+        .custom-navbar {
+            background-color: #212024e1;
+        }
+
+        .custom-navbar .navbar-nav .nav-link,
+        .custom-navbar .navbar-brand {
+            color: white !important;
+        }
     </style>
 </head>
 
 <body>
-    
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg custom-navbar mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/dashboard">لوحة التحكم</a>
+            <a class="navbar-brand" href="/dashboard    ">لوحة التحكم</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -123,21 +132,19 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav me-auto mb-1 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/create">➕ إنشاء تدوينة</a>
+                        <a class="nav-link" href="/posts/create">➕ إنشاء تدوينة</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/select-edit">✏️ تعديل تدوينة</a>
+                        <a class="nav-link" href="/posts/select-edit">✏️ تعديل تدوينة</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/select-delete">🗑️ حذف تدوينة</a>
+                        <a class="nav-link" href="/posts/select-delete">🗑️ حذف تدوينة</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/settings">الإعدادات</a>
-                    </li>
-                    <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
+                    <li class="nav-item"><a class="nav-link" href="/settings">الإعدادات</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="/logout">تسجيل الخروج</a></li>
                 </ul>
             </div>
         </div>
@@ -179,15 +186,15 @@
                         <% if (user.profileImage) { %>
                             <img src="/uploads/<%= user.profileImage %>" class="profile-img-preview"
                                 alt="الصورة الشخصية">
-                        <% } else { %>
-                            <img src="/uploads/default.png" class="profile-img-preview" alt="صورة افتراضية">
-                        <% } %>
-                        <div class="mb-3">
-                            <label for="profileImage" class="form-label">اختيار صورة جديدة</label>
-                            <input type="file" class="form-control" id="profileImage" name="profileImage"
-                                accept="image/*">
-                        </div>
-                        <button type="submit" class="btn btn-success">رفع الصورة</button>
+                            <% } else { %>
+                                <img src="/uploads/default.png" class="profile-img-preview" alt="صورة افتراضية">
+                                <% } %>
+                                    <div class="mb-3">
+                                        <label for="profileImage" class="form-label">اختيار صورة جديدة</label>
+                                        <input type="file" class="form-control" id="profileImage" name="profileImage"
+                                            accept="image/*">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">رفع الصورة</button>
                     </div>
                 </form>
             </div>
@@ -199,17 +206,19 @@
                     <div class="box-content">
                         <div class="mb-3">
                             <label for="siteTitle" class="form-label">عنوان الموقع</label>
-                            <input type="text" class="form-control" id="siteTitle" name="siteTitle" value="<%= site ? site.title : '' %>" required>
+                            <input type="text" class="form-control" id="siteTitle" name="siteTitle"
+                                value="<%= site ? site.title : '' %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="siteDescription" class="form-label">وصف الموقع</label>
-                            <input type="text" class="form-control" id="siteTitle" name="siteTitle" value="<%= site ? site.title : '' %>" required>
+                            <input type="text" class="form-control" id="siteTitle" name="siteTitle"
+                                value="<%= site ? site.title : '' %>" required>
                         </div>
                         <div class="mb-3">
                             <label for="siteTheme" class="form-label">ثيم الموقع</label>
                             <select class="form-control" id="siteTheme" name="siteTheme" required>
-                                <option value="light" <%= site.theme === 'light' ? 'selected' : '' %>>فاتح</option>
-                                <option value="dark" <%= site.theme === 'dark' ? 'selected' : '' %>>داكن</option>
+                                <option value="light" <%=site.theme==='light' ? 'selected' : '' %>>فاتح</option>
+                                <option value="dark" <%=site.theme==='dark' ? 'selected' : '' %>>داكن</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>

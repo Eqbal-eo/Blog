@@ -40,12 +40,17 @@
         }
 
         .post-content {
-    padding: 10px 15px; /* تقليل التباعد الداخلي */
-    font-size: 0.95rem;  /* تصغير الخط العام للبطاقة */
-    margin-bottom: 10px; /* تقليل المسافة بين البطاقات */
-    border-radius: 6px;  /* تقليل التدوير إن رغبت */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* ظل أخف */
-}
+            padding: 10px 15px;
+            /* تقليل التباعد الداخلي */
+            font-size: 0.95rem;
+            /* تصغير الخط العام للبطاقة */
+            margin-bottom: 10px;
+            /* تقليل المسافة بين البطاقات */
+            border-radius: 6px;
+            /* تقليل التدوير إن رغبت */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            /* ظل أخف */
+        }
 
 
         .post-content:hover {
@@ -89,14 +94,24 @@
                 transform: translateY(0);
             }
         }
+
+        .custom-navbar {
+            background-color: #212024e1;
+        }
+
+        .custom-navbar .navbar-nav .nav-link,
+        .custom-navbar .navbar-brand {
+            color: white !important;
+        }
     </style>
 </head>
 
 <body>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg custom-navbar mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#">لوحة التحكم</a>
+            <a class="navbar-brand" href="/dashboard">لوحة التحكم</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -104,23 +119,19 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav me-auto mb-1 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/create">➕ إنشاء تدوينة</a>
+                        <a class="nav-link" href="/posts/create">➕ إنشاء تدوينة</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/select-edit">✏️ تعديل تدوينة</a>
+                        <a class="nav-link" href="/posts/select-edit">✏️ تعديل تدوينة</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/posts/select-delete">🗑️ حذف تدوينة</a>
+                        <a class="nav-link" href="/posts/select-delete">🗑️ حذف تدوينة</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/settings">الإعدادات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="/logout">تسجيل الخروج</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/settings">الإعدادات</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="/logout">تسجيل الخروج</a></li>
                 </ul>
             </div>
         </div>
@@ -129,22 +140,26 @@
     <!-- محتوى الصفحة -->
     <div class="container">
 
-                <div class="posts-box">
+        <div class="posts-box">
             <h3>تدويناتك الأخيرة</h3>
-            <% if (posts.length === 0) { %>
+            <% if (posts.length===0) { %>
                 <div class="alert alert-info">لا توجد تدوينات بعد.</div>
-            <% } else { %>
-                <% posts.forEach(post => { %>
-                    <div class="post-content">
-                        <div class="post-title"><%= post.title %></div>
-                        <div class="post-full-content">
-                            <%- post.content %>
-                            <br>
-                            <small class="text-muted"><%= new Date(post.created_at).toLocaleString() %></small>
+                <% } else { %>
+                    <% posts.forEach(post=> { %>
+                        <div class="post-content">
+                            <div class="post-title">
+                                <%= post.title %>
+                            </div>
+                            <div class="post-full-content">
+                                <%- post.content %>
+                                    <br>
+                                    <small class="text-muted">
+                                        <%= new Date(post.created_at).toLocaleString() %>
+                                    </small>
+                            </div>
                         </div>
-                    </div>
-                <% }); %>
-            <% } %>
+                        <% }); %>
+                            <% } %>
         </div>
     </div>
 
