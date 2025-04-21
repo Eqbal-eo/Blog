@@ -34,7 +34,28 @@ app.use('/posts', postRoutes);
 
 // الصفحة الرئيسية (يمكن حذفه إذا كانت موجودة ضمن mainRoutes)
 app.get('/', (req, res) => {
-    res.render('home'); 
+    res.render('home');
+});
+let aboutContent = "مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.";
+let contactContent = "تواصل معنا عبر البريد أو مواقع التواصل.";
+
+// عرض الصفحات
+app.get('/about', (req, res) => {
+    res.render('about', { aboutContent });
+});
+
+app.get('/contact', (req, res) => {
+    res.render('contact', { contactContent });
+});
+
+app.get('/settings', (req, res) => {
+    res.render('settings', { aboutContent, contactContent });
+});
+
+app.post('/settings', (req, res) => {
+    aboutContent = req.body.aboutContent;
+    contactContent = req.body.contactContent;
+    res.redirect('/');
 });
 
 app.listen(PORT, () => {

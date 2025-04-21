@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><%= post.title %> - مدونة آفاق</title>
+    <title>التواصل - آفاق</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/js/css/footer.css">
     <style>
-        body {
+       body {
             margin: 0;
             font-family: 'Tajawal', sans-serif;
             background-image: url('https://cdn.vanderbilt.edu/vu-cas/wp-content/uploads/sites/39/2022/12/22140221/HisMap2.png');
@@ -23,7 +25,7 @@
         }
 
         .navbar {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.756);
             padding: 0.9rem 1.5rem;
             display: flex;
             justify-content: space-between;
@@ -50,10 +52,12 @@
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 5rem;
+            gap: 4rem;
             margin: 0;
             padding: 0;
+            margin-right: 100px;
             justify-content: center;
+            color: #e6e2d7;
         }
 
         .nav-links a {
@@ -61,60 +65,24 @@
             color: #fff;
             font-weight: 500;
         }
-
         .container {
             max-width: 800px;
             margin: 0.5rem auto;
             padding: 1rem;
             border-radius: 15px;
-            background-color: #ffffff6e;
         }
-
         .post-box {
-            padding: 1.5rem;
             border-right: 4px solid #c2a763;
-            background-color: #ffffff6e;
-            border-radius: 8px;
-        }
-
-        .post-box h1 {
-            margin-top: 0;
-            color: #85630d;
-        }
-
-        .post-meta {
-            font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 1rem;
-        }
-
-        .post-content {
-            font-size: 1.1rem;
-            line-height: 2;
+            background: #ffffffd9;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 2rem;
         }
 
         .custom-heading {
-            margin-top: 40px;
-            text-align: right;
-            margin-right: 360px;
-            margin-left: auto;
+            text-align: center;
+            margin-top: 2rem;
             color: #85630d;
-        }
-
-        .quote-box {
-            position: fixed;
-            top: 23%;
-            right: 2%;
-            width: 260px;
-            padding: 1rem;
-            background-color: #faf0e69a;
-            border-right: 6px solid #c2a763;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            font-size: 0.95rem;
-            text-align: right;
-            color: #5b4424;
-            z-index: 10;
         }
     </style>
 </head>
@@ -123,7 +91,7 @@
     <div class="overlay">
         <!-- Navbar -->
         <nav class="navbar">
-            <a href="/" class="logo">مدونة آفاق</a>
+            <a href="/" class="logo"> مدونة آفاق</a>
             <div class="nav-center">
                 <ul class="nav-links">
                     <li><a href="/">الرئيسية</a></li>
@@ -131,22 +99,25 @@
                     <li><a href="/contact">التواصل</a></li>
                 </ul>
             </div>
+            <div class="social-icons" style="margin-left: 30px; display: flex; gap: 1rem;">
+                <a href="https://facebook.com" target="_blank" style="color: #e6e2d7;"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank" style="color: #e6e2d7;"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank" style="color: #e6e2d7;"><i
+                        class="fab fa-instagram"></i></a>
+            </div>
         </nav>
 
-        <!-- المحتوى -->
+        <h1 class="custom-heading">معلومات التواصل </h1>
         <div class="container">
-            <div class="quote-box">
-                <p>"العيب في دراسة التاريخ اننا أحياناً نـطالع صفحاته لنقرأ أنباء الانتصارات و الهزائم ... و لـكن التاريخ شئ آخر وراء هذا الظاهر ، وهو أن تعرف ما المقدمات التي انتظمت حتى انتهت بالنصر أو الهزيمة"</p>
-            </div>
-
             <div class="post-box">
-                <h1><%= post.title %></h1>
-                <div class="post-meta">نُشرت في <%= post.created_at.toLocaleDateString() %></div>
-                <div class="post-content">
-                    <%= post.content %>
-                </div>
+                <%- contactContent %>
             </div>
         </div>
+
+        <footer>
+            جميع الحقوق محفوظة &copy; مدونة آفاق 2025
+        </footer>
     </div>
 </body>
 
