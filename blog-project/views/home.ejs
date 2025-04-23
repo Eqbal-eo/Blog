@@ -1,203 +1,93 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-    <title>آفاق</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آفاق </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Tajawal', sans-serif;
-            background-image: url('https://cdn.vanderbilt.edu/vu-cas/wp-content/uploads/sites/39/2022/12/22140221/HisMap2.png');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            color: #222;
-        }
-
-        .overlay {
-            background-color: rgba(255, 255, 255, 0.829);
-            min-height: 100vh;
-            padding-bottom: 50px;
-        }
-
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.756);
-            padding: 0.9rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 400;
-            color: #e6e2d7;
-            text-decoration: none;
-            position: absolute;
-            right: 1.5rem;
-        }
-
-        .nav-center {
-            margin: 0 auto;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 4rem;
-            margin: 0;
-            padding: 0;
-            margin-right: 100px;
-            justify-content: center;
-            color: #e6e2d7;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0.5rem auto;
-            padding: 1rem;
-            border-radius: 15px;
-        }
-
-        .post-box {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border-right: 4px solid #c2a763;
-            background-color: #ffffff6e;
-            border-radius: 8px;
-        }
-
-        .post-box h2 {
-            margin: 0 0 0.5rem;
-            color: #85630d;
-            font-family: tajawal, sans-serif;
-        }
-
-        .post-meta {
-            font-size: 0.9rem;
-            color: #777;
-        }
-
-        .read-more {
-            display: inline-block;
-            margin-top: 0.5rem;
-            color: #5b4424;
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
-        .custom-heading {
-            margin-top: 40px;
-            text-align: center;
-            margin-right: 0px;
-            margin-left: auto;
-            color: #85630d;
-        }
-
-        .quote-box {
-            position: fixed;
-            top: 28.5%;
-            right: 2%;
-            width: 260px;
-            padding: 1rem;
-            background-color: #faf0e69a;
-            border-right: 6px solid #c2a763;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            font-size: 0.95rem;
-            text-align: right;
-            color: #5b4424;
-            z-index: 10;
-        }
-
-        pre {
-            white-space: pre-wrap;
-            font-family: inherit;
-            margin: 0;
-        }
-
-        footer {
-            background-color:rgba(226, 226, 226, 0.873);
-            color: #0b0b0b;
-            text-align: center;
-            padding: 0.6rem;
-            font-size: 0.95rem;
-            margin-top: 0rem;
-            direction: rtl;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/js/css/home.css">
 </head>
-
 <body>
-    <div class="overlay">
-        <!-- Navbar -->
-        <nav class="navbar">
-            <a href="/" class="logo"> مدونة آفاق</a>
-            <div class="nav-center">
-                <ul class="nav-links">
-                    <li><a href="/">الرئيسية</a></li>
-                    <li><a href="/about">النبذة</a></li>
-                    <li><a href="/contact">التواصل</a></li>
+
+    <nav class="navbar navbar-expand-md bg-light sticky-top border-bottom">
+        <div class="container">
+            <!-- العنوان -->
+            <div class="navbar-brand-container ms-auto">
+                <a class="navbar-brand fw-bold brand-title" href="/">مدونة آفاق</a>
+            </div>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <!-- روابط الصفحات -->
+            <div class="navbar-nav-container mx-auto">
+                <ul class="navbar-nav gap-3 text-center">
+                    <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/blogs">المدونات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">عن المنصة</a></li>
                 </ul>
             </div>
-            <div class="social-icons" style="margin-left: 30px; display: flex; gap: 1rem;">
-                <a href="https://facebook.com" target="_blank" style="color: #e6e2d7;"><i
-                        class="fab fa-facebook-f"></i></a>
-                <a href="https://twitter.com" target="_blank" style="color: #e6e2d7;"><i class="fab fa-twitter"></i></a>
-                <a href="https://instagram.com" target="_blank" style="color: #e6e2d7;"><i
-                        class="fab fa-instagram"></i></a>
+      
+            <!-- الأزرار -->
+            <div class="buttons-container">
+              <a href="/login" class="btn btn-outline-dark btn-small">تسجيل الدخول</a>
+              <a href="/register" class="btn btn-dark text-white btn-small">إنشاء حساب</a>
             </div>
-        </nav>
+          </div>
+        </div>
+    </nav>
+    
+  
+<!-- Hero Section -->
+<section class="hero">
+    <h1>مدونة <span class="highlight">آفاق</span></h1>
+    <p>منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد</p>
+    <div class="d-flex justify-content-center flex-wrap gap-2 mt-4">
+        <a href="/create-post" class="btn btn-primary">ابدأ مدونتك الآن</a>
+        <a href="/blogs" class="btn btn-outline-dark">تصفح المدونات</a>
+    </div>
+</section>
 
-
-
-
-        <!-- المحتوى -->
-        <h1 class="custom-heading">التدوينات الأخيرة</h1>
-
-        <div class="container">
-            <div class="quote-box">
-                <p>"العيب في دراسة التاريخ اننا أحياناً نـطالع صفحاته لنقرأ أنباء الانتصارات و الهزائم ، و أخبار
-                    المواليد و الوفيات ... و لـكن التاريخ شئ آخر وراء هذا الظاهر ، وهو أن تعرف ما المقدمات التي انتظمت
-                    حتى انتهت بالنصر أو الهزيمة"</p>
-            </div>
-
-            <div class="container">
-                <% if (posts.length===0) { %>
-                    <p>لا توجد تدوينات بعد.</p>
-                    <% } else { %>
-                        <% posts.forEach(post=> { %>
-                            <div class="post-box">
-                                <h2>
-                                    <%= post.title %>
-                                </h2>
-                                <pre><%= post.content.replace(/(<([^>]+)>)/gi, "").slice(0, 150) %>...</pre>
-                                <div class="post-meta">نُشرت في <%= post.created_at.toLocaleDateString() %>
-                                </div>
-                                <a href="/posts/<%= post.id %>" class="read-more">قراءة المزيد</a>
-                            </div>
-                            <% }) %>
-                                <% } %>
-            </div>
+<!-- How It Works -->
+<section class="section">
+    <h2 class="section-title">كيف تعمل المنصة؟</h2>
+    <div class="steps">
+        <div class="step">
+            <span class="number">1</span>
+            <h4>سجل حساباً</h4>
+            <p>أنشئ حساباً مجانياً وابدأ رحلتك التدوينية</p>
+        </div>
+        <div class="step">
+            <span class="number">2</span>
+            <h4>خصّص مدونتك</h4>
+            <p>أضف معلوماتك وصمم صفحات "من أنا" و"اتصل بي"</p>
+        </div>
+        <div class="step">
+            <span class="number">3</span>
+            <h4>انشر مقالاتك</h4>
+            <p>اكتب وانشر مقالاتك باستخدام محرر نصوص متقدم</p>
         </div>
     </div>
-</body>
+</section>
+
+<!-- Call to Action -->
+<section class="cta">
+    <h2>انضم إلى مجتمع الكتّاب والمفكرين</h2>
+    <p>شارك أفكارك وآرائك مع العالم وانضم إلى نقاشات فكرية وثقافية عميقة</p>
+    <a href="/signup" class="btn btn-primary">سجل الآن مجاناً</a>
+</section>
+
+<!-- Footer -->
 <footer>
-    جميع الحقوق محفوظة &copy; لموقع مدونة آفاق 2025
+    آفاق بلُوغ | منصة للتدوين الثقافي والفكري © 2025
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
