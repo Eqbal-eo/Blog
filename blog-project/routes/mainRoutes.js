@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
 });
 
 // صفحة تدوينة واحدة
-router.get('/post/:id', (req, res) => {
+router.get('/posts/:id', (req, res) => {
     const postId = req.params.id;
 
     db.query('SELECT * FROM settings LIMIT 1', (err, settingsResult) => {

@@ -49,7 +49,7 @@
                 return res.redirect('/dashboard');
             }
             res.redirect('/login');
-        });
+        }); 
     });
 
     // صفحة تسجيل الحساب (GET)

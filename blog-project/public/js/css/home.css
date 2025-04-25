@@ -2,73 +2,187 @@ body {
   font-family: 'Tajawal', sans-serif;
   background-color: #f9f7f0;
   color: #222;
-  line-height: 1.6;
+  line-height: 1.5;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
+  background-color: #ffffff; /* التأكد من أن النافبار له خلفية */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل للنافبار */
+  border-bottom: 1px solid #cccccc96; /* الحفاظ على الحدود السفلية */
+}
+
+/* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
+body {
+  padding-top: 70px; /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
+}
+
+.d-flex a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 0.5rem 1.5rem;
+  opacity: 0.6;
 }
 
 .mainNavbar {
   background-color: #000000;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(40, 39, 39, 0.1);
 }
+
+.navbar-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-nav .nav-link {
+  color: #100f0f;
+  font-size: 1rem;
+  margin: 4px 1rem;
+  font-weight: 400;
+  padding: 0.5rem 2rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #fff;
+  background-color: #470539c5;
+  text-decoration: none;
+}
+
 .brand-title {
-  font-size: 1.6rem; /* حجم الخط */
-  font-weight: 700;  /* سماكة الخط */
+  font-size: 1.6rem;
+  font-weight: 500;
   font-family: 'Tajawal', sans-serif;
   color: #8c4a21ca;
 }
+
 .hero {
   text-align: center;
   padding: 8rem 2rem;
 }
+
 .hero h1 {
   font-size: 3.6rem;
-  font-weight: 650;
+  font-weight: 600;
 }
+
 .hero .highlight {
   color: #8c4a21ca;
 }
+
 .hero p {
-  color: #777;
-  font-size: 1.4rem;
+  color: #6a6969;
+  font-size: 1.3rem;
   font-weight: 400;
-  margin: 1.1rem 0;
+  margin: 1rem 2;
 }
+
 .btn-primary {
-  background-color: #8c4a21ca; 
+  background-color: #8c4a21ca;
   border: none;
-  padding: 0.6rem 1.5rem; 
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #8c4a21ca;
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:focus:active {
+  background-color: #8c4a21ca !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.btn-outline-dark,
+.btn-outline-dark-blog,
+.btn-outline-dark-log {
+  border-color: #0000003b;
+  color: #131313ca;
+  padding: 0.6rem 1.5rem;
   font-size: 0.9rem;
 }
 
-.btn-outline-dark {
-  border-color: #0000003b;
-  color: #131313ca;
-  font-size: 0.9rem; 
-  padding: 0.6rem 1.5rem; 
-}
-
-.btn-outline-dark:hover {
+.btn-outline-dark:hover,
+.btn-outline-dark-blog:hover,
+.btn-outline-dark-log:hover {
   background-color: #470539c5;
   color: #fff;
-  border-color: #0000003b;
+  border-color: transparent;
 }
+
 .btn-small {
   padding: 0.4rem 1rem;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  border-color: transparent;
 }
 
 .section {
   max-width: 1200px;
-  margin: 3rem auto;
+  margin: 4rem auto;
   padding: 0 1rem;
-  
 }
+
+
+
+/* 🔥 عنوان التدوينة */
+.blog-post-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 🔥 اسم الكاتب */
+.blog-post-author {
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* 🔥 محتوى التدوينة */
+.blog-post-content {
+  color: #999;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 🔥 زر اقرأ المزيد */
+.read-more-link {
+  color: #8c4a21ca;
+  font-weight: 400;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-top: 3px;
+  ;
+  padding-top: 0.1rem;
+}
+
+/* القسم والعنوان */
 .section-title {
-  text-align: right;
+  text-align: center;
   font-size: 1.6rem;
   margin-bottom: 2rem;
   font-weight: 700;
-  text-align: center;
 }
 
 .steps {
@@ -77,12 +191,14 @@ body {
   gap: 1.5rem;
   text-align: center;
 }
+
 .step {
   background-color: #a7a4a43a;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 5rem;
   border-radius: 8px;
   text-align: center;
 }
+
 .step .number {
   display: inline-block;
   background-color: #8c4a21ca;
@@ -93,15 +209,101 @@ body {
   border-radius: 50%;
   font-weight: 700;
 }
+
 .cta {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 3rem 3rem;
 }
-footer {
-  background-color: #a7a4a43a;
-  text-align: center;
-  padding: 1rem;
-  font-size: 1rem;
-  color: #777;
-  
+/* التحكم في عرض وارتفاع البطاقات في قسم التدوينات الأخيرة */
+.section .card {
+  width: 100%; /* تجعل البطاقة تمتد بالكامل داخل العمود */
+  height: 350px; /* تحديد ارتفاع أكبر للبطاقة */
+  border-radius: 10px; /* إضافة زاوية دائرية للبطاقة */
+  overflow: hidden; /* التخلص من أي محتوى يخرج عن حدود البطاقة */
+}
+
+/* تحسين أبعاد نص المقتطف */
+.section .card-text {
+  height: 90px; /* تحديد ارتفاع ثابت لمقتطف النص */
+  width: 90%; /* عرض المقتطف بالكامل */
+  overflow: hidden; /* إخفاء النص الزائد */
+  text-overflow: ellipsis; /* إضافة ثلاث نقاط عند زيادة النص عن الحدود */
+}
+
+/* تعديل أبعاد العناوين داخل البطاقة */
+.section .card-title {
+  font-size: 1.1rem; /* تعديل حجم الخط */
+  line-height: 1.3; /* زيادة المسافة بين الأسطر */
+  margin-bottom: 10px; /* إضافة مسافة أسفل العنوان */
+}
+
+/* تخصيص المسافة بين العناصر داخل البطاقة */
+.section .card-body {
+  padding: 30px; /* إضافة padding حول المحتوى داخل البطاقة */
+}
+/* التصميم
+ المتجاوب */
+
+ 
+@media (max-width: 768px) {
+  .navbar-toggler:hover {
+    background-color: transparent;
+    color: #470539c5;
+    border-color: #470539c5;
+  }
+
+  .navbar-collapse.show + .navbar-toggler {
+    background-color: transparent;
+    color: transparent;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-toggler-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+  }
+
+  .navbar-nav .nav-link {
+    width: 75%;
+    padding: 0.1rem;
+    text-align: center;
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  .hero {
+    padding: 4rem 2rem;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .section {
+    padding: 0 3rem;
+  }
+
+  .d-flex {
+    flex-direction: column;
+  }
+
+  .btn-outline-dark,
+  .btn-outline-dark-blog,
+  .btn-outline-dark-log,
+  .btn-primary {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.1rem;
+    font-size: 0.9rem;
+  }
+
+  .hero p {
+    font-size: 1.3rem;
+  }
 }

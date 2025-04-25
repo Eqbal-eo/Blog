@@ -1,28 +1,36 @@
-body {
+/* تعديل body ليأخذ كامل ارتفاع الصفحة */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   font-family: 'Tajawal', sans-serif;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f7f0;
 }
 
+/* تنسيق الكرت */
 .card {
   border-radius: 15px;
 }
 
 .btn-dark {
-  background-color: #343a40;
-  border-color: #343a40;
+  background-color: #8c4a21ca;
+  border-color: transparent;
 }
 
 .btn-dark:hover {
-  background-color: #23272b;
-  border-color: #1d2124;
+  background-color: #470539c5;
+  border-color: transparent;
 }
 
+/* تنسيق العناوين */
 h1 {
   font-family: 'Tajawal', sans-serif;
   font-size: 2.5rem;
-  color: #004085;
+  color: #8c4a21ca;
   text-align: center;
-  margin-top: 50px; 
-  /* إضافة مسافة من الأعلى */
+  margin-top: 50px;
 }
 
 h2 {
@@ -30,11 +38,31 @@ h2 {
   font-size: 1.75rem;
   color: #5a5a5a;
   text-align: center;
-  margin-top: 5px;
-  /* إضافة مسافة من الأعلى */
+  margin-top: 1px;
 }
 
 .container {
   margin-top: 50px;
-  /* إضافة مسافة للمحتوى ليظهر أسفل */
+}
+
+
+/* تحسين العرض في الشاشات الصغيرة */
+@media (max-width: 576px) {
+  h1 {
+    font-size: 2.7rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* إضافة خصائص للـ footer ليظل في أسفل الصفحة */
+footer {
+  background-color: #a7a4a43a;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #777;
+  margin-top: auto; /* إضافة هذا لضمان تثبيت الفوتر أسفل الصفحة */
 }
