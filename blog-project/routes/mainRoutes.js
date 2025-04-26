@@ -46,31 +46,36 @@ router.get('/', (req, res) => {
     });
 });
 
-// صفحة تدوينة واحدة
-router.get('/posts/:id', (req, res) => {
+
+// صفحة عرض التدوينة
+router.get('/article/:id', (req, res) => { 
     const postId = req.params.id;
 
     db.query('SELECT * FROM settings LIMIT 1', (err, settingsResult) => {
-        if (err || settingsResult.length === 0) {
-            return res.send('خطأ في تحميل الإعدادات');
+        if (err || settingsResult.length === 0) { 
+            console.error(err);
+            return res.send('خطأ في تحميل إعدادات الموقع');
         }
 
-        const site = settingsResult[0];
+        const site = settingsResult[0]; 
 
         db.query(
             'SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.id = ? AND posts.status = "published"',
             [postId],
-            (err, results) => {
-                if (err || results.length === 0) {
-                    return res.send('التدوينة غير موجودة أو لم يتم نشرها');
+            (err, postResult) => {
+                if (err || postResult.length === 0) {
+                    console.error(err);
+                    return res.send('التدوينة غير موجودة أو حدث خطأ');
                 }
 
-                const post = results[0];
-                res.render('post', { site, post });
+                const post = postResult[0];
+
+                res.render('post', {
+                    site,
+                    post
+                });
             }
         );
     });
 });
-
-
 module.exports = router;

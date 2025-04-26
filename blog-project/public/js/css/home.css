@@ -5,20 +5,29 @@ body {
   line-height: 1.5;
 }
 
+h4 {
+  
+  margin-top: 20px;
+}
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
-  background-color: #ffffff; /* التأكد من أن النافبار له خلفية */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل للنافبار */
-  border-bottom: 1px solid #cccccc96; /* الحفاظ على الحدود السفلية */
+  z-index: 1000;
+  /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
+  background-color: #ffffff;
+  /* التأكد من أن النافبار له خلفية */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  /* إضافة ظل للنافبار */
+  border-bottom: 1px solid #cccccc96;
+  /* الحفاظ على الحدود السفلية */
 }
 
 /* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
 body {
-  padding-top: 70px; /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
+  padding-top: 70px;
+  /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
 }
 
 .d-flex a {
@@ -137,44 +146,28 @@ body {
   border-color: transparent;
 }
 
+/* قسم التدوينات الأخيرة */
 .section {
   max-width: 1200px;
   margin: 4rem auto;
-  padding: 0 1rem;
+  padding: 0 rem;
 }
 
-
-
-/* 🔥 عنوان التدوينة */
-.blog-post-title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+.section .card-text {
+  margin: 1.5rem 0;
+  
 }
 
-/* 🔥 اسم الكاتب */
-.blog-post-author {
-  color: #999;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-/* 🔥 محتوى التدوينة */
-.blog-post-content {
-  color: #999;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-/* 🔥 زر اقرأ المزيد */
 .read-more-link {
+  text-decoration: none;
+  /* إزالة الخط السفلي */
   color: #8c4a21ca;
-  font-weight: 400;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border-top: 3px;
-  ;
-  padding-top: 0.1rem;
+  /* إضافة مسافة صغيرة على اليسار */
+}
+
+.read-more-link:hover {
+  color: #1c21c5c5;
+  /* لون مختلف عند التمرير */
 }
 
 /* القسم والعنوان */
@@ -214,47 +207,42 @@ body {
   text-align: center;
   padding: 3rem 3rem;
 }
-/* التحكم في عرض وارتفاع البطاقات في قسم التدوينات الأخيرة */
-.section .card {
-  width: 100%; /* تجعل البطاقة تمتد بالكامل داخل العمود */
-  height: 350px; /* تحديد ارتفاع أكبر للبطاقة */
-  border-radius: 10px; /* إضافة زاوية دائرية للبطاقة */
-  overflow: hidden; /* التخلص من أي محتوى يخرج عن حدود البطاقة */
-}
 
-/* تحسين أبعاد نص المقتطف */
-.section .card-text {
-  height: 90px; /* تحديد ارتفاع ثابت لمقتطف النص */
-  width: 90%; /* عرض المقتطف بالكامل */
-  overflow: hidden; /* إخفاء النص الزائد */
-  text-overflow: ellipsis; /* إضافة ثلاث نقاط عند زيادة النص عن الحدود */
-}
-
-/* تعديل أبعاد العناوين داخل البطاقة */
 .section .card-title {
-  font-size: 1.1rem; /* تعديل حجم الخط */
-  line-height: 1.3; /* زيادة المسافة بين الأسطر */
-  margin-bottom: 10px; /* إضافة مسافة أسفل العنوان */
+  color: #000000ca;
+  /* لون مشابه للصورة */
+  font-size: 1.3rem;
+  /* تكبير الخط */
+  font-weight: bold;
+  padding: 0.1rem 0rem;
+  margin-top: 10px ;
 }
 
-/* تخصيص المسافة بين العناصر داخل البطاقة */
-.section .card-body {
-  padding: 30px; /* إضافة padding حول المحتوى داخل البطاقة */
+.card:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.127);
+  /* ظل ناعم */
+  border-radius: 9px;
+  /* تحسين الزوايا */
 }
-/* التصميم
- المتجاوب */
 
- 
 @media (max-width: 768px) {
+  .card {
+    margin: 0.5rem 0; /* فراغ علوي وسفلي بين البطاقات */
+    padding: 1rem;
+    border-radius: 9px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  }
   .navbar-toggler:hover {
     background-color: transparent;
     color: #470539c5;
     border-color: #470539c5;
   }
 
-  .navbar-collapse.show + .navbar-toggler {
+  .navbar-collapse.show+.navbar-toggler {
     background-color: transparent;
     color: transparent;
+    overflow-y: auto; /* تمكين التمرير عند عرض القائمة */
+    max-height: 100vh; /* تحديد أقصى ارتفاع للقائمة */
   }
 
   .navbar-nav {
@@ -286,7 +274,13 @@ body {
   }
 
   .section {
-    padding: 0 3rem;
+    padding: 0 2rem;
+     
+  }
+  .card-title {
+   padding : 1.2rem;
+   margin-top: 10px ;
+   
   }
 
   .d-flex {
@@ -306,4 +300,5 @@ body {
   .hero p {
     font-size: 1.3rem;
   }
+  
 }

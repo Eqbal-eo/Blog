@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
+    <%
+    function toArabicNumbers(str) {
+      return str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+    }
+  
+    function formatDate(dateString) {
+      const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+      const date = new Date(dateString);
+      const day = toArabicNumbers(date.getDate());
+      const month = months[date.getMonth()];
+      const year = toArabicNumbers(date.getFullYear());
+      return `${day} ${month} ${year}`;
+    }
+  %>
+  
+  
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,39 +73,38 @@
     </section>
     <div class="custom-divider"></div>
 
-    <!-- Latest Posts Section -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title text-center">التدوينات الأخيرة</h2>
-            <div class="row justify-content-center">
-                <% posts.slice(0, 3).forEach(post=> { %>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body d-flex flex-column">
-                                <!-- عنوان التدوينة -->
-                                <h5 class="card-title fw-bold mb-2">
-                                    <%= post.title %>
-                                </h5>
+   <!-- Latest Posts Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title text-center">التدوينات الأخيرة</h2>
+        <div class="row justify-content-center">
+            <% posts.slice(0, 3).forEach(post=> { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <!-- عنوان التدوينة -->
+                            <h5 class="card-title">
+                                <%= post.title %>
+                            </h5>
 
-                                <!-- اسم الكاتب -->
-                                <small class="text-muted mb-2 d-block">بواسطة <%= post.author %></small>
+                            <!-- اسم الكاتب -->
+                            <small class="text-muted d-block" dir="rtl">بواسطة <%= post.username %> - <%= formatDate(post.created_at) %></small>
 
-                                <!-- مقتطف النص -->
-                                <p class="card-text text-muted flex-grow-1">
-                                    <%= post.content.substring(0, 100).replace(/(<([^>]+)>)/gi, "") %>...
-                                </p>
+                            <!-- مقتطف النص -->
+                            <p class="card-text text-secondary">
+                                <%= post.content.substring(0, 100).replace(/(<([^>]+)>)/gi, "") %>...
+                            </p>
 
-                                <!-- اقرأ المزيد -->
-                                <div class="mt-2">
-                                    <a href="/posts/<%= post.id %>" class="read-more-link"
-                                        style="color: #8c4a21ca; text-decoration: none;">اقرأ المزيد..</a>
-                                </div>
-                            </div>
+                            <!-- اقرأ المزيد -->
+                            <a href="/article/<%= post.id %>" class="read-more-link">اقرأ المزيد..</a>
                         </div>
                     </div>
-                    <% }) %>
-            </div>
+                </div>
+                <% }) %>
         </div>
+    </div>
+</section>
+
         
     </section>
     <div class="custom-divider"></div>

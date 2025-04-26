@@ -7,6 +7,7 @@ const db = require('./db/db'); // ملف الاتصال بقاعدة البيا�
 const authRoutes = require('./routes/authRoutes');
 const mainRoutes = require('./routes/mainRoutes');
 const postRoutes = require('./routes/postRoutes');
+const pagesRoutes = require('./routes/pagesRoutes'); // إذا كان لديك مسارات إضافية
 
 const app = express();
 const PORT = 3000;
@@ -28,36 +29,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // مسارات التطبيق
-app.use(authRoutes);
+app.use('/', authRoutes);
 app.use('/', mainRoutes);
 app.use('/posts', postRoutes);
-
-// الصفحة الرئيسية (يمكن حذفه إذا كانت موجودة ضمن mainRoutes)
-app.get('/', (req, res) => {
-    res.render('home');
-});
-let aboutContent = "مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.";
-let contactContent = "تواصل معنا عبر البريد أو مواقع التواصل.";
-
-// عرض الصفحات
-app.get('/about', (req, res) => {
-    res.render('about', { aboutContent });
-});
-
-app.get('/contact', (req, res) => {
-    res.render('contact', { contactContent });
-});
-
-app.get('/settings', (req, res) => {
-    res.render('settings', { aboutContent, contactContent });
-});
-
-app.post('/settings', (req, res) => {
-    aboutContent = req.body.aboutContent;
-    contactContent = req.body.contactContent;
-    res.redirect('/');
-});
-
+app.use('/', pagesRoutes); 
+ 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
-});
+});             

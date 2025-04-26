@@ -12,8 +12,10 @@ html, body {
 /* تنسيق الكرت */
 .card {
   border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* زر الـ btn-dark */
 .btn-dark {
   background-color: #8c4a21ca;
   border-color: transparent;
@@ -31,6 +33,7 @@ h1 {
   color: #8c4a21ca;
   text-align: center;
   margin-top: 50px;
+  padding: 0 15px;
 }
 
 h2 {
@@ -39,30 +42,11 @@ h2 {
   color: #5a5a5a;
   text-align: center;
   margin-top: 1px;
+  padding: 0 15px;
 }
 
 .container {
   margin-top: 50px;
+  padding: 0 15px; /* padding إضافي للتأكد من عدم التصاق المحتوى بالأطراف */
 }
 
-
-/* تحسين العرض في الشاشات الصغيرة */
-@media (max-width: 576px) {
-  h1 {
-    font-size: 2.7rem;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-}
-
-/* إضافة خصائص للـ footer ليظل في أسفل الصفحة */
-footer {
-  background-color: #a7a4a43a;
-  text-align: center;
-  padding: 1rem;
-  font-size: 1rem;
-  color: #777;
-  margin-top: auto; /* إضافة هذا لضمان تثبيت الفوتر أسفل الصفحة */
-}

@@ -28,8 +28,9 @@
 
         .post-info {
             font-size: 0.9rem;
-            color: #bbb;
+            color: #a8a6a6;
             margin-top: 1rem;
+            margin-bottom: 1rem;
             text-align: right;
         }
 
@@ -46,7 +47,10 @@
 
         .post-content {
             font-size: 1rem;
-            line-height: 1.5;
+            line-height: 1.4;
+            font-weight: 399; /* هذا يجعل الخط عاديًا */
+
+            /* قلل هذا الرقم إذا أردت التباعد أقل */
         }
     </style>
 </head>
@@ -79,23 +83,24 @@
     <section class="section">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8 mb-4">
+                <div class="col-md-9 mb-4">
                     <!-- عنوان التدوينة خارج مربع التدوينة -->
                     <h1 class="post-title">
                         <%= post.title %>
                     </h1>
 
                     <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
-                    <div class="post-info">
-                        <small>بواسطة <%= post.author %> <span>-</span> نُشرت في <%=
+                    <div class="post-info ">
+                        <small>بواسطة <%= post.username %> <span>-</span> نُشرت في <%=
                                     post.created_at.toLocaleDateString() %></small>
                     </div>
 
                     <!-- مربع التدوينة -->
-                    <div class="card h-100 shadow-sm">
+                    <div class="card shadow-sm">
                         <div class="card-body">
                             <div class="card-text post-content">
-                                <%= post.content %>
+                                <%- post.content %>
+
                             </div>
                         </div>
                     </div>
