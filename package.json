@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "build": "mkdir -p dist && cp -r $(ls -A | grep -v 'dist') dist/",
-    "start": "node app.js",
+    "start": "node index.js",
+    "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
