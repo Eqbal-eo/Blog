@@ -53,9 +53,9 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!username || !password) {
+    if (!username || !email || !password) {
         return res.render('register', { error: 'يرجى إدخال جميع الحقول', success: null });
     }
 
@@ -63,19 +63,28 @@ router.post('/register', async (req, res) => {
         // Check if username exists
         const { data: existingUser } = await supabase
             .from('users')
-            .select('username')
-            .eq('username', username)
+            .select('username, email')
+            .or(`username.eq.${username},email.eq.${email}`)
             .single();
 
         if (existingUser) {
-            return res.render('register', { error: 'اسم المستخدم موجود مسبقًا', success: null });
+            if (existingUser.username === username) {
+                return res.render('register', { error: 'اسم المستخدم موجود مسبقًا', success: null });
+            }
+            if (existingUser.email === email) {
+                return res.render('register', { error: 'البريد الإلكتروني مستخدم مسبقًا', success: null });
+            }
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const { error } = await supabase
             .from('users')
-            .insert([{ username, password: hashedPassword }]);
+            .insert([{ 
+                username, 
+                email,
+                password: hashedPassword 
+            }]);
 
         if (error) {
             console.error('Error during registration:', error);
@@ -111,20 +120,34 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-router.get('/settings', (req, res) => {
+router.get('/settings', async (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login');
     }
 
-    const site = {
-        title: 'مدونتي',
-        description: 'أهلاً بك في المدونة'
-    };
+    try {
+        const { data: userData, error } = await supabase
+            .from('users')
+            .select('username, email')
+            .eq('id', req.session.user.id)
+            .single();
 
-    res.render('settings', {
-        user: req.session.user,
-        site
-    });
+        if (error) throw error;
+
+        const site = {
+            title: 'مدونتي',
+            description: 'أهلاً بك في المدونة',
+            theme: 'light'
+        };
+
+        res.render('settings', {
+            user: { ...req.session.user, ...userData },
+            site
+        });
+    } catch (err) {
+        console.error('Error fetching user data:', err);
+        res.redirect('/dashboard');
+    }
 });
 
 module.exports = router;
