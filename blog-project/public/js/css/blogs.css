@@ -1,0 +1,76 @@
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #f9f7f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* عنوان الصفحة */
+  .section-title {
+    font-size: 2.5rem;
+    color: #8c4a21ca;
+    font-weight: bold;
+  }
+  
+  /* مربع البحث */
+  .search-box {
+    max-width: 500px;
+  }
+  
+  .search-box input {
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+  }
+  
+  /* بطاقة المدون */
+  .blogger-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+  }
+  
+  /* اسم الكاتب */
+  .blogger-name {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* تعريف الكاتب */
+  .blogger-bio {
+    color: #888;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  
+  /* عدد المقالات */
+  .articles-count {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #5a2b16; /* بني غامق */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* تحسين العرض للموبايل */
+  @media (max-width: 576px) {
+    .section-title {
+      font-size: 2rem;
+    }
+  
+    .search-box input {
+      padding: 8px 15px;
+    }
+  
+    .articles-count {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+    }
+  }
+  

@@ -29,11 +29,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // مسارات التطبيق
-app.use('/', authRoutes);
+app.use('/', authRoutes);  
 app.use('/', mainRoutes);
 app.use('/posts', postRoutes);
 app.use('/', pagesRoutes); 
  
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
-});             
+});               

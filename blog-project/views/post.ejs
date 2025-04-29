@@ -14,45 +14,63 @@
     <link rel="stylesheet" href="/js/css/home.css">
     <link rel="stylesheet" href="/js/css/footer.css">
     <style>
-        /* Styles to match your request */
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-            display: flex;
-            flex-direction: column;
-            background-color: #f9f7f0;
-        }
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Tajawal', sans-serif;
+        display: flex;
+        flex-direction: column;
+        background-color: #f9f7f0;
+    }
 
-        .post-info {
-            font-size: 0.9rem;
-            color: #a8a6a6;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            text-align: right;
-        }
+    .post-info {
+        font-size: 0.9rem;
+        color: #a8a6a6;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        text-align: right;
+    }
 
-        .post-info span {
-            margin-left: 1px;
-        }
+    .post-info span {
+        margin-left: 1px;
+    }
 
+    .post-title {
+        font-weight: bold;
+        font-size: 2rem;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .post-content {
+        font-size: 1rem;
+        line-height: 1.8; /* زودت التباعد بين الأسطر لتسهيل القراءة */
+        font-weight: 400;
+        padding: 1rem 1.5rem; /* مسافة من الأعلى والأسفل ومن اليمين واليسار */
+        text-align: right; /* محاذاة النص لليمين */
+    }
+
+    .card-body {
+        padding: 0; /* نلغي البادينغ الافتراضي للبطاقة لأننا أضفناه داخل post-content */
+    }
+    @media screen and (max-width: 768px) {
         .post-title {
-            font-weight: bold;
-            font-size: 2rem;
-            margin-top: 30px;
-            margin-bottom: 15px;
+            font-size: 1.5rem; /* حجم الخط في الشاشات الصغيرة */
         }
 
         .post-content {
-            font-size: 1rem;
-            line-height: 1.4;
-            font-weight: 399; /* هذا يجعل الخط عاديًا */
+        font-size: 1rem;
+        line-height: 1.8; /* زودت التباعد بين الأسطر لتسهيل القراءة */
+        font-weight: 400;
+        padding: 1rem 1.5rem; /* مسافة من الأعلى والأسفل ومن اليمين واليسار */
+        text-align: right; /* محاذاة النص لليمين */
+    }
+        
+    }
+</style>
 
-            /* قلل هذا الرقم إذا أردت التباعد أقل */
-        }
-    </style>
 </head>
 
 <body>

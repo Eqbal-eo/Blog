@@ -25,5 +25,13 @@ router.post('/settings', (req, res) => {
     contactContent = req.body.contactContent;
     res.redirect('/');
 });
-
+router.get('/blogs', (req, res) => {
+    db.query('SELECT users.id, users.name, users.bio, COUNT(posts.id) AS post_count FROM blogs LEFT JOIN posts ON users.id = posts.user_id GROUP BY users.id', (err, blogs) => {
+        if (err) {
+            console.error(err);
+            return res.send('حدث خطأ');
+        }
+        res.render('blogs', { blogs }); // إرسال البيانات للواجهة
+    });
+});
 module.exports = router;
