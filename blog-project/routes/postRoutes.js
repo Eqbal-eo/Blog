@@ -1,81 +1,114 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/db');
+const supabase = require('../db/db');
 
-// صفحة إنشاء تدوينة
 router.get('/create', (req, res) => {
     if (!req.session.user) return res.redirect('/login');
     res.render('create-post');
 });
 
-// تنفيذ عملية إنشاء التدوينة
-router.post('/create', (req, res) => {
-    const { title, content, status } = req.body;  // إضافة الحقل status
+router.post('/create', async (req, res) => {
+    const { title, content, status } = req.body;
     const userId = req.session.user.id;
 
     if (!title || !content) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    // إذا لم يتم إرسال حالة النشر، سيتم تعيينها كـ "منشورة" افتراضيًا
-    const postStatus = status || 'published'; 
+    const postStatus = status || 'published';
 
-    const query = 'INSERT INTO posts (title, content, user_id, status) VALUES (?, ?, ?, ?)';
-    db.query(query, [title, content, userId, postStatus], (err) => {
-        if (err) {
-            console.error('خطأ في إدخال التدوينة:', err);
-            return res.send('حدث خطأ');
-        }
+    try {
+        const { error } = await supabase
+            .from('posts')
+            .insert([{
+                title,
+                content,
+                user_id: userId,
+                status: postStatus
+            }]);
+
+        if (error) throw error;
         res.redirect('/dashboard');
-    });
+    } catch (err) {
+        console.error('خطأ في إدخال التدوينة:', err);
+        res.send('حدث خطأ');
+    }
 });
 
-// عرض التدوينات الخاصة بالمستخدم مع حالة النشر
-router.get('/select-edit', (req, res) => { 
+router.get('/select-edit', async (req, res) => {
     if (!req.session.user) return res.redirect('/login');
 
-    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => { 
-        if (err) return res.send('حدث خطأ');
+    try {
+        const { data: posts, error } = await supabase
+            .from('posts')
+            .select('*')
+            .eq('user_id', req.session.user.id);
+
+        if (error) throw error;
         res.render('select-edit', { posts });
-    });
+    } catch (err) {
+        res.send('حدث خطأ');
+    }
 });
 
-// تنفيذ عملية تعديل التدوينة
-router.post('/edit/:id', (req, res) => { 
+router.post('/edit/:id', async (req, res) => {
     const postId = req.params.id;
-    if (!req.session.user) return res.redirect('/login'); 
-    const { title, content, status } = req.body; 
+    if (!req.session.user) return res.redirect('/login');
+    const { title, content, status } = req.body;
 
     if (!title || !content) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    const postStatus = status || 'published'; // إذا لم يتم إرسال حالة النشر، سيتم تعيينها كـ "منشورة" افتراضيًا
+    const postStatus = status || 'published';
 
-    db.query('UPDATE posts SET title = ?, content = ?, status = ? WHERE id = ?', [title, content, postStatus, postId], (err) => {
-        if (err) return res.send('فشل التعديل');
+    try {
+        const { error } = await supabase
+            .from('posts')
+            .update({
+                title,
+                content,
+                status: postStatus
+            })
+            .eq('id', postId);
+
+        if (error) throw error;
         res.redirect('/dashboard');
-    });
+    } catch (err) {
+        res.send('فشل التعديل');
+    }
 });
 
-// صفحة اختيار التدوينة للحذف
-router.get('/select-delete', (req, res) => {
+router.get('/select-delete', async (req, res) => {
     if (!req.session.user) return res.redirect('/login');
 
-    db.query('SELECT * FROM posts WHERE user_id = ?', [req.session.user.id], (err, posts) => {
-        if (err) return res.send('حدث خطأ');
+    try {
+        const { data: posts, error } = await supabase
+            .from('posts')
+            .select('*')
+            .eq('user_id', req.session.user.id);
+
+        if (error) throw error;
         res.render('select-delete', { posts });
-    });
+    } catch (err) {
+        res.send('حدث خطأ');
+    }
 });
 
-// تنفيذ عملية حذف التدوينة
-router.post('/delete/:id', (req, res) => { 
+router.post('/delete/:id', async (req, res) => {
     const postId = req.params.id;
-    db.query('DELETE FROM posts WHERE id = ?', [postId], (err) => {
-        if (err) return res.send('فشل الحذف');
-        res.redirect('/posts/select-delete');
-    });
-});
+    
+    try {
+        const { error } = await supabase
+            .from('posts')
+            .delete()
+            .eq('id', postId);
 
+        if (error) throw error;
+        res.redirect('/posts/select-delete');
+    } catch (err) {
+        res.send('فشل الحذف');
+    }
+});
 
 module.exports = router;

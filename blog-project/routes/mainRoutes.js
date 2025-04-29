@@ -1,81 +1,95 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/db');
+const supabase = require('../db/db');
 
-// الصفحة الرئيسية
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     const postsPerPage = 5;
     const page = parseInt(req.query.page) || 1;
-    const offset = (page - 1) * postsPerPage;
+    const start = (page - 1) * postsPerPage;
+    const end = start + postsPerPage - 1;
 
-    db.query('SELECT * FROM settings LIMIT 1', (err, settingsResult) => {
-        if (err || settingsResult.length === 0) {
-            console.error(err);
-            return res.send('خطأ في تحميل إعدادات الموقع');
+    try {
+        const { data: settings, error: settingsError } = await supabase
+            .from('settings')
+            .select('*')
+            .single();
+
+        if (settingsError) {
+            throw new Error('خطأ في تحميل إعدادات الموقع');
         }
 
-        const site = settingsResult[0];
+        const { count: totalPosts } = await supabase
+            .from('posts')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'published');
 
-        db.query('SELECT COUNT(*) AS total FROM posts WHERE status = "published"', (err, countResult) => {
-            if (err) {
-                console.error(err);
-                return res.send('خطأ في حساب عدد التدوينات');
-            }
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-            const totalPosts = countResult[0].total;
-            const totalPages = Math.ceil(totalPosts / postsPerPage);
+        const { data: posts, error: postsError } = await supabase
+            .from('posts')
+            .select(`
+                *,
+                users (
+                    username
+                )
+            `)
+            .eq('status', 'published')
+            .order('created_at', { ascending: false })
+            .range(start, end);
 
-            db.query(
-                'SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.status = "published" ORDER BY created_at DESC LIMIT ? OFFSET ?',
-                [postsPerPage, offset],
-                (err, posts) => {
-                    if (err) {
-                        console.error(err);
-                        return res.send('حدث خطأ أثناء جلب التدوينات');
-                    }
+        if (postsError) {
+            throw new Error('حدث خطأ أثناء جلب التدوينات');
+        }
 
-                    res.render('home', {
-                        site,
-                        posts,
-                        pages: Array.from({ length: totalPages }, (_, i) => totalPages - i),
-                        currentPage: page
-                    });
-                }
-            );
+        res.render('home', {
+            site: settings,
+            posts,
+            pages: Array.from({ length: totalPages }, (_, i) => totalPages - i),
+            currentPage: page
         });
-    });
+    } catch (err) {
+        console.error(err);
+        res.send(err.message || 'حدث خطأ');
+    }
 });
 
-
-// صفحة عرض التدوينة
-router.get('/article/:id', (req, res) => { 
+router.get('/article/:id', async (req, res) => {
     const postId = req.params.id;
 
-    db.query('SELECT * FROM settings LIMIT 1', (err, settingsResult) => {
-        if (err || settingsResult.length === 0) { 
-            console.error(err);
-            return res.send('خطأ في تحميل إعدادات الموقع');
+    try {
+        const { data: settings, error: settingsError } = await supabase
+            .from('settings')
+            .select('*')
+            .single();
+
+        if (settingsError) {
+            throw new Error('خطأ في تحميل إعدادات الموقع');
         }
 
-        const site = settingsResult[0]; 
+        const { data: post, error: postError } = await supabase
+            .from('posts')
+            .select(`
+                *,
+                users (
+                    username
+                )
+            `)
+            .eq('id', postId)
+            .eq('status', 'published')
+            .single();
 
-        db.query(
-            'SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.id = ? AND posts.status = "published"',
-            [postId],
-            (err, postResult) => {
-                if (err || postResult.length === 0) {
-                    console.error(err);
-                    return res.send('التدوينة غير موجودة أو حدث خطأ');
-                }
+        if (postError || !post) {
+            throw new Error('التدوينة غير موجودة أو حدث خطأ');
+        }
 
-                const post = postResult[0];
-
-                res.render('post', {
-                    site,
-                    post
-                });
-            }
-        );
-    });
+        res.render('post', {
+            site: settings,
+            post
+        });
+    } catch (err) {
+        console.error(err);
+        res.send(err.message || 'حدث خطأ');
+    }
 });
+
 module.exports = router;

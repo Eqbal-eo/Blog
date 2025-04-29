@@ -1,126 +1,130 @@
-    const express = require('express');
-    const router = express.Router();
-    const db = require('../db/db');
-    const bcrypt = require('bcrypt');
+const express = require('express');
+const router = express.Router();
+const supabase = require('../db/db');
+const bcrypt = require('bcrypt');
 
-    // صفحة تسجيل الدخول (GET)
-    router.get('/login', (req, res) => {
-        res.render('login', { error: null });
-    });
+router.get('/login', (req, res) => {
+    res.render('login', { error: null });
+});
 
-    // عملية تسجيل الدخول (POST)
-    router.post('/login', (req, res) => {
-        const { username, password } = req.body;
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], async (err, results) => {
-            if (err) {
-                console.error('Error querying database:', err);
-                return res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
-            }
+    try {
+        const { data: users, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('username', username)
+            .single();
 
-            if (results.length === 0) {
-                return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-            }
-
-            const user = results[0];
-
-            // ✅ مقارنة كلمة المرور المشفرة
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-            }
-
-            // ✅ تسجيل الدخول بنجاح
-            req.session.user = {
-                id: user.id,
-                username: user.username
-            };
-
-            res.redirect('/dashboard');
-        });
-    });
-
-    // تسجيل الخروج (GET)
-    router.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('فشل في إنهاء الجلسة:', err);
-                return res.redirect('/dashboard');
-            }
-            res.redirect('/login');
-        }); 
-    });
-
-    // صفحة تسجيل الحساب (GET)
-    router.get('/register', (req, res) => {
-        res.render('register', { error: null, success: null });
-    });
-
-    // تنفيذ عملية التسجيل (POST)
-    router.post('/register', async (req, res) => {
-        const { username, password } = req.body;
-
-        if (!username || !password) {
-            return res.render('register', { error: 'يرجى إدخال جميع الحقول', success: null });
+        if (error || !users) {
+            return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
         }
 
-        db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
-            if (err) {
-                console.error(err);
-                return res.render('register', { error: 'حدث خطأ في قاعدة البيانات', success: null });
-            }
-
-            if (results.length > 0) {
-                return res.render('register', { error: 'اسم المستخدم موجود مسبقًا', success: null });
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
-                if (err) {
-                    console.error(err);
-                    return res.render('register', { error: 'حدث خطأ أثناء إنشاء الحساب', success: null });
-                }
-
-                res.render('register', { error: null, success: 'تم إنشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن' });
-            });
-        });
-    });
-
-    // صفحة لوحة التحكم (GET)
-    router.get('/dashboard', (req, res) => {
-        if (!req.session.user) return res.redirect('/login');
-
-        const query = 'SELECT * FROM posts WHERE user_id = ? ORDER BY created_at DESC';
-        db.query(query, [req.session.user.id], (err, posts) => {
-            if (err) {
-                console.error(err);
-                return res.send('حدث خطأ');
-            }
-
-            res.render('dashboard', {
-                user: req.session.user,
-                posts
-            });
-        });
-    });
-
-    router.get('/settings', (req, res) => {
-        if (!req.session.user) {
-            return res.redirect('/login');
+        const isMatch = await bcrypt.compare(password, users.password);
+        if (!isMatch) {
+            return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
         }
 
-        const site = {
-            title: 'مدونتي',
-            description: 'أهلاً بك في المدونة'
+        req.session.user = {
+            id: users.id,
+            username: users.username
         };
 
-        res.render('settings', {
-            user: req.session.user,
-            site
-        });
+        res.redirect('/dashboard');
+    } catch (err) {
+        console.error('Error during login:', err);
+        res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
+    }
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('فشل في إنهاء الجلسة:', err);
+            return res.redirect('/dashboard');
+        }
+        res.redirect('/login');
     });
+});
 
+router.get('/register', (req, res) => {
+    res.render('register', { error: null, success: null });
+});
 
-    module.exports = router;
+router.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.render('register', { error: 'يرجى إدخال جميع الحقول', success: null });
+    }
+
+    try {
+        // Check if username exists
+        const { data: existingUser } = await supabase
+            .from('users')
+            .select('username')
+            .eq('username', username)
+            .single();
+
+        if (existingUser) {
+            return res.render('register', { error: 'اسم المستخدم موجود مسبقًا', success: null });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const { error } = await supabase
+            .from('users')
+            .insert([{ username, password: hashedPassword }]);
+
+        if (error) {
+            console.error('Error during registration:', error);
+            return res.render('register', { error: 'حدث خطأ أثناء إنشاء الحساب', success: null });
+        }
+
+        res.render('register', { error: null, success: 'تم إنشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن' });
+    } catch (err) {
+        console.error('Error:', err);
+        res.render('register', { error: 'حدث خطأ في قاعدة البيانات', success: null });
+    }
+});
+
+router.get('/dashboard', async (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
+
+    try {
+        const { data: posts, error } = await supabase
+            .from('posts')
+            .select('*')
+            .eq('user_id', req.session.user.id)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        res.render('dashboard', {
+            user: req.session.user,
+            posts
+        });
+    } catch (err) {
+        console.error(err);
+        res.send('حدث خطأ');
+    }
+});
+
+router.get('/settings', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    const site = {
+        title: 'مدونتي',
+        description: 'أهلاً بك في المدونة'
+    };
+
+    res.render('settings', {
+        user: req.session.user,
+        site
+    });
+});
+
+module.exports = router;

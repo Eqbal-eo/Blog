@@ -1,13 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/db');
-
-const { route } = require("./pagesRoutes");
+const supabase = require('../db/db');
 
 let aboutContent = "مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.";
 let contactContent = "تواصل معنا عبر البريد أو مواقع التواصل.";
 
-// عرض الصفحات
 router.get('/about', (req, res) => {
     res.render('about', { aboutContent });
 });
@@ -25,13 +22,30 @@ router.post('/settings', (req, res) => {
     contactContent = req.body.contactContent;
     res.redirect('/');
 });
-router.get('/blogs', (req, res) => {
-    db.query('SELECT users.id, users.name, users.bio, COUNT(posts.id) AS post_count FROM blogs LEFT JOIN posts ON users.id = posts.user_id GROUP BY users.id', (err, blogs) => {
-        if (err) {
-            console.error(err);
-            return res.send('حدث خطأ');
-        }
-        res.render('blogs', { blogs }); // إرسال البيانات للواجهة
-    });
+
+router.get('/blogs', async (req, res) => {
+    try {
+        const { data: blogs, error } = await supabase
+            .from('users')
+            .select(`
+                id,
+                name,
+                bio,
+                posts (count)
+            `);
+
+        if (error) throw error;
+
+        const formattedBlogs = blogs.map(blog => ({
+            ...blog,
+            post_count: blog.posts?.[0]?.count || 0
+        }));
+
+        res.render('blogs', { blogs: formattedBlogs });
+    } catch (err) {
+        console.error(err);
+        res.send('حدث خطأ');
+    }
 });
+
 module.exports = router;
