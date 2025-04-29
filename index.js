@@ -9,7 +9,7 @@ const db = require('./db/db'); // ملف الاتصال بقاعدة البيا�
 const authRoutes = require('./routes/authRoutes');
 const mainRoutes = require('./routes/mainRoutes');
 const postRoutes = require('./routes/postRoutes');
-const pagesRoutes = require('./routes/pagesRoutes'); // إذا كان لديك مسارات إضافية
+const pagesRoutes = require('./routes/pagesRoutes'); 
 
 const app = express();
 const PORT = 3000;
