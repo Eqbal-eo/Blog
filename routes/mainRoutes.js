@@ -82,10 +82,14 @@ router.get('/article/:id', async (req, res) => {
             throw new Error('التدوينة غير موجودة أو حدث خطأ');
         }
 
+        // نحول created_at إلى كائن Date
+        post.created_at = new Date(post.created_at);
+
         res.render('post', {
             site: settings,
             post
         });
+
     } catch (err) {
         console.error(err);
         res.send(err.message || 'حدث خطأ');
