@@ -109,7 +109,7 @@
 
                     <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
                     <div class="post-info ">
-                        <small>بواسطة <%= post.username %> <span>-</span> نُشرت في <%=
+                        <small>بواسطة <%= post.users.username %> <span>-</span> نُشرت في <%=
                                     post.created_at.toLocaleDateString() %></small>
                     </div>
 
