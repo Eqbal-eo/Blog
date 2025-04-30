@@ -1,0 +1,85 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #cccccc96;
+  }
+
+  .mainNavbar {
+    background-color: #000000;
+    box-shadow: 0 2px 6px rgba(40, 39, 39, 0.1);
+  }
+  
+  .navbar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #100f0f;
+    font-size: 1rem;
+    margin: 4px 1rem;
+    font-weight: 400;
+    padding: 0.5rem 2rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #fff;
+    background-color: #470539c5;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background-color: #8c4a21ca;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #8c4a21ca;
+    color: #fff;
+    border: none;
+  }
+  
+  .btn-primary:active,
+  .btn-primary:focus,
+  .btn-primary:focus:active {
+    background-color: #8c4a21ca !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  
+  .btn-outline-dark,
+  .btn-outline-dark-blog,
+  .btn-outline-dark-log {
+    border-color: #0000003b;
+    color: #131313ca;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-outline-dark:hover,
+  .btn-outline-dark-blog:hover,
+  .btn-outline-dark-log:hover {
+    background-color: #470539c5;
+    color: #fff;
+    border-color: transparent;
+  }
+  
+  .btn-small {
+    padding: 0.4rem 1rem;
+    font-size: 1rem;
+    border-color: transparent;
+  }
+  

@@ -14,21 +14,16 @@ body {
 
 .about-card {
     background: rgba(255, 255, 255, 0.25);
-    /* شفافية خلفية ناعمة */
     backdrop-filter: blur(10px);
-    /* تأثير بلور خلفي */
     -webkit-backdrop-filter: blur(10px);
-    /* دعم سفاري */
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 5px 30px 0 rgba(100, 100, 102, 0.1);
-    /* ظل أنعم وعصري */
     border: 1px solid rgba(98, 96, 96, 0.18);
-    /* حدود خفيفة */
     max-width: 850px;
     margin: 0 auto;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 30px; 
 }
 
 .about-title {
