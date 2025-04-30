@@ -1,0 +1,96 @@
+html,
+body {
+    height: 100%;
+    font-family: 'Tajawal', sans-serif;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f7f0;
+    margin: 0;
+}
+
+.about-section {
+    padding: 80px 20px;
+}
+
+.about-card {
+    background: rgba(255, 255, 255, 0.25);
+    /* شفافية خلفية ناعمة */
+    backdrop-filter: blur(10px);
+    /* تأثير بلور خلفي */
+    -webkit-backdrop-filter: blur(10px);
+    /* دعم سفاري */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 30px 0 rgba(100, 100, 102, 0.1);
+    /* ظل أنعم وعصري */
+    border: 1px solid rgba(98, 96, 96, 0.18);
+    /* حدود خفيفة */
+    max-width: 850px;
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.about-title {
+    font-weight: normal;
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.about-text {
+    font-size: 1rem;
+    line-height: 2;
+    color: #555;
+    text-align: center;
+}
+
+/* استعلامات الوسائط للأجهزة الصغيرة */
+@media (max-width: 768px) {
+    .about-title {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .about-text {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .about-card {
+        padding: 30px;
+        border-radius: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .about-section {
+        padding: 60px 15px;
+        /* مسافة من الجوانب أقل */
+    }
+}
+
+@media (max-width: 480px) {
+    .about-title {
+        font-size: 1.6rem;
+    }
+
+    .about-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .about-card {
+        padding: 20px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .about-section {
+        padding: 50px 10px;
+        /* مسافة أقل على الهواتف الصغيرة */
+    }
+}
+</style>
