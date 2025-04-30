@@ -1,50 +1,74 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>مدونات آفاق</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/js/css/blogs.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>مدونات آفاق</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/js/css/blogs.css">
+    <link rel="stylesheet" href="/js/css/home.css">
+    <link rel="stylesheet" href="/js/css/footer.css">
 </head>
 <body>
-
-<section class="blogs-section py-5">
-  <div class="container">
-
-    <!-- العنوان والبحث -->
-    <div class="text-center mb-5">
-      <h1 class="section-title mb-4">مدونات آفاق</h1>
-      <div class="search-box mx-auto">
-        <input type="text" class="form-control" placeholder="ابحث عن مدون أو موضوع في المدونات والكتاب">
-      </div>
-    </div>
-
-    <!-- البطاقات -->
-    <div class="row g-4">
-
-      <% if (bloggers.length > 0) { %>
-        <% bloggers.forEach(function(blogger) { %>
-          <div class="col-md-6 col-lg-4">
-            <div class="blogger-card position-relative p-4">
-              <div class="articles-count"><%= blogger.articlesCount %> مقالة</div>
-              <h5 class="blogger-name mb-2"><%= blogger.name %></h5>
-              <p class="blogger-bio mb-0"><%= blogger.bio %></p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md">
+        <div class="container">
+            <a class="navbar-brand fw-bold brand-title" href="/">مدونة آفاق</a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-label="Toggle navigation" id="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto gap-1 mb-1 mb-md-0">
+                    <a href="/" class="btn btn-outline-dark btn-small">الرئيسية</a>
+                    <a href="/blogs" class="btn btn-outline-dark btn-small">المدونات</a>
+                    <a href="/about" class="btn btn-outline-dark btn-small">عن المنصة</a>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/login" class="btn btn-outline-dark-log px-3 py-2 text-nowrap">تسجيل الدخول</a>
+                    <a href="/register" class="btn btn-primary px-3 py-2 text-nowrap">إنشاء حساب</a>
+                </div>
             </div>
-          </div>
-        <% }); %>
-      <% } else { %>
-        <div class="text-center">
-          <p>لا يوجد مدونين حاليا.</p>
         </div>
-      <% } %>
+    </nav>
 
-    </div>
+    <section class="blogs-section py-5">
+        <div class="container">
+            <!-- العنوان والبحث -->
+            <div class="text-center mb-5">
+                <h1 class="section-title mb-4">مدونات آفاق</h1>
+                <div class="search-box mx-auto">
+                    <input type="text" class="form-control" placeholder="ابحث عن مدون أو موضوع في المدونات والكتاب">
+                </div>
+            </div>
 
-  </div>
-</section>
+            <!-- البطاقات -->
+            <div class="row g-4">
+                <% if (bloggers && bloggers.length > 0) { %>
+                    <% bloggers.forEach(function(blogger) { %>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="blogger-card position-relative p-4">
+                                <div class="articles-count"><%= blogger.articlesCount %> مقالة</div>
+                                <h5 class="blogger-name mb-2"><%= blogger.name %></h5>
+                                <p class="blogger-bio mb-0"><%= blogger.bio %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="text-center">
+                        <p>لا يوجد مدونين حاليا.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer>
+        آفاق بلُوغ | منصة للتدوين الثقافي والفكري © 2025
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -25,23 +25,24 @@ router.post('/settings', (req, res) => {
 
 router.get('/blogs', async (req, res) => {
     try {
-        const { data: blogs, error } = await supabase
+        const { data: users, error } = await supabase
             .from('users')
             .select(`
                 id,
-                name,
+                username,
                 bio,
                 posts (count)
             `);
 
         if (error) throw error;
 
-        const formattedBlogs = blogs.map(blog => ({
-            ...blog,
-            post_count: blog.posts?.[0]?.count || 0
+        const bloggers = users.map(user => ({
+            name: user.username,
+            bio: user.bio || 'لم يتم إضافة نبذة بعد',
+            articlesCount: user.posts?.[0]?.count || 0
         }));
 
-        res.render('blogs', { blogs: formattedBlogs });
+        res.render('blogs', { bloggers });
     } catch (err) {
         console.error(err);
         res.send('حدث خطأ');
