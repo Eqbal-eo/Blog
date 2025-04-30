@@ -1,8 +1,14 @@
+html,
 body {
+    height: 100%;
     font-family: 'Tajawal', sans-serif;
+    display: flex;
+    flex-direction: column;
     background-color: #f9f7f0;
     margin: 0;
-    padding: 0;
+
+    padding-top: 20px;
+
   }
   
   /* عنوان الصفحة */

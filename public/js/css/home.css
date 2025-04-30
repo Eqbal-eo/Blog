@@ -6,29 +6,11 @@ body {
 }
 
 h4 {
-  
+
   margin-top: 20px;
 }
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
-  background-color: #ffffff;
-  /* التأكد من أن النافبار له خلفية */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  /* إضافة ظل للنافبار */
-  border-bottom: 1px solid #cccccc96;
-  /* الحفاظ على الحدود السفلية */
-}
 
-/* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
-body {
-  padding-top: 70px;
-  /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
-}
+
 
 .d-flex a {
   display: flex;
@@ -155,7 +137,7 @@ body {
 
 .section .card-text {
   margin: 1.5rem 0;
-  
+
 }
 
 .read-more-link {
@@ -215,7 +197,7 @@ body {
   /* تكبير الخط */
   font-weight: bold;
   padding: 0.1rem 0rem;
-  margin-top: 10px ;
+  margin-top: 10px;
 }
 
 .card:hover {
@@ -227,11 +209,13 @@ body {
 
 @media (max-width: 768px) {
   .card {
-    margin: 0.5rem 0; /* فراغ علوي وسفلي بين البطاقات */
+    margin: 0.5rem 0;
+    /* فراغ علوي وسفلي بين البطاقات */
     padding: 1rem;
     border-radius: 9px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   }
+
   .navbar-toggler:hover {
     background-color: transparent;
     color: #470539c5;
@@ -241,8 +225,10 @@ body {
   .navbar-collapse.show+.navbar-toggler {
     background-color: transparent;
     color: transparent;
-    overflow-y: auto; /* تمكين التمرير عند عرض القائمة */
-    max-height: 100vh; /* تحديد أقصى ارتفاع للقائمة */
+    overflow-y: auto;
+    /* تمكين التمرير عند عرض القائمة */
+    max-height: 100vh;
+    /* تحديد أقصى ارتفاع للقائمة */
   }
 
   .navbar-nav {
@@ -275,12 +261,13 @@ body {
 
   .section {
     padding: 0 2rem;
-     
+
   }
+
   .card-title {
-   padding : 1.2rem;
-   margin-top: 10px ;
-   
+    padding: 1.2rem;
+    margin-top: 10px;
+
   }
 
   .d-flex {
@@ -300,5 +287,5 @@ body {
   .hero p {
     font-size: 1.3rem;
   }
-  
+
 }
