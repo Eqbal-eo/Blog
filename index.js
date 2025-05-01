@@ -15,7 +15,6 @@ const app = express();
 const PORT = 3000;
 
 // إعداد الجلسات
-const session = require('express-session');
 app.use(session({
     secret: 'mySecretKey',
     resave: false,
