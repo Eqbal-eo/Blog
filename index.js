@@ -15,12 +15,13 @@ const app = express();
 const PORT = 3000;
 
 // إعداد الجلسات
+const session = require('express-session');
 app.use(session({
     secret: 'mySecretKey',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    // cookie: { secure: false } // تأكد من ذلك أثناء التطوير
 }));
-
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
