@@ -31,12 +31,20 @@ router.post('/login', async (req, res) => {
             id: users.id,
             username: users.username
         };
-        
+        req.session.save(err => {
+            if (err) {
+                console.error('فشل في حفظ الجلسة:', err);
+                return res.render('login', { error: 'فشل في إنشاء الجلسة' });
+            }
+            res.redirect('/dashboard');
+        });
+
         res.redirect('/dashboard');
     } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
     }
+
 });
 
 router.get('/logout', (req, res) => {
@@ -81,10 +89,10 @@ router.post('/register', async (req, res) => {
 
         const { error } = await supabase
             .from('users')
-            .insert([{ 
-                username, 
+            .insert([{
+                username,
                 email,
-                password: hashedPassword 
+                password: hashedPassword
             }]);
 
         if (error) {
