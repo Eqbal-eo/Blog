@@ -9,22 +9,18 @@ router.get('/', async (req, res) => {
     const end = start + postsPerPage - 1;
 
     try {
-        const { data: settings, error: settingsError } = await supabase
+        const { data: settings } = await supabase
             .from('settings')
             .select('*')
             .single();
-
-        if (settingsError) {
-            throw new Error('خطأ في تحميل إعدادات الموقع');
-        }
-
+    
         const { count: totalPosts } = await supabase
             .from('posts')
             .select('*', { count: 'exact', head: true })
             .eq('status', 'published');
-
+    
         const totalPages = Math.ceil(totalPosts / postsPerPage);
-
+    
         const { data: posts, error: postsError } = await supabase
             .from('posts')
             .select(`
@@ -36,11 +32,11 @@ router.get('/', async (req, res) => {
             .eq('status', 'published')
             .order('created_at', { ascending: false })
             .range(start, end);
-
+    
         if (postsError) {
             throw new Error('حدث خطأ أثناء جلب التدوينات');
         }
-
+    
         res.render('home', {
             site: settings,
             posts,
@@ -51,7 +47,7 @@ router.get('/', async (req, res) => {
         console.error(err);
         res.send(err.message || 'حدث خطأ');
     }
-});
+});    
 
 router.get('/article/:id', async (req, res) => {
     const postId = req.params.id;
