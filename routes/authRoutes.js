@@ -3,9 +3,6 @@ const router = express.Router();
 const supabase = require('../db/db');
 const bcrypt = require('bcrypt');
 
-router.get('/login', (req, res) => {
-    res.render('login', { error: null });
-});
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
