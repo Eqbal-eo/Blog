@@ -39,9 +39,12 @@
         </div>
     </div>
     <script>
-        setTimeout(() => {
+        // Using setTimeout with a promise to ensure redirect happens
+        new Promise((resolve) => {
+            setTimeout(resolve, 1500); // 1.5 seconds delay
+        }).then(() => {
             window.location.href = '/dashboard';
-        }, 1500); // 1.5 seconds
+        });
     </script>
 </body>
 </html>
