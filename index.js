@@ -17,9 +17,13 @@ const PORT = 3000;
 // إعداد الجلسات
 app.use(session({
     secret: 'mySecretKey',
-    resave: false,
-    saveUninitialized: false,
-    // cookie: { secure: false } // تأكد من ذلك أثناء التطوير
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 24 * 60 * 60 * 1000 // 24 ساعة
+    }
 }));
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');

@@ -2,8 +2,18 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db/db');
 
+// Middleware للتحقق من تسجيل الدخول
+const checkAuth = (req, res, next) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+};
+
+// تطبيق middleware على جميع مسارات التدوينات
+router.use(checkAuth);
+
 router.get('/create', (req, res) => {
-    if (!req.session.user) return res.redirect('/login');
     res.render('create-post');
 });
 
@@ -36,8 +46,6 @@ router.post('/create', async (req, res) => {
 });
 
 router.get('/select-edit', async (req, res) => {
-    if (!req.session.user) return res.redirect('/login');
-
     try {
         const { data: posts, error } = await supabase
             .from('posts')
@@ -53,7 +61,6 @@ router.get('/select-edit', async (req, res) => {
 
 router.post('/edit/:id', async (req, res) => {
     const postId = req.params.id;
-    if (!req.session.user) return res.redirect('/login');
     const { title, content, status } = req.body;
 
     if (!title || !content) {
@@ -80,8 +87,6 @@ router.post('/edit/:id', async (req, res) => {
 });
 
 router.get('/select-delete', async (req, res) => {
-    if (!req.session.user) return res.redirect('/login');
-
     try {
         const { data: posts, error } = await supabase
             .from('posts')
