@@ -7,12 +7,12 @@ router.get('/create', (req, res) => {
     res.render('create-post');
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', async (req, res) => { 
     const { title, content, status } = req.body;
     const userId = req.session.user.id;
 
     if (!title || !content) {
-        return res.send('يرجى إدخال جميع الحقول');
+        return res.send('يرجى ادخال جميع الحقول');
     }
 
     const postStatus = status || 'published';
