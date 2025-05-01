@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
         if (error || !users) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
         }
-
+        // Check if the password matches
         const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
@@ -32,14 +32,7 @@ router.post('/login', async (req, res) => {
             username: users.username
         };
         
-        // Save session before redirect
-        req.session.save((err) => {
-            if (err) {
-                console.error('Error saving session:', err);
-                return res.render('login', { error: 'حدث خطأ في حفظ الجلسة' });
-            }
-            res.render('welcome', { username: users.username });
-        });
+        res.redirect('/dashboard');
     } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
