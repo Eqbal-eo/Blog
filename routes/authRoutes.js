@@ -26,13 +26,20 @@ router.post('/login', async (req, res) => {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
         }
 
+        // Set session data
         req.session.user = {
             id: users.id,
             username: users.username
         };
-
-        // توجيه المستخدم إلى صفحة الترحيب
-        res.render('welcome', { username: users.username });
+        
+        // Save session before redirect
+        req.session.save((err) => {
+            if (err) {
+                console.error('Error saving session:', err);
+                return res.render('login', { error: 'حدث خطأ في حفظ الجلسة' });
+            }
+            res.render('welcome', { username: users.username });
+        });
     } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
