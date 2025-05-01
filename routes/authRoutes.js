@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
             username: users.username
         };
 
-        res.redirect('/dashboard');
+        res.redirect('/welcome');
     } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
@@ -78,24 +78,40 @@ router.post('/register', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('users')
             .insert([{ 
                 username, 
                 email,
                 password: hashedPassword 
-            }]);
+            }])
+            .select()
+            .single();
 
         if (error) {
             console.error('Error during registration:', error);
             return res.render('register', { error: 'حدث خطأ أثناء إنشاء الحساب', success: null });
         }
 
-        res.render('register', { error: null, success: 'تم إنشاء الحساب بنجاح، يمكنك تسجيل الدخول الآن' });
+        // Set session after successful registration
+        req.session.user = {
+            id: data.id,
+            username: data.username
+        };
+
+        // Redirect to welcome page
+        res.redirect('/welcome');
     } catch (err) {
         console.error('Error:', err);
         res.render('register', { error: 'حدث خطأ في قاعدة البيانات', success: null });
     }
+});
+
+router.get('/welcome', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    res.render('welcome');
 });
 
 router.get('/dashboard', async (req, res) => {
