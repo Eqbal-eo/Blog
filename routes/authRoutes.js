@@ -39,8 +39,7 @@ router.post('/login', async (req, res) => {
             res.redirect('/dashboard');
         });
 
-        res.redirect('/dashboard');
-    } catch (err) {
+        } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
     }
