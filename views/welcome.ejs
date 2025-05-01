@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرحباً بك</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+        .welcome-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .welcome-message {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .user-name {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="welcome-message">
+            مرحباً بك <span class="user-name"><%= username %></span>
+        </div>
+    </div>
+    <script>
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 1500); // 1.5 seconds
+    </script>
+</body>
+</html>

@@ -30,9 +30,15 @@ router.post('/login', (req, res) => {
             if (match) {
                 // كلمة المرور صحيحة، إنشاء التوكن JWT
                 const token = jwt.sign({ userId: user.id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
-
-                // إرسال التوكن في استجابة
-                res.json({ message: 'تم تسجيل الدخول بنجاح', token });
+                
+                // حفظ معلومات المستخدم في الجلسة
+                req.session.user = {
+                    id: user.id,
+                    username: user.username
+                };
+                
+                // توجيه المستخدم إلى صفحة الترحيب
+                res.render('welcome', { username: user.username });
             } else {
                 // كلمة المرور خاطئة
                 return res.status(401).json({ error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
