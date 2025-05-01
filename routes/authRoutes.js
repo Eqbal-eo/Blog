@@ -31,7 +31,8 @@ router.post('/login', async (req, res) => {
             username: users.username
         };
 
-        res.redirect('/dashboard');
+        // توجيه المستخدم إلى صفحة الترحيب
+        res.render('welcome', { username: users.username });
     } catch (err) {
         console.error('Error during login:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
