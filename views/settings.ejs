@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>إعدادات المدونة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/js/css/editor.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .custom-navbar {
+            background-color: #212024e1;
+        }
+        .custom-navbar .navbar-nav .nav-link,
+        .custom-navbar .navbar-brand {
+            color: white !important;
+        }
+        .settings-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 50%;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">لوحة التحكم</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/create">➕ إنشاء تدوينة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/select-edit">✏️ تعديل تدوينة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/select-delete">🗑️ حذف تدوينة</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/settings">الإعدادات</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="/logout">تسجيل الخروج</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">إعدادات المدونة</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="settings-form">
+                    <form action="/settings" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="blog_title" class="form-label">عنوان المدونة</label>
+                            <input type="text" class="form-control" id="blog_title" name="blog_title" value="<%= settings ? settings.blog_title : '' %>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="blog_description" class="form-label">وصف المدونة</label>
+                            <textarea class="form-control" id="blog_description" name="blog_description" rows="3"><%= settings ? settings.blog_description : '' %></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="about_text" class="form-label">نص صفحة "عن المدونة"</label>
+                            <textarea class="form-control" id="about_text" name="about_text" rows="5"><%= settings ? settings.about_text : '' %></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contact_info" class="form-label">معلومات التواصل</label>
+                            <textarea class="form-control" id="contact_info" name="contact_info" rows="3"><%= settings ? settings.contact_info : '' %></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<%= settings ? settings.email : '' %>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="profile_image" class="form-label">الصورة الشخصية</label>
+                            <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
+                            <% if (settings && settings.profile_image) { %>
+                                <img src="<%= settings.profile_image %>" alt="الصورة الشخصية" class="preview-image">
+                            <% } %>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
+                            <a href="/dashboard" class="btn btn-secondary ms-2">إلغاء</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
