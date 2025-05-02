@@ -10,8 +10,6 @@ router.get('/login', (req, res) => {
 
 // معالجة تسجيل الدخول
 router.post('/login', async (req, res) => {
-    console.log('🟢 بيانات الإدخال:', req.body);
-    console.log('🔴 الجلسة الحالية قبل التعديل:', req.session);
 
     const { username, password } = req.body;
 
@@ -43,8 +41,6 @@ router.post('/login', async (req, res) => {
                 console.error('فشل في حفظ الجلسة:', err);
                 return res.render('login', { error: 'فشل في إنشاء الجلسة' });
             }
-
-            console.log('✅ الجلسة بعد الحفظ:', req.session);
             res.redirect('/dashboard');
         });
 
@@ -53,6 +49,8 @@ router.post('/login', async (req, res) => {
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
     }
 });
+
+ 
 
 // عرض لوحة التحكم
 router.get('/dashboard', async (req, res) => {
