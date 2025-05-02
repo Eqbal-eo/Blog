@@ -3,6 +3,58 @@ const router = express.Router();
 const supabase = require('../db/db');
 const bcrypt = require('bcrypt');
 
+// عرض صفحة التسجيل
+router.get('/register', (req, res) => {
+    res.render('register', { error: null, success: null });
+});
+
+// معالجة التسجيل
+router.post('/register', async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        // التحقق من وجود المستخدم
+        const { data: existingUser } = await supabase
+            .from('users')
+            .select('username, email')
+            .or(`username.eq.${username},email.eq.${email}`)
+            .single();
+
+        if (existingUser) {
+            return res.render('register', {
+                error: 'اسم المستخدم أو البريد الإلكتروني مستخدم بالفعل',
+                success: null
+            });
+        }
+
+        // تشفير كلمة المرور
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // إنشاء المستخدم
+        const { error: createError } = await supabase
+            .from('users')
+            .insert([{
+                username,
+                email,
+                password: hashedPassword
+            }]);
+
+        if (createError) throw createError;
+
+        res.render('register', {
+            error: null,
+            success: 'تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول'
+        });
+
+    } catch (err) {
+        console.error('خطأ في التسجيل:', err);
+        res.render('register', {
+            error: 'حدث خطأ أثناء إنشاء الحساب',
+            success: null
+        });
+    }
+});
+
 // عرض صفحة تسجيل الدخول
 router.get('/login', (req, res) => {
     res.render('login', { error: null });
