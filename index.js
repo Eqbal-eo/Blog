@@ -3,7 +3,6 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
-const Memorystore = require('memorystore')(session); // استيراد memorystore
 
 // استدعاء الراوتات
 const authRoutes = require('./routes/authRoutes');
@@ -14,23 +13,19 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const app = express();
 const PORT = 3000;
 
-// إعداد الجلسات مع Memorystore
-const sessionStore = new Memorystore({
-    checkPeriod: 86400000 // التحقق من الجلسات القديمة كل 24 ساعة
-});
+
+
 
 app.use(session({
-    secret: 'mySecretKey',
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore, // استخدام memorystore لتخزين الجلسات
-    cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000, // 24 ساعة
-        sameSite: 'lax'
-    }
+  secret: 'mySecretKey',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60, // 1 ساعة
+    httpOnly: true
+  }
 }));
+
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
