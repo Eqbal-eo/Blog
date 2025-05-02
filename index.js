@@ -13,9 +13,6 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const app = express();
 const PORT = 3000;
 
-
-
-
 app.use(session({
   secret: 'mySecretKey',
   resave: false,
