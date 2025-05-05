@@ -138,28 +138,32 @@ router.get('/contact', async (req, res) => {
 
 router.get('/blogs', async (req, res) => {
     try {
-        const { data: users, error } = await supabase
-            .from('users')
-            .select(`
-                id,
-                username,
-                bio,
-                posts (count)
-            `);
-
-        if (error) throw error;
-
-        const bloggers = users.map(user => ({
-            name: user.username,
-            bio: user.bio || 'لم يتم إضافة نبذة بعد',
-            articlesCount: user.posts?.[0]?.count || 0
-        }));
-
-        res.render('blogs', { bloggers });
+      const { data: users, error } = await supabase
+        .from('users')
+        .select('id, username');
+  
+      if (error) throw error;
+  
+      const bloggers = await Promise.all(users.map(async (user) => {
+        const { count, error: countError } = await supabase
+          .from('posts')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id);
+  
+        return {
+          name: user.username,
+          bio: 'لم يتم إضافة نبذة بعد',
+          articlesCount: count || 0
+        };
+      }));
+  
+      res.render('blogs', { bloggers });
     } catch (err) {
-        console.error(err);
-        res.send('حدث خطأ');
+      console.error(err);
+      res.send('حدث خطأ');
     }
-});
+  });
+  
+
 
 module.exports = router;
