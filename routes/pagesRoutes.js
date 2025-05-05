@@ -187,7 +187,7 @@ router.get('/blogs', async (req, res) => {
             const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
             return {
-                name: user.username,
+                name: user.display_name_ar || user.username, // استخدام الاسم العربي إذا كان موجوداً
                 bio: user.bio || 'لم يتم إضافة نبذة بعد',
                 articlesCount: posts.length,
                 categories: categories
