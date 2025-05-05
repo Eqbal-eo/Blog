@@ -168,18 +168,25 @@ router.get('/blogs', async (req, res) => {
             
         if (error) throw error;
 
-        // جلب عدد التدوينات لكل مستخدم
+        // جلب التدوينات والتصنيفات لكل مستخدم
         const bloggers = await Promise.all(users.map(async (user) => {
-            const { count, error: countError } = await supabase
+            // جلب التدوينات المنشورة للمستخدم
+            const { data: posts, error: postsError } = await supabase
                 .from('posts')
-                .select('*', { count: 'exact', head: true })
+                .select('category')
                 .eq('user_id', user.id)
-                .eq('status', 'published'); // فقط التدوينات المنشورة
+                .eq('status', 'published');
+
+            if (postsError) throw postsError;
+
+            // استخراج التصنيفات الفريدة من التدوينات
+            const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
             return {
                 name: user.username,
                 bio: user.bio || 'لم يتم إضافة نبذة بعد',
-                articlesCount: count || 0
+                articlesCount: posts.length,
+                categories: categories
             };
         }));
 

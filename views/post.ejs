@@ -37,6 +37,14 @@
         margin-left: 1px;
     }
 
+    .post-category {
+        display: inline-block;
+        padding: 2px 8px;
+        background-color: #f0f0f0;
+        border-radius: 12px;
+        color: #666;
+    }
+
     .post-title {
         font-weight: bold;
         font-size: 2rem;
@@ -108,9 +116,24 @@
                     </h1>
 
                     <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
-                    <div class="post-info ">
-                        <small>بواسطة <%= post.users.username %> <span>-</span> نُشرت في <%=
-                                    post.created_at.toLocaleDateString() %></small>
+                    <div class="post-info">
+                        <small>
+                            بواسطة <%= post.users.username %> 
+                            <span>-</span> 
+                            نُشرت في <%= post.created_at.toLocaleDateString() %>
+                            <% if (post.category) { %>
+                                <span>-</span>
+                                <span class="post-category">
+                                    <%= {
+                                        'politics': 'سياسة',
+                                        'history': 'تاريخ',
+                                        'economics': 'اقتصاد',
+                                        'technology': 'تكنلوجيا',
+                                        'literature': 'أدب'
+                                    }[post.category] || post.category %>
+                                </span>
+                            <% } %>
+                        </small>
                     </div>
 
                     <!-- مربع التدوينة -->

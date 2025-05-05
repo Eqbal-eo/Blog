@@ -112,6 +112,18 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="category" class="form-label">تصنيف التدوينة</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="" disabled selected>اختر تصنيفاً</option>
+                            <option value="politics">سياسة</option>
+                            <option value="history">تاريخ</option>
+                            <option value="economics">اقتصاد</option>
+                            <option value="technology">تكنلوجيا</option>
+                            <option value="literature">أدب</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="status" class="form-label">حالة التدوينة</label>
                         <select id="status" name="status" class="form-select" required>
                             <option value="draft">مسودة</option>
@@ -165,7 +177,8 @@
 
                 titleInput.value = post.title;
                 quill.root.innerHTML = post.content;
-                statusSelect.value = post.status; // Set the status based on the post
+                statusSelect.value = post.status;
+                document.getElementById('category').value = post.category || ''; // Set the category
                 form.action = `/posts/edit/${post.id}`;
             });
 
