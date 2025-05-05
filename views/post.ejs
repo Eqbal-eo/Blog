@@ -118,7 +118,7 @@
                     <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
                     <div class="post-info">
                         <small>
-                            بواسطة <%= post.users.username %> 
+                            بواسطة <%= post.users.displayName %> 
                             <span>-</span> 
                             نُشرت في <%= post.created_at.toLocaleDateString() %>
                             <% if (post.category) { %>

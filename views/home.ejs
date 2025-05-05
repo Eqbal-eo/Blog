@@ -64,7 +64,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>مدونة <span class="highlight">آفاق</span></h1>
+        <h1>مدونات <span class="highlight">آفاق</span></h1>
         <p>منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد</p>
         <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
             <a href="/register" class="btn btn-primary">ابدأ مدونتك الآن</a>
@@ -88,7 +88,7 @@
                             </h5>
 
                             <!-- اسم الكاتب -->
-                            <small class="text-muted d-block" dir="rtl">بواسطة <%= post.users.username %> - <%= formatDate(post.created_at) %></small>
+                            <small class="text-muted d-block" dir="rtl">بواسطة <%= post.users.displayName %> - <%= formatDate(post.created_at) %></small>
 
                             <!-- مقتطف النص -->
                             <p class="card-text text-secondary">

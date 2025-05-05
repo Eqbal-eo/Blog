@@ -26,7 +26,8 @@ router.get('/', async (req, res) => {
             .select(`
                 *,
                 users (
-                    username
+                    username,
+                    display_name_ar
                 )
             `)
             .eq('status', 'published')
@@ -36,6 +37,13 @@ router.get('/', async (req, res) => {
         if (postsError) {
             throw new Error('حدث خطأ أثناء جلب التدوينات');
         }
+
+        // تعديل posts لاستخدام الاسم العربي إذا كان متوفراً
+        posts.forEach(post => {
+            if (post.users) {
+                post.users.displayName = post.users.display_name_ar || post.users.username;
+            }
+        });
     
         res.render('home', {
             site: settings,
@@ -67,7 +75,8 @@ router.get('/article/:id', async (req, res) => {
             .select(`
                 *,
                 users (
-                    username
+                    username,
+                    display_name_ar
                 )
             `)
             .eq('id', postId)
@@ -76,6 +85,11 @@ router.get('/article/:id', async (req, res) => {
 
         if (postError || !post) {
             throw new Error('التدوينة غير موجودة أو حدث خطأ');
+        }
+
+        // استخدام الاسم العربي إذا كان متوفراً
+        if (post.users) {
+            post.users.displayName = post.users.display_name_ar || post.users.username;
         }
 
         // نحول created_at إلى كائن Date

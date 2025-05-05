@@ -66,15 +66,19 @@ router.post('/settings', checkAuth, upload.single('profile_image'), async (req, 
             about_text,
             contact_info,
             email,
-            bio
+            bio,
+            display_name_ar
         } = req.body;
 
         let profile_image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
-        // Update user bio
+        // Update user bio and Arabic display name
         const { error: userError } = await supabase
             .from('users')
-            .update({ bio })
+            .update({ 
+                bio,
+                display_name_ar 
+            })
             .eq('id', req.session.user.id);
 
         if (userError) throw userError;
@@ -161,10 +165,10 @@ router.get('/contact', async (req, res) => {
 // عرض صفحة المدونات
 router.get('/blogs', async (req, res) => {
     try {
-        // جلب المستخدمين مع نبذهم الشخصية
+        // جلب المستخدمين مع نبذهم الشخصية والاسم العربي
         const { data: users, error } = await supabase
             .from('users')
-            .select('id, username, bio');
+            .select('id, username, bio, display_name_ar');
             
         if (error) throw error;
 
