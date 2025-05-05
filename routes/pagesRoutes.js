@@ -28,16 +28,29 @@ const checkAuth = (req, res, next) => {
 // Get settings page
 router.get('/settings', checkAuth, async (req, res) => {
     try {
-        const { data: settings, error } = await supabase
+        // Get settings
+        const { data: settings, error: settingsError } = await supabase
             .from('settings')
             .select('*')
             .single();
 
-        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows returned
-            throw error;
+        if (settingsError && settingsError.code !== 'PGRST116') {
+            throw settingsError;
         }
 
-        res.render('settings', { settings: settings || {} });
+        // Get user data including bio
+        const { data: user, error: userError } = await supabase
+            .from('users')
+            .select('bio')
+            .eq('id', req.session.user.id)
+            .single();
+
+        if (userError) throw userError;
+
+        res.render('settings', { 
+            settings: settings || {},
+            user: user || {}
+        });
     } catch (err) {
         console.error('Error fetching settings:', err);
         res.status(500).send('حدث خطأ في جلب الإعدادات');
@@ -52,10 +65,19 @@ router.post('/settings', checkAuth, upload.single('profile_image'), async (req, 
             blog_description,
             about_text,
             contact_info,
-            email
+            email,
+            bio
         } = req.body;
 
         let profile_image = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+        // Update user bio
+        const { error: userError } = await supabase
+            .from('users')
+            .update({ bio })
+            .eq('id', req.session.user.id);
+
+        if (userError) throw userError;
 
         // Check if settings exist
         const { data: existingSettings } = await supabase
@@ -139,24 +161,24 @@ router.get('/contact', async (req, res) => {
 // عرض صفحة المدونات
 router.get('/blogs', async (req, res) => {
     try {
+        // جلب المستخدمين مع نبذهم الشخصية
         const { data: users, error } = await supabase
             .from('users')
-            .select('id, username');
-        const { data: settings, error: settingsError } = await supabase
-            .from('settings')
-            .select('about_text')
-            .single();
+            .select('id, username, bio');
+            
         if (error) throw error;
 
+        // جلب عدد التدوينات لكل مستخدم
         const bloggers = await Promise.all(users.map(async (user) => {
             const { count, error: countError } = await supabase
                 .from('posts')
                 .select('*', { count: 'exact', head: true })
-                .eq('user_id', user.id);
+                .eq('user_id', user.id)
+                .eq('status', 'published'); // فقط التدوينات المنشورة
 
             return {
                 name: user.username,
-                bio: settings.about_text || 'نبذة عن المدون',
+                bio: user.bio || 'لم يتم إضافة نبذة بعد',
                 articlesCount: count || 0
             };
         }));
