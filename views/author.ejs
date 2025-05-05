@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تدوينات <%= author.name %> - مدونة آفاق</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/js/css/home.css">
+    <link rel="stylesheet" href="/js/css/footer.css">
+    <style>
+        .author-header {
+            background-color: #fff;
+            padding: 3rem 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+        }
+
+        .author-name {
+            color: #8c4a21ca;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .author-bio {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .posts-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .post-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-title {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .post-excerpt {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .post-meta {
+            color: #888;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-category {
+            background-color: #f8f9fa;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .read-more {
+            color: #8c4a21ca;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #470539c5;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .author-header {
+                padding: 2rem 1rem;
+            }
+
+            .author-name {
+                font-size: 2rem;
+            }
+
+            .author-bio {
+                font-size: 1rem;
+            }
+
+            .post-card {
+                padding: 1.5rem;
+            }
+
+            .post-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md">
+        <div class="container">
+            <a class="navbar-brand fw-bold brand-title" href="/">مدونات آفاق</a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-label="Toggle navigation" id="navbar-toggler">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto gap-1 mb-1 mb-md-0">
+                    <a href="/" class="btn btn-outline-dark btn-small">الرئيسية</a>
+                    <a href="/blogs" class="btn btn-outline-dark btn-small">المدونات</a>
+                    <a href="/about" class="btn btn-outline-dark btn-small">عن المنصة</a>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/login" class="btn btn-outline-dark-log px-3 py-2 text-nowrap">تسجيل الدخول</a>
+                    <a href="/register" class="btn btn-primary px-3 py-2 text-nowrap">إنشاء حساب</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Author Header -->
+    <div class="container mt-5">
+        <div class="author-header">
+            <h1 class="author-name"><%= author.name %></h1>
+            <p class="author-bio"><%= author.bio %></p>
+        </div>
+    </div>
+
+    <!-- Posts Section -->
+    <div class="posts-container">
+        <% if (posts && posts.length > 0) { %>
+            <% posts.forEach(function(post) { %>
+                <article class="post-card">
+                    <h2 class="post-title"><%= post.title %></h2>
+                    <div class="post-excerpt">
+                        <%= post.content.substring(0, 200).replace(/(<([^>]+)>)/gi, "") %>...
+                    </div>
+                    <div class="post-meta">
+                        <span class="post-category">
+                            <%= {
+                                'politics': 'سياسة',
+                                'history': 'تاريخ',
+                                'economics': 'اقتصاد',
+                                'technology': 'تكنلوجيا',
+                                'literature': 'أدب',
+                                'medicine': 'طب'
+                            }[post.category] || post.category %>
+                        </span>
+                        <a href="/article/<%= post.id %>" class="read-more">اقرأ المزيد...</a>
+                    </div>
+                </article>
+            <% }); %>
+        <% } else { %>
+            <div class="no-posts">
+                <h3>لا توجد تدوينات بعد</h3>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

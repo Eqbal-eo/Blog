@@ -58,28 +58,30 @@
             <div class="row g-4">
                 <% if (bloggers && bloggers.length > 0) { %>
                     <% bloggers.forEach(function(blogger) { %>
-                        <div class="col-md-6 col-lg-4" data-categories="<%= blogger.categories?.join(' ') || '' %>">
-                            <div class="blogger-card position-relative p-4">
-                                <div class="articles-count"><%= blogger.articlesCount %> تدوينة</div>
-                                <h5 class="blogger-name mb-2"><%= blogger.name %></h5>
-                                <p class="blogger-bio mb-3"><%= blogger.bio || 'لم يتم إضافة نبذة بعد' %></p>
-                                <% if (blogger.categories && blogger.categories.length > 0) { %>
-                                    <div class="categories">
-                                        <% blogger.categories.forEach(function(category) { %>
-                                            <span class="category-badge">
-                                                <%= {
-                                                    'politics': 'سياسة',
-                                                    'history': 'تاريخ',
-                                                    'economics': 'اقتصاد',
-                                                    'technology': 'تكنلوجيا',
-                                                    'literature': 'أدب',
-                                                    'medicine': 'طب'
-                                                }[category] || category %>
-                                            </span>
-                                        <% }); %>
-                                    </div>
-                                <% } %>
-                            </div>
+                        <div class="col-md-6" data-categories="<%= blogger.categories?.join(' ') || '' %>">
+                            <a href="/author/<%= blogger.id %>" class="text-decoration-none">
+                                <div class="blogger-card position-relative p-4">
+                                    <div class="articles-count"><%= blogger.articlesCount %> تدوينة</div>
+                                    <h5 class="blogger-name mb-2"><%= blogger.name %></h5>
+                                    <p class="blogger-bio mb-3"><%= blogger.bio || 'لم يتم إضافة نبذة بعد' %></p>
+                                    <% if (blogger.categories && blogger.categories.length > 0) { %>
+                                        <div class="categories">
+                                            <% blogger.categories.forEach(function(category) { %>
+                                                <span class="category-badge">
+                                                    <%= {
+                                                        'politics': 'سياسة',
+                                                        'history': 'تاريخ',
+                                                        'economics': 'اقتصاد',
+                                                        'technology': 'تكنلوجيا',
+                                                        'literature': 'أدب',
+                                                        'medicine': 'طب'
+                                                    }[category] || category %>
+                                                </span>
+                                            <% }); %>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </a>
                         </div>
                     <% }); %>
                 <% } else { %>
@@ -126,4 +128,3 @@
     </script>
 </body>
 </html>
-``` 

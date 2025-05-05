@@ -187,7 +187,8 @@ router.get('/blogs', async (req, res) => {
             const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
             return {
-                name: user.display_name_ar || user.username, // استخدام الاسم العربي إذا كان موجوداً
+                id: user.id,
+                name: user.display_name_ar || user.username,
                 bio: user.bio || 'لم يتم إضافة نبذة بعد',
                 articlesCount: posts.length,
                 categories: categories
@@ -201,6 +202,48 @@ router.get('/blogs', async (req, res) => {
     }
 });
 
+// عرض تدوينات الكاتب
+router.get('/author/:id', async (req, res) => {
+    try {
+        const authorId = req.params.id;
+        
+        // جلب معلومات الكاتب
+        const { data: author, error: authorError } = await supabase
+            .from('users')
+            .select('username, bio, display_name_ar')
+            .eq('id', authorId)
+            .single();
 
+        if (authorError) throw authorError;
+
+        // جلب تدوينات الكاتب
+        const { data: posts, error: postsError } = await supabase
+            .from('posts')
+            .select(`
+                *,
+                users (
+                    username,
+                    display_name_ar,
+                    bio
+                )
+            `)
+            .eq('user_id', authorId)
+            .eq('status', 'published')
+            .order('created_at', { ascending: false });
+
+        if (postsError) throw postsError;
+
+        res.render('author', {
+            author: {
+                name: author.display_name_ar || author.username,
+                bio: author.bio || 'لم يتم إضافة نبذة بعد'
+            },
+            posts: posts
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('حدث خطأ في جلب تدوينات الكاتب');
+    }
+});
 
 module.exports = router;
