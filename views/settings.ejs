@@ -82,6 +82,12 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="bio" class="form-label">نبذة عني</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3"><%= user ? user.bio : '' %></textarea>
+                            <small class="text-muted">هذه النبذة ستظهر في صفحة المدونين</small>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="about_text" class="form-label">نص صفحة "عن المدونة"</label>
                             <textarea class="form-control" id="about_text" name="about_text" rows="5"><%= settings ? settings.about_text : '' %></textarea>
                         </div>
