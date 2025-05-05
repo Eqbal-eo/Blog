@@ -4,5 +4,5 @@ footer {
     padding: 1rem;
     font-size: 1rem;
     color: #777;
-    margin-top: auto; /* إضافة هذا لضمان تثبيت الفوتر أسفل الصفحة */
+    margin-top: auto  ; /* إضافة هذا لضمان تثبيت الفوتر أسفل الصفحة */
   }

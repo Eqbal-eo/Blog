@@ -3,6 +3,7 @@ const router = express.Router();
 const supabase = require('../db/db');
 const multer = require('multer');
 const path = require('path');
+const { settings } = require('..');
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -107,12 +108,12 @@ router.get('/about', async (req, res) => {
             .select('about_text')
             .single();
 
-        res.render('about', { 
+        res.render('about', {
             aboutContent: settings?.about_text || 'مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.'
         });
     } catch (err) {
         console.error(err);
-        res.render('about', { 
+        res.render('about', {
             aboutContent: 'مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.'
         });
     }
@@ -125,45 +126,48 @@ router.get('/contact', async (req, res) => {
             .select('contact_info')
             .single();
 
-        res.render('contact', { 
+        res.render('contact', {
             contactContent: settings?.contact_info || 'تواصل معنا عبر البريد أو مواقع التواصل.'
         });
     } catch (err) {
         console.error(err);
-        res.render('contact', { 
+        res.render('contact', {
             contactContent: 'تواصل معنا عبر البريد أو مواقع التواصل.'
         });
     }
 });
-
+// عرض صفحة المدونات
 router.get('/blogs', async (req, res) => {
     try {
-      const { data: users, error } = await supabase
-        .from('users')
-        .select('id, username');
-  
-      if (error) throw error;
-  
-      const bloggers = await Promise.all(users.map(async (user) => {
-        const { count, error: countError } = await supabase
-          .from('posts')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id);
-  
-        return {
-          name: user.username,
-          bio: 'لم يتم إضافة نبذة بعد',
-          articlesCount: count || 0
-        };
-      }));
-  
-      res.render('blogs', { bloggers });
+        const { data: users, error } = await supabase
+            .from('users')
+            .select('id, username');
+        const { data: settings, error: settingsError } = await supabase
+            .from('settings')
+            .select('about_text')
+            .single();
+        if (error) throw error;
+
+        const bloggers = await Promise.all(users.map(async (user) => {
+            const { count, error: countError } = await supabase
+                .from('posts')
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', user.id);
+
+            return {
+                name: user.username,
+                bio: settings.about_text || 'نبذة عن المدون',
+                articlesCount: count || 0
+            };
+        }));
+
+        res.render('blogs', { bloggers });
     } catch (err) {
-      console.error(err);
-      res.send('حدث خطأ');
+        console.error(err);
+        res.send('حدث خطأ');
     }
-  });
-  
+});
+
 
 
 module.exports = router;
