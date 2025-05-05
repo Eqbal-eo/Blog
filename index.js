@@ -33,13 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// تتبع الجلسات في كل طلب
-app.use((req, res, next) => {
-    console.log(`🛜 [${req.method}] ${req.url} - session ID: ${req.sessionID}`);
-    console.log('جلسة المستخدم:', req.session);
-    next();
-});
-
 // مسارات التطبيق
 app.use('/', authRoutes);  
 app.use('/', mainRoutes);
