@@ -210,7 +210,7 @@ router.get('/author/:id', async (req, res) => {
         // جلب معلومات الكاتب
         const { data: author, error: authorError } = await supabase
             .from('users')
-            .select('username, bio, display_name_ar')
+            .select('id, username, bio, display_name_ar')
             .eq('id', authorId)
             .single();
 
@@ -220,12 +220,12 @@ router.get('/author/:id', async (req, res) => {
         const { data: posts, error: postsError } = await supabase
             .from('posts')
             .select(`
-                *,
-                users (
-                    username,
-                    display_name_ar,
-                    bio
-                )
+                id,
+                title,
+                content,
+                category,
+                created_at,
+                status
             `)
             .eq('user_id', authorId)
             .eq('status', 'published')
@@ -233,15 +233,28 @@ router.get('/author/:id', async (req, res) => {
 
         if (postsError) throw postsError;
 
+        // جلب إعدادات المدونة
+        const { data: settings, error: settingsError } = await supabase
+            .from('settings')
+            .select('blog_title, blog_description, about_text, contact_info, email')
+            .limit(1)
+            .single();
+
+        // لا نريد أن نوقف العملية إذا لم تكن هناك إعدادات
+        const finalSettings = settingsError ? {} : settings;
+
         res.render('author', {
             author: {
+                id: author.id,
+                username: author.username,
                 name: author.display_name_ar || author.username,
                 bio: author.bio || 'لم يتم إضافة نبذة بعد'
             },
-            posts: posts
+            posts: posts,
+            settings: finalSettings
         });
     } catch (err) {
-        console.error(err);
+        console.error('Error:', err);
         res.status(500).send('حدث خطأ في جلب تدوينات الكاتب');
     }
 });

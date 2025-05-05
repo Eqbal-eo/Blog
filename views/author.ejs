@@ -10,11 +10,8 @@
     <link rel="stylesheet" href="/js/css/footer.css">
     <style>
         .author-header {
-            background-color: #fff;
-            padding: 3rem 1rem;
             text-align: center;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
             border-radius: 15px;
         }
 
@@ -33,7 +30,7 @@
             line-height: 1.8;
         }
 
-        .posts-container {
+        .content-container {
             max-width: 900px;
             margin: 0 auto;
             padding: 0 1rem;
@@ -93,10 +90,70 @@
             color: #470539c5;
         }
 
-        .no-posts {
+        .no-content {
             text-align: center;
             padding: 3rem;
             color: #666;
+        }
+
+        .nav-tabs {
+            justify-content: center;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 2rem;
+            gap: 0; /* تقليل المسافة بين الأزرار */
+        }
+
+        .nav-tabs .nav-link {
+            color: #666;
+            border: none;
+            padding: 0.75rem 1.5rem; /* تقليل padding */
+            margin: 0; /* إزالة الهوامش */
+            font-weight: 500;
+            position: relative;
+            background: transparent;
+        }
+
+        .nav-tabs .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #8c4a21ca;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #8c4a21ca;
+            background: transparent;
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        .contact-info, .blog-settings {
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-label {
+            color: #8c4a21ca;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-content {
+            color: #666;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
@@ -112,7 +169,12 @@
                 font-size: 1rem;
             }
 
-            .post-card {
+            .nav-tabs .nav-link {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .post-card, .contact-info, .blog-settings {
                 padding: 1.5rem;
             }
 
@@ -151,37 +213,119 @@
             <h1 class="author-name"><%= author.name %></h1>
             <p class="author-bio"><%= author.bio %></p>
         </div>
-    </div>
 
-    <!-- Posts Section -->
-    <div class="posts-container">
-        <% if (posts && posts.length > 0) { %>
-            <% posts.forEach(function(post) { %>
-                <article class="post-card">
-                    <h2 class="post-title"><%= post.title %></h2>
-                    <div class="post-excerpt">
-                        <%= post.content.substring(0, 200).replace(/(<([^>]+)>)/gi, "") %>...
-                    </div>
-                    <div class="post-meta">
-                        <span class="post-category">
-                            <%= {
-                                'politics': 'سياسة',
-                                'history': 'تاريخ',
-                                'economics': 'اقتصاد',
-                                'technology': 'تكنلوجيا',
-                                'literature': 'أدب',
-                                'medicine': 'طب'
-                            }[post.category] || post.category %>
-                        </span>
-                        <a href="/article/<%= post.id %>" class="read-more">اقرأ المزيد...</a>
-                    </div>
-                </article>
-            <% }); %>
-        <% } else { %>
-            <div class="no-posts">
-                <h3>لا توجد تدوينات بعد</h3>
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="authorTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
+                    التدوينات
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
+                    معلومات التواصل
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">
+                    عن المدونة
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="authorTabsContent">
+            <!-- Posts Tab -->
+            <div class="tab-pane fade show active" id="posts" role="tabpanel">
+                <div class="content-container">
+                    <% if (posts && posts.length > 0) { %>
+                        <% posts.forEach(function(post) { %>
+                            <article class="post-card">
+                                <h2 class="post-title"><%= post.title %></h2>
+                                <div class="post-excerpt">
+                                    <%= post.content.substring(0, 200).replace(/(<([^>]+)>)/gi, "") %>...
+                                </div>
+                                <div class="post-meta">
+                                    <span class="post-category">
+                                        <%= {
+                                            'politics': 'سياسة',
+                                            'history': 'تاريخ',
+                                            'economics': 'اقتصاد',
+                                            'technology': 'تكنلوجيا',
+                                            'literature': 'أدب',
+                                            'medicine': 'طب'
+                                        }[post.category] || post.category %>
+                                    </span>
+                                    <a href="/article/<%= post.id %>" class="read-more">اقرأ المزيد...</a>
+                                </div>
+                            </article>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="no-content">
+                            <h3>لا توجد تدوينات بعد</h3>
+                        </div>
+                    <% } %>
+                </div>
             </div>
-        <% } %>
+
+            <!-- Contact Tab -->
+            <div class="tab-pane fade" id="contact" role="tabpanel">
+                <div class="content-container">
+                    <div class="contact-info">
+                        <% if (settings.contact_info || settings.email) { %>
+                            <% if (settings.email) { %>
+                                <div class="info-item">
+                                    <div class="info-label">البريد الإلكتروني:</div>
+                                    <div class="info-content"><%= settings.email %></div>
+                                </div>
+                            <% } %>
+                            <% if (settings.contact_info) { %>
+                                <div class="info-item">
+                                    <div class="info-label">معلومات التواصل:</div>
+                                    <div class="info-content"><%- settings.contact_info %></div>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="no-content">
+                                <h3>لم يتم إضافة معلومات التواصل بعد</h3>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div class="tab-pane fade" id="about" role="tabpanel">
+                <div class="content-container">
+                    <div class="blog-settings">
+                        <% if (settings.blog_title || settings.blog_description || settings.about_text) { %>
+                            <% if (settings.blog_title) { %>
+                                <div class="info-item">
+                                    <div class="info-label">عنوان المدونة:</div>
+                                    <div class="info-content"><%= settings.blog_title %></div>
+                                </div>
+                            <% } %>
+                            <% if (settings.blog_description) { %>
+                                <div class="info-item">
+                                    <div class="info-label">وصف المدونة:</div>
+                                    <div class="info-content"><%= settings.blog_description %></div>
+                                </div>
+                            <% } %>
+                            <% if (settings.about_text) { %>
+                                <div class="info-item">
+                                    <div class="info-label">نبذة عن المدونة:</div>
+                                    <div class="info-content"><%- settings.about_text %></div>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="no-content">
+                                <h3>لم يتم إضافة معلومات عن المدونة بعد</h3>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
