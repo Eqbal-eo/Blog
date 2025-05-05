@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
         res.send(err.message || 'حدث خطأ');
     }
 });    
-
+// عرض صفحة التدوينة المفردة
 router.get('/article/:id', async (req, res) => {
     const postId = req.params.id;
 
@@ -62,7 +62,7 @@ router.get('/article/:id', async (req, res) => {
             throw new Error('خطأ في تحميل إعدادات الموقع');
         }
 
-        const { data: post, error: postError } = await supabase
+        const { data: post, error: postError } = await supabase 
             .from('posts')
             .select(`
                 *,
