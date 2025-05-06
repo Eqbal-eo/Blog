@@ -58,7 +58,7 @@
             <div class="row g-4">
                 <% if (bloggers && bloggers.length > 0) { %>
                     <% bloggers.forEach(function(blogger) { %>
-                        <div class="col-md-6" data-categories="<%= blogger.categories?.join(' ') || '' %>">
+                        <div class="col-md-6 col-lg-4" data-categories="<%= blogger.categories?.join(' ') || '' %>">
                             <a href="/author/<%= blogger.id %>" class="text-decoration-none">
                                 <div class="blogger-card position-relative p-4">
                                     <div class="articles-count"><%= blogger.articlesCount %> تدوينة</div>
@@ -100,11 +100,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Category filtering functionality
         document.addEventListener('DOMContentLoaded', function() {
             const categoryButtons = document.querySelectorAll('.categories-filter .btn');
             const bloggerCards = document.querySelectorAll('[data-categories]');
+            const searchInput = document.querySelector('.search-box input');
 
+            // Category filtering functionality
             categoryButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const selectedCategory = this.dataset.category;
@@ -113,17 +114,37 @@
                     categoryButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
 
-                    // Filter cards
-                    bloggerCards.forEach(card => {
-                        if (selectedCategory === 'all') {
-                            card.style.display = 'block';
-                        } else {
-                            const categories = card.dataset.categories.split(' ');
-                            card.style.display = categories.includes(selectedCategory) ? 'block' : 'none';
-                        }
-                    });
+                    filterCards(selectedCategory, searchInput.value);
                 });
             });
+
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const activeCategory = document.querySelector('.categories-filter .btn.active').dataset.category;
+                filterCards(activeCategory, this.value);
+            });
+
+            // Combined filtering function
+            function filterCards(category, searchText) {
+                searchText = searchText.toLowerCase();
+                
+                bloggerCards.forEach(card => {
+                    const name = card.querySelector('.blogger-name').textContent.toLowerCase();
+                    const bio = card.querySelector('.blogger-bio').textContent.toLowerCase();
+                    const categories = card.dataset.categories.split(' ');
+                    const categoryLabels = Array.from(card.querySelectorAll('.category-badge'))
+                        .map(badge => badge.textContent.toLowerCase());
+                    
+                    // Check if card matches both category and search criteria
+                    const matchesCategory = category === 'all' || categories.includes(category);
+                    const matchesSearch = searchText === '' || 
+                        name.includes(searchText) || 
+                        bio.includes(searchText) ||
+                        categoryLabels.some(label => label.includes(searchText));
+
+                    card.style.display = matchesCategory && matchesSearch ? 'block' : 'none';
+                });
+            }
         });
     </script>
 </body>
