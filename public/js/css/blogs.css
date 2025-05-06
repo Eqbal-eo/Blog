@@ -144,6 +144,15 @@ a:hover .blogger-card {
     color: white;
 }
 
+/* تنسيق الاقتباسات */
+blockquote {
+    background-color: #f5f5f5;
+    border-right: 4px solid#8c4a21ca;
+    margin: 1.5em 0;
+    padding: 1em 1.5em;
+    color: #666;
+}
+
 /* تحسين العرض للموبايل */
 @media (max-width: 576px) {
     .blogs-section {
