@@ -7,121 +7,174 @@ body {
     display: flex;
     flex-direction: column;
 }
-  
-  /* عنوان الصفحة */
-  .section-title {
-    font-size: 2.5rem;
+
+/* قسم المدونات */
+.blogs-section {
+    padding-top: 2rem;
+    margin-top: 2rem;
+}
+
+/* عنوان الصفحة */
+.section-title {
+    font-size: 2rem;
     color: #8c4a21ca;
-    font-weight: bold;
-  }
-  
-  /* مربع البحث */
-  .search-box {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* مربع البحث */
+.search-box {
     max-width: 100%;
     width: 100%;
     margin: 0 auto;
-  }
-  
-  .search-box input {
+}
+
+.search-box input {
     border-radius: 10px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: 1px solid #ccc;
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
     display: block;
-  }
-  
-  /* بطاقة المدون */
-  .blogger-card {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #8c4a21ca;
+    box-shadow: 0 0 0 2px rgba(140, 74, 33, 0.1);
+}
+
+/* بطاقة المدون */
+.blogger-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     position: relative;
     overflow: hidden;
     min-height: 160px;
-  }
-  
-  /* اسم الكاتب */
-  .blogger-name {
-    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    color: inherit;
+}
+
+.blogger-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* المحافظة على لون النص عند الضغط على البطاقة */
+a .blogger-card {
+    color: inherit;
+}
+
+a:hover .blogger-card {
+    color: inherit;
+}
+
+/* اسم الكاتب */
+.blogger-name {
+    font-size: 1.3rem;
+    font-weight: 600;
     color: #333;
-  }
-  
-  /* تعريف الكاتب */
-  .blogger-bio {
-    color: #888;
+    margin-bottom: 0.8rem;
+}
+
+/* تعريف الكاتب */
+.blogger-bio {
+    color: #666;
     font-size: 1rem;
     line-height: 1.7;
-  }
-  
-  /* عدد المقالات */
-  .articles-count {
+    margin-bottom: 1rem;
+}
+
+/* عدد المقالات */
+.articles-count {
     position: absolute;
     top: 15px;
     left: 15px;
-    background-color: #8c4a21ca; /* بني غامق */
+    background-color: #8c4a21ca;
     color: #fff;
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 0.9rem;
-  }
+}
 
-  /* تصنيفات المدونات */
-  .categories {
+/* تصنيفات المدونات */
+.categories {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  }
+}
 
-  .category-badge {
+.category-badge {
     display: inline-block;
     padding: 4px 12px;
     background-color: #e7e5e5;
     border-radius: 11px;
     font-size: 0.87rem;
     color: #666;
-  }
+    font-weight: 500;
+}
 
-  /* أزرار تصفية التصنيفات */
-  .categories-filter {
-    margin-bottom: 2rem;
-  }
+/* أزرار تصفية التصنيفات */
+.categories-filter {
+    margin: 1.5rem 0 2rem;
+}
 
-  .categories-filter .btn-group {
+.categories-filter .btn-group {
     flex-wrap: wrap;
     gap: 5px;
-  }
+}
 
-  .categories-filter .btn {
+.categories-filter .btn {
     border-radius: 20px !important;
-    padding: 5px 15px;
-    font-size: 0.9rem;
-  }
+    padding: 6px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
 
-  .categories-filter .btn.active {
+.categories-filter .btn.active {
     background-color: #8c4a21ca;
     border-color: #8c4a21ca;
     color: white;
-  }
-  
-  /* تحسين العرض للموبايل */
-  @media (max-width: 576px) {
+}
+
+/* تحسين العرض للموبايل */
+@media (max-width: 576px) {
+    .blogs-section {
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
     .section-title {
-      font-size: 2rem;
+        font-size: 1.7rem;
     }
-  
+
     .search-box input {
-      padding: 8px 15px;
+        padding: 8px 15px;
+        font-size: 0.95rem;
     }
-  
+
+    .blogger-name {
+        font-size: 1.2rem;
+    }
+
+    .blogger-bio {
+        font-size: 0.95rem;
+    }
+
     .articles-count {
-      font-size: 0.8rem;
-      padding: 4px 8px;
+        font-size: 0.8rem;
+        padding: 4px 8px;
     }
 
     .categories-filter .btn {
-        font-size: 0.8rem;
-        padding: 4px 10px;
+        font-size: 0.9rem;
+        padding: 5px 12px;
     }
-  }
+}
