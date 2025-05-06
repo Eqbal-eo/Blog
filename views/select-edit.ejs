@@ -132,6 +132,11 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="created_at" class="form-label">تاريخ النشر</label>
+                        <input type="datetime-local" class="form-control" id="created_at" name="created_at" required>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                     <a href="/dashboard" class="btn btn-secondary">العودة</a>
                 </form>
@@ -179,7 +184,13 @@
                 titleInput.value = post.title;
                 quill.root.innerHTML = post.content;
                 statusSelect.value = post.status;
-                document.getElementById('category').value = post.category || ''; // Set the category
+                document.getElementById('category').value = post.category || '';
+                
+                // Format the date for datetime-local input
+                const date = new Date(post.created_at);
+                const formattedDate = date.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:mm
+                document.getElementById('created_at').value = formattedDate;
+                
                 form.action = `/posts/edit/${post.id}`;
             });
 

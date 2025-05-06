@@ -84,6 +84,13 @@
                         <option value="draft">مسودة</option>
                     </select>
                 </div>
+
+                <div class="mb-3">
+                    <label for="created_at" class="form-label">تاريخ النشر</label>
+                    <input type="datetime-local" class="form-control" id="created_at" name="created_at"
+                        value="<%= new Date().toISOString().slice(0, 16) %>" required>
+                </div>
+
                 <button type="submit" class="btn btn-primary">نشر التدوينة</button>
                 <a href="/dashboard" class="btn btn-secondary ms-2">إلغاء</a>
             </div>

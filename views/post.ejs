@@ -2,6 +2,21 @@
 <html lang="ar" dir="rtl">
 
 <head>
+    <%
+    function toArabicNumbers(str) {
+      return str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+    }
+  
+    function formatDate(dateString) {
+      const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+      const date = new Date(dateString);
+      const day = toArabicNumbers(date.getDate());
+      const month = months[date.getMonth()];
+      const year = toArabicNumbers(date.getFullYear());
+      return `${day} ${month} ${year}`;
+    }
+    %>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -120,7 +135,7 @@
                         <small>
                             بواسطة <%= post.users.displayName %> 
                             <span>-</span> 
-                            نُشرت في <%= post.created_at.toLocaleDateString() %>
+                            نُشرت في <%= formatDate(post.created_at) %>
                             <% if (post.category) { %>
                                 <span>-</span>
                                 <span class="post-category">
