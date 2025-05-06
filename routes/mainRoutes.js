@@ -61,15 +61,7 @@ router.get('/article/:id', async (req, res) => {
     const postId = req.params.id;
 
     try {
-        const { data: settings, error: settingsError } = await supabase
-            .from('settings')
-            .select('*')
-            .single();
-
-        if (settingsError) {
-            throw new Error('خطأ في تحميل إعدادات الموقع');
-        }
-
+        // Get the post data first
         const { data: post, error: postError } = await supabase 
             .from('posts')
             .select(`
@@ -87,6 +79,12 @@ router.get('/article/:id', async (req, res) => {
             throw new Error('التدوينة غير موجودة أو حدث خطأ');
         }
 
+        // Try to get settings, but don't fail if they don't exist
+        const { data: settings } = await supabase
+            .from('settings')
+            .select('*')
+            .single();
+
         // استخدام الاسم العربي إذا كان متوفراً
         if (post.users) {
             post.users.displayName = post.users.display_name_ar || post.users.username;
@@ -95,14 +93,15 @@ router.get('/article/:id', async (req, res) => {
         // نحول created_at إلى كائن Date
         post.created_at = new Date(post.created_at);
 
+        // Render the page with or without settings
         res.render('post', {
-            site: settings,
+            site: settings || {},
             post
         });
 
     } catch (err) {
         console.error(err);
-        res.send(err.message || 'حدث خطأ');
+        res.status(404).send(err.message || 'حدث خطأ في تحميل التدوينة');
     }
 });
 
