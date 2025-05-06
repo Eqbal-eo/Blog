@@ -18,7 +18,7 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    const { title, content, status, category } = req.body;
+    const { title, content, status, category, created_at } = req.body;
     const userId = req.session.user.id;
 
     if (!title || !content || !category) {
@@ -35,7 +35,8 @@ router.post('/create', async (req, res) => {
                 content,
                 category,
                 user_id: userId,
-                status: postStatus
+                status: postStatus,
+                created_at // Add the created_at field
             }]);
 
         if (error) throw error;
@@ -62,7 +63,7 @@ router.get('/select-edit', async (req, res) => {
 
 router.post('/edit/:id', async (req, res) => {
     const postId = req.params.id;
-    const { title, content, status, category } = req.body;
+    const { title, content, status, category, created_at } = req.body;
 
     if (!title || !content || !category) {
         return res.send('يرجى إدخال جميع الحقول');
@@ -77,7 +78,8 @@ router.post('/edit/:id', async (req, res) => {
                 title,
                 content,
                 category,
-                status: postStatus
+                status: postStatus,
+                created_at // Add the created_at field to the update
             })
             .eq('id', postId);
 
