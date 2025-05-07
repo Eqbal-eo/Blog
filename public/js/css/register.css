@@ -47,6 +47,7 @@ h5 {
 
 .container {
     margin-top: 50px;
+    margin-bottom: 50px;
     padding: 0 15px;
 }
 
@@ -77,9 +78,7 @@ h5 {
     }
 
     .container {
-        margin-top: 20px;
-        padding: 0 15px;
-        width: 100%;
+        margin-bottom: 40px;
     }
 
     .card {
@@ -105,6 +104,32 @@ h5 {
     }
 }
 
+/* تنسيقات خاصة للآيباد في الوضع العمودي */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .container {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .col-md-4 {
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .form-control {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .btn {
+        padding: 12px 0;
+    }
+}
+
 @media (max-width: 480px) {
     h1 {
         font-size: 1.5rem;
@@ -116,11 +141,6 @@ h5 {
     }
 
     .container {
-        margin-top: 10px;
-        padding: 0 10px;
-    }
-
-    .card-header h5 {
-        font-size: 1.1rem;
+        margin-bottom: 30px;
     }
 }
