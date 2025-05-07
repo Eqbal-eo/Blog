@@ -149,76 +149,102 @@ a:hover .blogger-card {
 /* زر إظهار/إخفاء التصنيفات */
 .categories-toggle {
     display: none;
-    width: 100%;
-    padding: 10px 15px;
-    background-color: #8c4a21ca;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    text-align: center;
-    cursor: pointer;
 }
 
-/* اقتباسات */
-blockquote {
-    background-color: #f5f5f5;
-    border-right: 4px solid #8c4a21ca;
-    margin: 1.5em 0;
-    padding: 1em 1.5em;
-    color: #666;
-    font-style: normal;
+@media (max-width: 768px) {
+    .blogs-section {
+        padding: 1rem 0.8rem;
+        margin-top: 1rem;
+    }
+
+    /* تحسين مربع البحث */
+    .search-box {
+        padding: 0 0.5rem;
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .search-box input {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: none;
+    }
+
+    /* زر التصنيفات في وضع الموبايل */
+    .categories-toggle {
+        display: block;
+        width: auto;
+        min-width: 150px;
+        max-width: 180px;
+        margin: 0 auto 1rem;
+        padding: 8px 16px;
+        background-color: #8c4a21ca;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    /* تحسين بطاقات المدونين */
+    .blogger-card {
+        margin: 0.5rem 0;
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+
+    /* تحسين التصنيفات */
+    .categories-filter {
+        display: none;
+        transition: all 0.3s ease;
+    }
+
+    .categories-filter.show {
+        
+        animation: slideDown 0.3s ease-out;
+        width: 60%;
+        margin: 0 auto;
+        display: flex;
+        
+    }
 }
 
-blockquote * {
-    font-style: normal;
-}
 
-/* تحسين العرض للموبايل */
 @media (max-width: 576px) {
-    .blogs-section { 
+    .blogs-section {
         padding-top: 1rem;
         margin-top: 1rem;
     }
 
     .section-title {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         margin-bottom: 1rem;
     }
 
     .search-box {
-        padding: 0 0.5rem;
-        margin-bottom: 1rem;
+        padding: 0 0.8rem;
     }
 
     .search-box input {
         padding: 8px 12px;
         font-size: 0.9rem;
-        border-radius: 8px;
-    }
-
-    .categories-filter {
-        padding: 0 0.5rem;
-    }
-
-    .categories-filter .btn {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-        margin: 0.2rem;
     }
 
     .categories-toggle {
-        padding: 9px 12px;
-        font-size: 0.9rem;
-        margin: 1.8rem;
-        border-radius: 8px;
-        width: 85%;
+        min-width: 100px;
+        max-width: 140px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
     }
 
     .blogger-card {
         padding: 1rem;
         margin: 0.5rem 0;
-        
     }
 
     .blogger-name {
@@ -230,19 +256,63 @@ blockquote * {
         line-height: 1.5;
     }
 
-    .category-badge {
-        padding: 3px 8px;
+    .articles-count {
         font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    .categories-filter .btn {
+        font-size: 0.9rem;
+        padding: 5px 12px;
+    }
+}
+
+/* تحسين العرض للموبايل */
+@media (max-width: 576px) {
+    .blogs-section { 
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+    }
+
+    .search-box input {
+        padding: 8px 15px;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+        
+
+    .blogger-name {
+        font-size: 1.2rem;
+    }
+
+    .blogger-bio {
+        font-size: 0.95rem;
     }
 
     .articles-count {
         font-size: 0.8rem;
         padding: 4px 8px;
-        border-radius: 6px;
+    }
+
+    .categories-filter .btn {
+        font-size: 0.9rem;
+        padding: 5px 12px;
+    }
+
+    .categories-toggle {
+        min-width: 100px;
+        max-width: 160px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
     }
 }
 
-/* Enhanced Mobile and Tablet Responsive Design */
+/* تحسينات الهاتف المحمول والتابلت */
 @media (max-width: 768px) {
     .blogs-section {
         padding: 1rem 0.8rem;
@@ -253,62 +323,43 @@ blockquote * {
     .search-box {
         padding: 0 0.5rem;
         margin-bottom: 1.5rem;
+        width: 100%;
     }
 
     .search-box input {
-        padding: 0.8rem 1rem;
-        font-size: 1rem;
+        padding: 10px 15px;
+        font-size: 0.95rem;
         border-radius: 8px;
+        width: 100%;
+        max-width: none;
+    }
+
+    /* زر التصنيفات في وضع الموبايل */
+    .categories-toggle {
+        display: block;
+        width: auto;
+        min-width: 120px;
+        max-width: 180px;
+        margin: 0 auto 1rem;
+        padding: 8px 16px;
+        background-color: #8c4a21ca;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
     /* تحسين بطاقات المدونين */
     .blogger-card {
-        margin: 0.1rem 3;
+        margin: 0.5rem 0;
         padding: 1.2rem;
         border-radius: 12px;
     }
 
-    .blogger-name {
-        font-size: 1.15rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .blogger-bio {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 0.8rem;
-    }
-
     /* تحسين التصنيفات */
-    .categories-filter {
-        margin: 1rem 0;
-    }
-
-    .categories-filter .btn-group {
-        gap: 0.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .categories-filter .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.95rem;
-        border-radius: 8px;
-        margin: 0.2rem;
-        flex: 0 0 calc(50% - 0.4rem);
-    }
-
-    .category-badge {
-        padding: 0.3rem 0.8rem;
-        font-size: 0.85rem;
-        margin: 0.2rem;
-    }
-
-    /* التحكم في عرض وإخفاء التصنيفات في وضع الهاتف المحمول */
-    .categories-toggle {
-        display: block;
-    }
-
     .categories-filter {
         display: none;
         transition: all 0.3s ease;
@@ -317,17 +368,6 @@ blockquote * {
     .categories-filter.show {
         display: block;
         animation: slideDown 0.3s ease-out;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
 }
 
