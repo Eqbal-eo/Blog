@@ -9,21 +9,40 @@ body {
     background-color: #f9f7f0;
 }
 
+/* تنسيق الكرت */
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* زر الـ btn-dark */
+.btn-dark {
+    background-color: #8c4a21ca;
+    border-color: transparent;
+}
+
+.btn-dark:hover {
+    background-color: #470539c5;
+    border-color: transparent;
+}
+
 /* تنسيق العناوين */
 h1 {
     font-family: 'Tajawal', sans-serif;
+    font-size: 2.5rem;
     color: #8c4a21ca;
     text-align: center;
-    margin-top: 35px;
-    font-size: 2.5rem;
+    margin-top: 30px;
+    padding: 0 15px;
 }
 
 h5 {
     font-family: 'Tajawal', sans-serif;
+    font-size: 1.2rem;
     color: #5a5a5a;
     text-align: center;
-    margin-top: 2px;
-    font-size: 1.2rem;
+    margin-top: 1px;
+    padding: 0 15px;
 }
 
 .container {
@@ -31,31 +50,30 @@ h5 {
     padding: 0 15px;
 }
 
-/* Form Styles */
+/* تنسيق حقول الإدخال */
 .form-control {
-    font-size: 1rem;
-    padding: 0.75rem;
-    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: right;
+    direction: rtl;
 }
 
-.btn {
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
-    border-radius: 8px;
+.form-control::placeholder {
+    font-size: 0.85rem;
+    text-align: right;
+    direction: rtl;
+    opacity: 0.7;
 }
 
-/* Enhanced Responsive Design */
+/* Responsive design */
 @media (max-width: 768px) {
     h1 {
         font-size: 1.8rem;
         margin-top: 20px;
-        padding: 0 10px;
     }
 
     h5 {
         font-size: 1.1rem;
         margin-top: 10px;
-        padding: 0 15px;
     }
 
     .container {
@@ -67,7 +85,6 @@ h5 {
     .card {
         margin: 0;
         border-radius: 10px;
-        padding: 15px;
     }
 
     .card-body {
@@ -75,7 +92,7 @@ h5 {
     }
 
     .form-control {
-        font-size: 16px; /* منع تكبير النص تلقائياً في iOS */
+        font-size: 16px;
         padding: 10px;
         margin-bottom: 10px;
     }
@@ -85,12 +102,6 @@ h5 {
         padding: 12px;
         margin-top: 5px;
         font-size: 16px;
-    }
-
-    .alert {
-        margin-bottom: 15px;
-        padding: 10px;
-        font-size: 14px;
     }
 }
 
@@ -102,7 +113,6 @@ h5 {
 
     h5 {
         font-size: 1rem;
-        padding: 0 10px;
     }
 
     .container {
@@ -112,27 +122,5 @@ h5 {
 
     .card-header h5 {
         font-size: 1.1rem;
-    }
-
-    .form-control {
-        padding: 8px;
-    }
-
-    .btn {
-        padding: 10px;
-    }
-}
-
-/* Card Styles */
-.card {
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-}
-
-@media (max-width: 768px) {
-    .card {
-        padding: 1rem;
-        margin: 0 10px;
     }
 }
