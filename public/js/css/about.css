@@ -78,19 +78,19 @@ body {
     }
 
     .about-text {
-        font-size: 0.95rem;
-        line-height: 1.6;
+        font-size: 1.2rem;
+        line-height: 1.7;
+        text-align: center;
     }
 
     .about-card {
         padding: 20px;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin-top: 10px;
+        margin-bottom: 12px;
     }
 
     .about-section {
-        padding: 50px 10px;
+        padding: 55px 10px;
         /* مسافة أقل على الهواتف الصغيرة */
     }
 }
-</style>
