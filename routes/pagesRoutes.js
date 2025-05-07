@@ -3,7 +3,6 @@ const router = express.Router();
 const supabase = require('../db/db');
 const multer = require('multer');
 const path = require('path');
-const { settings } = require('..');
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -28,38 +27,59 @@ const checkAuth = (req, res, next) => {
 // Get settings page
 router.get('/settings', checkAuth, async (req, res) => {
     try {
-        // Get settings
+        // الحصول على معرف المستخدم من الجلسة
+        const userId = req.session.user.id;
+        console.log('Fetching settings for user:', userId);
+
+        // Get user data including bio and display name
+        const { data: user, error: userError } = await supabase
+            .from('users')
+            .select('bio, display_name_ar')
+            .eq('id', userId)
+            .single();
+
+        if (userError) {
+            console.error('Error fetching user data:', userError);
+            throw userError;
+        }
+
+        // Get settings for the user
         const { data: settings, error: settingsError } = await supabase
             .from('settings')
             .select('*')
+            .eq('user_id', userId)
             .single();
 
+        // لا نعتبر عدم وجود إعدادات خطأً
         if (settingsError && settingsError.code !== 'PGRST116') {
+            console.error('Error fetching settings:', settingsError);
             throw settingsError;
         }
 
-        // Get user data including bio
-        const { data: user, error: userError } = await supabase
-            .from('users')
-            .select('bio')
-            .eq('id', req.session.user.id)
-            .single();
-
-        if (userError) throw userError;
+        console.log('Successfully fetched settings and user data');
 
         res.render('settings', { 
             settings: settings || {},
-            user: user || {}
+            user: {
+                ...user,
+                id: userId
+            }
         });
     } catch (err) {
-        console.error('Error fetching settings:', err);
-        res.status(500).send('حدث خطأ في جلب الإعدادات');
+        console.error('Error in settings route:', err);
+        // تقديم رسالة خطأ أكثر تفصيلاً للمستخدم
+        res.status(500).render('settings', {
+            settings: {},
+            user: { id: req.session.user.id },
+            error: 'عذراً، حدث خطأ أثناء جلب الإعدادات. يرجى المحاولة مرة أخرى.'
+        });
     }
 });
 
 // Update settings
 router.post('/settings', checkAuth, upload.single('profile_image'), async (req, res) => {
     try {
+        const userId = req.session.user.id;
         const {
             blog_title,
             blog_description,
@@ -70,6 +90,8 @@ router.post('/settings', checkAuth, upload.single('profile_image'), async (req, 
             display_name_ar
         } = req.body;
 
+        console.log('Updating settings for user:', userId);
+
         let profile_image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
         // Update user bio and Arabic display name
@@ -79,51 +101,69 @@ router.post('/settings', checkAuth, upload.single('profile_image'), async (req, 
                 bio,
                 display_name_ar 
             })
-            .eq('id', req.session.user.id);
+            .eq('id', userId);
 
-        if (userError) throw userError;
+        if (userError) {
+            console.error('Error updating user data:', userError);
+            throw userError;
+        }
 
-        // Check if settings exist
-        const { data: existingSettings } = await supabase
+        // Check if settings exist for this user
+        const { data: existingSettings, error: checkError } = await supabase
             .from('settings')
             .select('id')
+            .eq('user_id', userId)
             .single();
+
+        if (checkError && checkError.code !== 'PGRST116') {
+            console.error('Error checking existing settings:', checkError);
+            throw checkError;
+        }
+
+        const settingsData = {
+            blog_title,
+            blog_description,
+            about_text,
+            contact_info,
+            email,
+            user_id: userId,
+            ...(profile_image && { profile_image })
+        };
 
         if (existingSettings) {
             // Update existing settings
+            console.log('Updating existing settings');
             const { error: updateError } = await supabase
                 .from('settings')
-                .update({
-                    blog_title,
-                    blog_description,
-                    about_text,
-                    contact_info,
-                    email,
-                    ...(profile_image && { profile_image })
-                })
+                .update(settingsData)
                 .eq('id', existingSettings.id);
 
-            if (updateError) throw updateError;
+            if (updateError) {
+                console.error('Error updating settings:', updateError);
+                throw updateError;
+            }
         } else {
             // Insert new settings
+            console.log('Creating new settings');
             const { error: insertError } = await supabase
                 .from('settings')
-                .insert([{
-                    blog_title,
-                    blog_description,
-                    about_text,
-                    contact_info,
-                    email,
-                    profile_image
-                }]);
+                .insert([settingsData]);
 
-            if (insertError) throw insertError;
+            if (insertError) {
+                console.error('Error inserting settings:', insertError);
+                throw insertError;
+            }
         }
 
+        console.log('Settings updated successfully');
         res.redirect('/settings');
     } catch (err) {
-        console.error('Error updating settings:', err);
-        res.status(500).send('حدث خطأ في تحديث الإعدادات');
+        console.error('Error in settings update:', err);
+        res.status(500).render('settings', {
+            settings: req.body,
+            user: { id: req.session.user.id },
+            error: 'عذراً، حدث خطأ أثناء حفظ الإعدادات. يرجى المحاولة مرة أخرى.'
+        });
     }
 });
 

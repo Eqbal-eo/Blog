@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
             }
             res.redirect('/dashboard');
         });
-
+            
     } catch (err) {
         console.error('حدث خطأ أثناء تسجيل الدخول:', err);
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });

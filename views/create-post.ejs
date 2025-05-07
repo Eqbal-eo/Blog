@@ -3,99 +3,142 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>إنشاء تدوينة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء تدوينة | آفاق بلُوغ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="/js/css/editor.css">
+    <link rel="stylesheet" href="/js/css/dashboard.css">
 </head>
-<style>
-    .custom-navbar {
-        background-color: #212024e1;
-    }
-
-    .custom-navbar .navbar-nav .nav-link,
-    .custom-navbar .navbar-brand {
-        color: white !important;
-    }
-</style>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg custom-navbar mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/dashboard">لوحة التحكم</a>
+            <a class="navbar-brand" href="/dashboard">
+                <i class="bi bi-grid-fill me-2"></i>لوحة التحكم
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/posts/create">➕ إنشاء تدوينة</a>
+                        <a class="nav-link active" href="/posts/create">
+                            <i class="bi bi-plus-circle-fill"></i> إنشاء تدوينة
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/posts/select-edit">✏️ تعديل تدوينة</a>
+                        <a class="nav-link" href="/posts/select-edit">
+                            <i class="bi bi-pencil-square"></i> تعديل تدوينة
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/posts/select-delete">🗑️ حذف تدوينة</a>
+                        <a class="nav-link" href="/posts/select-delete">
+                            <i class="bi bi-trash3"></i> حذف تدوينة
+                        </a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/settings">الإعدادات</a></li>
-                    <li class="nav-item"><a class="nav-link text-danger" href="/logout">تسجيل الخروج</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">
+                            <i class="bi bi-gear"></i> الإعدادات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/logout">
+                            <i class="bi bi-box-arrow-left"></i> تسجيل الخروج
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
     <!-- Main Content -->
-    <div class="container mt-5">
-        <h2 class="mb-4 text-center">➕ إنشاء تدوينة جديدة</h2>
-        <form action="/posts/create" method="POST" onsubmit="return handleFormSubmit()">
-            <div class="form-box">
-                <div class="mb-3">
-                    <label for="title" class="form-label">عنوان التدوينة</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="editor" class="form-label">محتوى التدوينة</label>
-                    <div id="editor"></div>
-                    <input type="hidden" name="content" id="content">
-                </div>
-                <div class="mb-3">
-                    <label for="category" class="form-label">تصنيف التدوينة</label>
-                    <select class="form-select" id="category" name="category" required>
-                        <option value="" disabled selected>اختر تصنيفاً</option>
-                        <option value="politics">سياسة</option>
-                        <option value="history">تاريخ</option>
-                        <option value="economics">اقتصاد</option>
-                        <option value="technology">تكنلوجيا</option>
-                        <option value="literature">أدب</option>
-                        <option value="medicine">طب</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="status" class="form-label">حالة التدوينة</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="published">منشورة</option>
-                        <option value="draft">مسودة</option>
-                    </select>
-                </div>
+    <div class="container my-4">
+        <div class="posts-box fadeIn">
+            <h3>
+                <i class="bi bi-plus-circle me-2"></i>
+                <strong>إنشاء تدوينة جديدة</strong>
+            </h3>
 
-                <div class="mb-3">
-                    <label for="created_at" class="form-label">تاريخ النشر</label>
-                    <input type="datetime-local" class="form-control" id="created_at" name="created_at"
-                        value="<%= new Date().toISOString().slice(0, 16) %>" required>
-                </div>
+            <form action="/posts/create" method="POST" onsubmit="return handleFormSubmit()" class="mt-4">
+                <div class="row g-4">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <label for="title" class="form-label fw-bold">عنوان التدوينة</label>
+                            <input type="text" class="form-control form-control-lg" id="title" name="title" required
+                                placeholder="أدخل عنوان التدوينة هنا...">
+                        </div>
 
-                <button type="submit" class="btn btn-primary">نشر التدوينة</button>
-                <a href="/dashboard" class="btn btn-secondary ms-2">إلغاء</a>
-            </div>
-        </form>
+                        <div class="mb-4">
+                            <label for="editor" class="form-label fw-bold">محتوى التدوينة</label>
+                            <div id="editor" class="rounded"></div>
+                            <input type="hidden" name="content" id="content">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="action-card">
+                            <h5 class="mb-3">
+                                <i class="bi bi-gear-fill me-2"></i>
+                                إعدادات النشر
+                            </h5>
+
+                            <div class="mb-3">
+                                <label for="category" class="form-label">تصنيف التدوينة</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="" disabled selected>اختر تصنيفاً</option>
+                                    <option value="politics">سياسة</option>
+                                    <option value="history">تاريخ</option>
+                                    <option value="economics">اقتصاد</option>
+                                    <option value="technology">تكنلوجيا</option>
+                                    <option value="literature">أدب</option>
+                                    <option value="medicine">طب</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="status" class="form-label">حالة التدوينة</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="published">منشورة</option>
+                                    <option value="draft">مسودة</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="created_at" class="form-label">تاريخ النشر</label>
+                                <input type="datetime-local" class="form-control" id="created_at" name="created_at"
+                                    value="<%= new Date().toISOString().slice(0, 16) %>" required>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    نشر التدوينة
+                                </button>
+                                <a href="/dashboard" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    إلغاء
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <footer>
+        <div class="container">
+            آفاق بلُوغ | منصة للتدوين الثقافي والفكري © <%= new Date().getFullYear() %>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -106,30 +149,30 @@
             placeholder: 'اكتب محتوى التدوينة هنا...',
             modules: {
                 toolbar: [
-                    [{ 'header': '1' }, { 'header': '2' }],
+                    [{ 'header': [1, 2, 3, false] }],
                     [{ 'size': ['small', false, 'large', 'huge'] }],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                     ['bold', 'italic', 'underline'],
-                    ['link'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                     [{ 'align': [] }],
+                    ['link', 'image'],
                     ['blockquote', 'code-block'],
                     [{ 'color': [] }, { 'background': [] }],
-                    ['clean'],
-                    [{ 'direction': 'rtl' }, { 'direction': 'ltr' }]
+                    [{ 'direction': 'rtl' }],
+                    ['clean']
                 ]
             }
         });
 
-        // إرسال المحتوى عند إرسال النموذج
         function handleFormSubmit() {
             const contentInput = document.getElementById('content');
             let html = quill.root.innerHTML;
-
             html = html.replace(/<blockquote>/g, '<blockquote dir="auto">');
-
             contentInput.value = html.trim();
             return true;
         }
+
+        // Set default text direction to RTL
+        quill.format('direction', 'rtl');
     </script>
 </body>
 

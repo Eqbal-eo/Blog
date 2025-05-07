@@ -22,28 +22,119 @@ body {
     direction: ltr !important;
 }
 
-#editor {
-    height: 400px;
+/* Editor Styles */
+.ql-container {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 1.1rem;
+    height: 400px !important;
     background-color: white;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.ql-toolbar {
+    background-color: #f8f9fa;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.ql-editor {
+    direction: rtl;
+    text-align: right;
+    padding: 1.5rem;
+}
+
+.ql-editor.ql-blank::before {
+    right: 1.5rem;
+    left: auto;
+    font-style: normal;
+    color: #adb5bd;
+}
+
+/* Form Elements */
+.form-control, .form-select {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(107, 43, 18, 0.15);
+}
+
+.form-control-lg {
+    font-size: 1.25rem;
+}
+
+/* Custom Button Styles */
+.btn-primary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+    background-color: #5a2410;
+    border-color: #5a2410;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: var(--secondary-color);
+    border-color: currentColor;
+}
+
+/* Editor Content Styles */
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.ql-editor p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
 }
 
 .ql-editor blockquote {
-    border-left: none !important;
-    border-right: 4px solid #ccc !important;
-    padding-left: 0 !important;
-    padding-right: 16px !important;
-    direction: rtl;
-    text-align: right;
+    border-right: 4px solid var(--secondary-color);
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
 }
 
-.ql-editor ul,
-.ql-editor ol {
-    padding-right: 1.5em;
-    /* شوية مساحة داخلية على اليمين */
-    padding-left: 0 !important;
-    /* منع المسافة على اليسار */
-    direction: rtl;
-    text-align: right;
-    list-style-position: inside;
-    /* حتى يجي الترقيم/النقطة جوّا */
+.ql-editor pre.ql-syntax {
+    background-color: #2d2d2d;
+    color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 1rem 0;
+    direction: ltr;
+    text-align: left;
+}
+
+/* Responsive Editor Height */
+@media (max-width: 768px) {
+    .ql-container {
+        height: 300px !important;
+    }
+}
+
+/* Animation */
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.form-box {
+    animation: slideInUp 0.5s ease-out;
 }
