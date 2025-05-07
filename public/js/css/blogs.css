@@ -192,3 +192,92 @@ blockquote * {
         padding: 5px 12px;
     }
 }
+
+/* Enhanced Mobile and Tablet Responsive Design */
+@media (max-width: 768px) {
+    .blogs-section {
+        padding: 1rem;
+    }
+
+    .search-box {
+        padding: 0 1rem;
+    }
+
+    .search-box input {
+        font-size: 1rem;
+        padding: 10px 15px;
+    }
+
+    .blogger-card {
+        margin: 1rem 0.5rem;
+        padding: 1rem;
+    }
+
+    .categories {
+        margin: 0.5rem 0;
+    }
+
+    .category-badge {
+        font-size: 0.8rem;
+        padding: 3px 10px;
+    }
+
+    .categories-filter .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .categories-filter .btn {
+        margin: 0.2rem;
+        flex: 0 0 calc(50% - 0.4rem);
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .blogger-card {
+        min-height: 140px;
+        margin: 0.5rem 0;
+    }
+
+    .blogger-name {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .blogger-bio {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .categories-filter .btn {
+        flex: 0 0 calc(100% - 0.4rem);
+        margin: 0.2rem;
+    }
+}
+
+/* Tablet Specific Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .blogs-section {
+        padding: 1.5rem;
+    }
+
+    .blogger-card {
+        margin: 1rem;
+    }
+
+    .categories-filter .btn-group {
+        justify-content: center;
+    }
+
+    .categories-filter .btn {
+        flex: 0 0 auto;
+    }
+}
