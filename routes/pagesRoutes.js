@@ -175,12 +175,12 @@ router.get('/about', async (req, res) => {
             .single();
 
         res.render('about', {
-            aboutContent: settings?.about_text || 'مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.'
+            aboutContent: settings?.about_text || 'مرحباً بك في مدونات آفاق، هذه النبذة قابلة للتعديل.'
         });
     } catch (err) {
         console.error(err);
         res.render('about', {
-            aboutContent: 'مرحباً بك في مدونة آفاق، هذه النبذة قابلة للتعديل.'
+            aboutContent: 'مرحباً بك في مدونات آفاق، هذه النبذة قابلة للتعديل.'
         });
     }
 });
