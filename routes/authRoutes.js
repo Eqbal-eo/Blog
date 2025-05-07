@@ -13,14 +13,35 @@ router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
     try {
-        // التحقق من وجود المستخدم
-        const { data: existingUser } = await supabase
+        // التحقق من وجود المستخدم باستخدام اسم المستخدم
+        const { data: existingUser, error: userError } = await supabase
             .from('users')
-            .select('username, email')
-            .or(`username.eq.${username},email.eq.${email}`)
-            .single();
+            .select('username')
+            .eq('username', username);
 
-        if (existingUser) {
+        if (userError) {
+            console.error('خطأ في البحث عن المستخدم:', userError);
+            return res.render('register', {
+                error: 'حدث خطأ أثناء التحقق من البيانات',
+                success: null
+            });
+        }
+
+        // التحقق من وجود البريد الإلكتروني في جدول الإعدادات
+        const { data: existingEmail, error: emailError } = await supabase
+            .from('settings')
+            .select('email')
+            .eq('email', email);
+
+        if (emailError) {
+            console.error('خطأ في البحث عن البريد الإلكتروني:', emailError);
+            return res.render('register', {
+                error: 'حدث خطأ أثناء التحقق من البيانات',
+                success: null
+            });
+        }
+
+        if ((existingUser && existingUser.length > 0) || (existingEmail && existingEmail.length > 0)) {
             return res.render('register', {
                 error: 'اسم المستخدم أو البريد الإلكتروني مستخدم بالفعل',
                 success: null
@@ -31,15 +52,32 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // إنشاء المستخدم
-        const { error: createError } = await supabase
+        const { data: newUser, error: createError } = await supabase
             .from('users')
             .insert([{
                 username,
-                email,
                 password: hashedPassword
+            }])
+            .select()
+            .single();
+
+        if (createError) {
+            console.error('خطأ في إنشاء المستخدم:', createError);
+            throw createError;
+        }
+
+        // إنشاء إعدادات المستخدم مع البريد الإلكتروني
+        const { error: settingsError } = await supabase
+            .from('settings')
+            .insert([{
+                user_id: newUser.id,
+                email: email
             }]);
 
-        if (createError) throw createError;
+        if (settingsError) {
+            console.error('خطأ في إنشاء الإعدادات:', settingsError);
+            throw settingsError;
+        }
 
         res.render('register', {
             error: null,
