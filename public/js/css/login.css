@@ -47,6 +47,7 @@ h2 {
 
 .container {
   margin-top: 50px;
+  margin-bottom: 50px;  /* إضافة هامش سفلي */
   padding: 0 15px; /* padding إضافي للتأكد من عدم التصاق المحتوى بالأطراف */
 }
 
@@ -78,6 +79,7 @@ h2 {
 
   .container {
     margin-top: 20px;
+    margin-bottom: 40px;  /* هامش سفلي للأجهزة المتوسطة */
     padding: 0 15px;
     width: 100%;
   }
@@ -105,6 +107,32 @@ h2 {
   }
 }
 
+/* تنسيقات خاصة للآيباد في الوضع العمودي */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .container {
+    margin-top: 40px;
+    margin-bottom: 60px;
+  }
+
+  .col-md-4 {
+    width: 70%;  /* عرض أكبر للإطار في الآيباد */
+    margin: 0 auto;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .form-control {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .btn {
+    padding: 12px 0;
+  }
+}
+
 @media (max-width: 480px) {
   h1 {
     font-size: 1.5rem;
@@ -117,6 +145,7 @@ h2 {
 
   .container {
     margin-top: 10px;
+    margin-bottom: 30px;  /* هامش سفلي للهواتف */
     padding: 0 10px;
   }
 
