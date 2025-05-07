@@ -41,6 +41,7 @@
                 <div class="search-box mx-auto mb-3">
                     <input type="text" class="form-control" placeholder="ابحث عن مدون أو موضوع في المدونات والكتاب">
                 </div>
+                <button class="categories-toggle" id="categoriesToggle">التصنيفات</button>
                 <div class="categories-filter mb-4">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-dark active" data-category="all">الكل</button>
@@ -104,6 +105,14 @@
             const categoryButtons = document.querySelectorAll('.categories-filter .btn');
             const bloggerCards = document.querySelectorAll('[data-categories]');
             const searchInput = document.querySelector('.search-box input');
+            const categoriesToggle = document.getElementById('categoriesToggle');
+            const categoriesFilter = document.querySelector('.categories-filter');
+
+            // Toggle categories visibility
+            categoriesToggle.addEventListener('click', function() {
+                categoriesFilter.classList.toggle('show');
+                this.textContent = categoriesFilter.classList.contains('show') ? 'إخفاء التصنيفات' : 'عرض التصنيفات';
+            });
 
             // Category filtering functionality
             categoryButtons.forEach(button => {
