@@ -14,6 +14,7 @@
             background: white;
             border-radius: var(--border-radius);
             margin-bottom: 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .settings-section {
@@ -26,7 +27,7 @@
         }
 
         .section-title {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             font-size: 1.25rem;
             margin-bottom: 1.5rem;
             display: flex;
@@ -36,6 +37,7 @@
 
         .section-title i {
             font-size: 1.5rem;
+            color: var(--primary-color);
         }
 
         .form-label {
@@ -45,15 +47,40 @@
         }
 
         .text-helper {
-            color: #6c757d;
+            color: #6a6969;
             font-size: 0.875rem;
             margin-top: 0.25rem;
         }
 
         .contact-icon {
             font-size: 1.25rem;
-            color: var(--secondary-color);
+            color: var(--primary-color);
             margin-left: 0.5rem;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-lg {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .settings-section {
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .btn-lg {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
         }
     </style>
 </head>
