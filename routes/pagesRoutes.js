@@ -273,11 +273,11 @@ router.get('/author/:id', async (req, res) => {
 
         if (postsError) throw postsError;
 
-        // جلب إعدادات المدونة
+        // جلب إعدادات المدونة الخاصة بالكاتب
         const { data: settings, error: settingsError } = await supabase
             .from('settings')
             .select('blog_title, blog_description, about_text, contact_info, email')
-            .limit(1)
+            .eq('user_id', authorId)
             .single();
 
         // لا نريد أن نوقف العملية إذا لم تكن هناك إعدادات
