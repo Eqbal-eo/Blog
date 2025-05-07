@@ -203,20 +203,83 @@ html, body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .posts-box {
-        padding: 1rem;
+    html, body {
+        padding-top: 60px;
     }
-    
+
+    .custom-navbar {
+        padding: 0.5rem 0;
+    }
+
+    .custom-navbar .nav-link {
+        margin: 4px 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .dashboard-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    .posts-box h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .post-title {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+
     .post-content {
+        padding: 0.8rem;
+    }
+
+    .posts-box {
+        margin: 0.5rem;
+    }
+
+    .action-card {
         padding: 1rem;
     }
-    
-    .stat-card {
-        padding: 1rem;
+}
+
+/* Tablet Specific Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard-actions {
+        grid-template-columns: repeat(2, 1fr);
     }
-    
-    .custom-navbar .navbar-brand {
-        font-size: 1.2rem;
+
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .custom-navbar .nav-link {
+        margin: 4px 0.75rem;
+        padding: 0.5rem 1.5rem;
     }
 }
 

@@ -8,5 +8,34 @@ footer {
     width: 100%;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #cccccc96;
+}
 
+/* Responsive Footer */
+@media (max-width: 768px) {
+    footer {
+        padding: 1rem 0;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 0.8rem 0;
+        font-size: 0.85rem;
+    }
+}
+
+/* Footer Content Spacing */
+footer p {
+    margin: 0.5rem 0;
+}
+
+footer a {
+    color: #8c4a21ca;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #470539c5;
 }

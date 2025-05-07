@@ -115,6 +115,69 @@ body {
     }
 }
 
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+    .form-box {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .ql-toolbar {
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+
+    .ql-toolbar button {
+        padding: 3px 5px;
+    }
+
+    .form-control-lg {
+        font-size: 1.1rem;
+        padding: 0.5rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ql-container {
+        height: 250px !important;
+    }
+
+    .ql-editor {
+        font-size: 16px;
+    }
+
+    .form-control, .form-select {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-box {
+        padding: 10px;
+        margin: 5px;
+    }
+}
+
+/* Tablet Specific Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .ql-container {
+        height: 350px !important;
+    }
+
+    .col-md-8 {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .action-card {
+        margin: 1rem;
+    }
+}
+
 /* Animation */
 @keyframes slideInUp {
     from {
