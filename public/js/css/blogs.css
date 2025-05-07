@@ -51,7 +51,7 @@ body {
 .blogger-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
     min-height: 160px;
@@ -62,7 +62,7 @@ body {
 
 .blogger-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     background: rgba(255, 255, 255, 0.95);
 }
 
@@ -151,6 +151,11 @@ blockquote {
     margin: 1.5em 0;
     padding: 1em 1.5em;
     color: #666;
+    font-style: normal;
+}
+
+blockquote * {
+    font-style: normal;
 }
 
 /* تحسين العرض للموبايل */
