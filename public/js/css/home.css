@@ -81,7 +81,7 @@ body {
 
 .hero {
   text-align: center;
-  padding: 8rem 2rem;
+  padding: 6rem 2rem;
 }
 
 .hero h1 {
@@ -156,12 +156,12 @@ body {
 /* قسم التدوينات الأخيرة */
 .section {
   max-width: 1200px;
-  margin: 4rem auto;
-  padding: 0 rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 .section .card-text {
-  margin: 1.5rem 0;
+  margin: 1rem 0;
 
 }
 
@@ -181,7 +181,7 @@ body {
 .section-title {
   text-align: center;
   font-size: 1.6rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-weight: 700;
   animation: fadeInUp 0.8s ease-out;
 }
@@ -249,7 +249,7 @@ body {
 
 .cta {
   text-align: center;
-  padding: 3rem 3rem;
+  padding: 2rem 3rem;
   animation: scaleIn 0.8s ease-out;
 }
 
