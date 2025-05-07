@@ -67,46 +67,61 @@ h2 {
 /* Responsive design for mobile and tablet */
 @media (max-width: 768px) {
   h1 {
-    font-size: 2rem;
-    margin-top: 30px;
+    font-size: 1.8rem;
+    margin-top: 20px;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-top: 10px;
   }
 
   .container {
-    margin-top: 30px;
-    padding: 0 10px;
+    margin-top: 20px;
+    padding: 0 15px;
+    width: 100%;
   }
 
   .card {
-    margin: 0 10px;
+    margin: 0;
+    border-radius: 10px;
+  }
+
+  .card-body {
+    padding: 15px;
   }
 
   .form-control {
-    font-size: 1rem;
-    padding: 12px;
+    font-size: 16px; /* منع تكبير النص تلقائياً في iOS */
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   .btn {
     width: 100%;
     padding: 12px;
-    margin-top: 10px;
+    margin-top: 5px;
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    margin-top: 15px;
   }
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .container {
-    margin-top: 20px;
+    margin-top: 10px;
+    padding: 0 10px;
+  }
+
+  .card-header h5 {
+    font-size: 1.1rem;
   }
 }
 
