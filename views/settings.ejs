@@ -169,7 +169,7 @@
                 <div class="settings-section">
                     <h4 class="section-title">
                         <i class="bi bi-person-circle"></i>
-                        الملف الشخصي
+                        الملف الشخصي <small class="text-helper">(سيظهر في بطاقة المدونة)</small>
                     </h4>
                     
                     <div class="row align-items-start">
@@ -260,13 +260,12 @@
                 <div class="settings-section">
                     <h4 class="section-title">
                         <i class="bi bi-file-text"></i>
-                        محتوى الصفحات
+                     نبذة عن المدونة
                     </h4>
 
                     <div class="mb-4">
-                        <label for="about_text" class="form-label">صفحة "عن المدونة"</label>
                         <textarea class="form-control" id="about_text" name="about_text" 
-                            rows="5" placeholder="أدخل نص صفحة عن المدونة"><%= settings ? settings.about_text : '' %></textarea>
+                            rows="5" placeholder="اختياري.."><%= settings ? settings.about_text : '' %></textarea>
                         <small class="text-helper">سيظهر هذا النص في صفحة "عن المدونة"</small>
                     </div>
                 </div>
