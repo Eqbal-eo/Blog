@@ -1,3 +1,12 @@
+:root {
+    --primary-color: #281e1a;
+    --secondary-color: rgb(107, 43, 18);
+    --accent-color: #f8f9fa;
+    --text-color: #333;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -5,53 +14,194 @@ html, body {
     font-family: 'Tajawal', sans-serif;
     display: flex;
     flex-direction: column;
-  }
+    background-color: #f5f5f5;
+}
+
+/* Navbar Styles */
+.custom-navbar {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+}
+
+.custom-navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    transition: var(--transition);
+}
+
+.custom-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.custom-navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Dashboard Cards */
+.posts-box {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.posts-box h3 {
+    color: var(--secondary-color);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-right: 1rem;
+}
+
+.posts-box h3::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 24px;
+    background-color: var(--secondary-color);
+    border-radius: 2px;
+}
+
 .post-content {
-    background-color: #fff;
-    padding: 5px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    direction: rtl;
-    text-align: right;
-    border: color-mix(in hsl shorter hue, color percentage, color percentage) solid #ccc;
-    /* إضافة إطار حول التدوينة */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    /* إضافة ظل ناعم حول الإطار */
+    background-color: var(--accent-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    cursor: pointer;
 }
 
-/* تخصيص blockquote */
-.post-content blockquote {
-    border-right: px solid #ccc;
-    padding-right: 15px;
-    margin-right: 0;
-    margin-left: 0;
-    direction: rtl;
-    text-align: right;
+.post-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    background-color: white;
 }
 
-/* إزالة الحد الأيسر الافتراضي */
-.post-content blockquote[dir="rtl"] {
-    border-left: none;
-    border-right: 5px solid #ccc;
-}
-.toggle-content {
-    color: #6c757d; /* لون النص الرمادي */
-    background-color: transparent; /* خلفية شفافة */
-    border: none; /* إزالة الحدود */
-    font-size: 1rem; /* حجم الخط */
-    text-decoration: underline; /* إضافة خط تحت النص */
-    padding: 0; /* إزالة الحشوة */
+.post-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
 }
 
-.toggle-content:hover {
-    color: #007BFF; /* تغيير اللون عند المرور بالفأرة */
-    text-decoration: underline; /* إبقاء الخط تحت النص عند المرور */
+.post-full-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease, opacity 0.4s ease;
+    color: #666;
+    line-height: 1.6;
 }
 
-@media (max-width: 576px) {
-    .navbar-brand {
-        display: block;
-        margin: 0 auto;
-        text-align: center;
+.post-content:hover .post-full-content {
+    max-height: 1000px;
+    opacity: 1;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Action Buttons */
+.dashboard-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Stats Section */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.stat-label {
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .posts-box {
+        padding: 1rem;
     }
+    
+    .post-content {
+        padding: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .custom-navbar .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    padding: 1.5rem 0;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease forwards;
 }
