@@ -1,9 +1,9 @@
 :root {
-    --primary-color: #281e1a;
-    --secondary-color: rgb(107, 43, 18);
-    --accent-color: #f8f9fa;
-    --text-color: #333;
-    --border-radius: 12px;
+    --primary-color: #8c4a21ca;
+    --secondary-color: #470539c5;
+    --accent-color: #f9f7f0;
+    --text-color: #222;
+    --border-radius: 8px;
     --transition: all 0.3s ease;
 }
 
@@ -14,47 +14,58 @@ html, body {
     font-family: 'Tajawal', sans-serif;
     display: flex;
     flex-direction: column;
-    background-color: #f5f5f5;
+    background-color: #f9f7f0;
+    color: #222;
+    line-height: 1.5;
+    padding-top: 70px;
 }
 
 /* Navbar Styles */
 .custom-navbar {
-    background-color: var(--primary-color);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #cccccc96;
     padding: 1rem 0;
 }
 
 .custom-navbar .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #8c4a21ca;
     transition: var(--transition);
 }
 
 .custom-navbar .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
+    color: #100f0f !important;
+    font-size: 1rem;
+    margin: 4px 1rem;
+    font-weight: 400;
+    padding: 0.5rem 2rem;
     border-radius: 6px;
-    transition: var(--transition);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .custom-navbar .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
+    color: #fff !important;
+    background-color: #470539c5;
 }
 
 /* Dashboard Cards */
 .posts-box {
     background-color: white;
     border-radius: var(--border-radius);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     margin-bottom: 2rem;
 }
 
 .posts-box h3 {
-    color: var(--secondary-color);
+    color: #8c4a21ca;
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
     position: relative;
@@ -162,6 +173,34 @@ html, body {
     margin-top: 0.5rem;
 }
 
+/* Buttons */
+.btn-primary {
+    background-color: #8c4a21ca;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #8c4a21ca;
+    color: #fff;
+    border: none;
+}
+
+.btn-outline-dark {
+    border-color: #0000003b;
+    color: #131313ca;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+.btn-outline-dark:hover {
+    background-color: #470539c5;
+    color: #fff;
+    border-color: transparent;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .posts-box {
@@ -185,9 +224,11 @@ html, body {
 footer {
     margin-top: auto;
     padding: 1.5rem 0;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: #ffffff;
+    color: #222;
     text-align: center;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #cccccc96;
 }
 
 /* Animations */

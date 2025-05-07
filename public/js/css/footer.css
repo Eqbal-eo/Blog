@@ -1,10 +1,12 @@
 footer {
-    background-color: #a7a4a43a;
+    background-color: #ffffff;
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem 0;
     font-size: 1rem;
-    color: #777;
+    color: #222;
     margin-top: auto;
     width: 100%;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #cccccc96;
 
 }
