@@ -349,25 +349,4 @@ body {
     width: 100%;
     margin: 0.25rem 0;
   }
-
-  body {
-    padding-top: 60px;
-  }
-  
-  .navbar-collapse {
-    position: static;
-    background-color: #ffffff;
-  }
-
-  .navbar-collapse.show {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .navbar-nav {
-    padding: 1rem 0;
-  }
-  
-  .d-flex {
-    padding-bottom: 1rem;
-  }
 }
