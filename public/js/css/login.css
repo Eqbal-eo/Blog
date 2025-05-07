@@ -130,28 +130,41 @@ h2 {
 
 /* تنسيقات خاصة للآيباد في الوضع العمودي */
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .container {
-    margin-top: 40px;
-    margin-bottom: 60px;
-  }
+    .container {
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
 
-  .col-md-4 {
-    width: 70%;  /* عرض أكبر للإطار في الآيباد */
-    margin: 0 auto;
-  }
+    .col-md-4 {
+        width: 70%;
+        margin: 0 auto;
+    }
 
-  .card {
-    padding: 20px;
-  }
+    .card {
+        padding: 0;  /* إزالة الـpadding الزائد */
+    }
 
-  .form-control {
-    font-size: 1rem;
-    padding: 12px;
-  }
+    .card-body {
+        padding: 15px;  /* تقليل الـpadding في جسم الكرت */
+    }
 
-  .btn {
-    padding: 12px 0;
-  }
+    .card-header {
+        padding: 10px;  /* تقليل الـpadding في رأس الكرت */
+    }
+
+    .form-control {
+        font-size: 1rem;
+        padding: 8px 12px;  /* تقليل الـpadding في حقول الإدخال */
+    }
+
+    .btn {
+        padding: 8px 0;  /* تقليل الـpadding في الزر */
+        margin-top: 5px;
+    }
+
+    .mb-3 {
+        margin-bottom: 15px;  /* تقليل المسافة بين العناصر */
+    }
 }
 
 @media (max-width: 480px) {
