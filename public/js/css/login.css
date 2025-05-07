@@ -50,3 +50,17 @@ h2 {
   padding: 0 15px; /* padding إضافي للتأكد من عدم التصاق المحتوى بالأطراف */
 }
 
+/* تنسيق حقول الإدخال */
+.form-control {
+  font-size: 0.9rem;
+  text-align: right;
+  direction: rtl;
+}
+
+.form-control::placeholder {
+  font-size: 0.85rem;
+  text-align: right;
+  direction: rtl;
+  opacity: 0.7;
+}
+
