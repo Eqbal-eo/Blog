@@ -26,7 +26,7 @@ h4 {
 
 /* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
 body {
-  padding-top: 70px;
+  padding-top: 80px;
   /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
 }
 
@@ -226,10 +226,10 @@ body {
 }
 
 @media (max-width: 768px) {
-  .card {
+.card {
     margin: 0.5rem 0; /* فراغ علوي وسفلي بين البطاقات */
-    padding: 1rem;
-    border-radius: 9px;
+    padding: 0.3rem;
+    border-radius: 12px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   }
   .navbar-toggler:hover {
@@ -241,9 +241,9 @@ body {
   .navbar-collapse.show+.navbar-toggler {
     background-color: transparent;
     color: transparent;
-    overflow-y: auto; /* تمكين التمرير عند عرض القائمة */
+    overflow-y: auto;   /* تمكين التمرير عند عرض القائمة */
     max-height: 100vh; /* تحديد أقصى ارتفاع للقائمة */
-  }
+}  
 
   .navbar-nav {
     flex-direction: column;
@@ -260,12 +260,12 @@ body {
   .navbar-nav .nav-link {
     width: 75%;
     padding: 0.1rem;
-    text-align: center;
+text-align: center;
     margin-bottom: 0.2rem;
     font-size: 0.9rem;
-  }
+      }
 
-  .hero {
+    .hero {
     padding: 4rem 2rem;
   }
 
@@ -274,31 +274,57 @@ body {
   }
 
   .section {
-    padding: 0 2rem;
-     
+    padding: 0 0.8rem;
+    margin: 2rem auto;
   }
+
+  .card {
+    margin: 0.5rem 0;
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
   .card-title {
-   padding : 1.2rem;
-   margin-top: 10px ;
-   
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem 0;
+    padding: 0;
+    line-height: 1.4;
   }
 
-  .d-flex {
-    flex-direction: column;
+  .card-text {
+    font-size: 0.95rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
   }
 
-  .btn-outline-dark,
-  .btn-outline-dark-blog,
-  .btn-outline-dark-log,
-  .btn-primary {
+  /* تحسين الأزرار */
+  .btn {
     width: 100%;
-    padding: 0.6rem;
-    margin-bottom: 0.1rem;
-    font-size: 0.9rem;
+    margin: 0.4rem 0;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 8px;
   }
 
-  .hero p {
-    font-size: 1.3rem;
+  /* تحسين الأقسام */
+  .section-title {
+    font-size: 1.5rem;
+    margin: 2rem 0 1.5rem;
   }
-  
+
+  .steps {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .step {
+    padding: 1.2rem;
+    margin: 0.5rem 0;
+  }
 }
