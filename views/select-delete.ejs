@@ -9,103 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/js/css/dashboard.css">
-    <style>
-        .list-group-item {
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            margin-bottom: 0.5rem;
-            border-radius: 8px !important;
-            transition: all 0.3s ease;
-            background-color: var(--accent-color);
-        }
-
-        .list-group-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.127);
-        }
-
-        .list-group-item h6 {
-            color: var(--text-color);
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .list-group-item .text-muted {
-            color: #6a6969 !important;
-        }
-
-        .btn-outline-danger {
-            border-color: #dc3545;
-            color: #dc3545;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .modal-content {
-            border-radius: 12px;
-            border: none;
-        }
-
-        .modal-header {
-            background-color: #fff5f5;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-
-        .modal-title {
-            color: #dc3545;
-            font-size: 1.25rem;
-        }
-
-        .modal-body {
-            color: var(--text-color);
-        }
-
-        #modalPostTitle {
-            color: var(--primary-color);
-            margin-top: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.5rem;
-            font-size: 0.9rem;
-            border-radius: 6px;
-        }
-
-        @media (max-width: 768px) {
-            .list-group-item {
-                padding: 1rem;
-            }
-            
-            .btn {
-                padding: 0.5rem 1rem;
-            }
-            
-            h6 {
-                font-size: 1rem;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .list-group-item {
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: calc(var(--animation-order) * 0.1s);
-            opacity: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -255,11 +158,6 @@
 
             modalPostTitle.textContent = postTitle;
             deleteForm.action = `/posts/delete/${postId}`;
-        });
-
-        // Add animation order to list items
-        document.querySelectorAll('.list-group-item').forEach((item, index) => {
-            item.style.setProperty('--animation-order', index);
         });
     </script>
 </body>
