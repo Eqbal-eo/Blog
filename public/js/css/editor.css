@@ -1,12 +1,12 @@
 body {
     font-family: 'Tajawal', sans-serif;
-    background-color: #f9f7f0;
+    background-color: #f8f9fa;
 }
 
 .form-box {
     background: #fff;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -15,16 +15,11 @@ body {
     direction: rtl;
     text-align: right;
     font-family: 'Tajawal', sans-serif;
-    font-size: 1.1rem;
-    line-height: 1.5;
+    font-size: 18px;
 }
 
 .ql-toolbar {
     direction: ltr !important;
-    background-color: #ffffff;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom: 1px solid #dee2e6;
 }
 
 /* Editor Styles */
@@ -54,7 +49,7 @@ body {
     right: 1.5rem;
     left: auto;
     font-style: normal;
-    color: #6a6969;
+    color: #adb5bd;
 }
 
 /* Form Elements */
@@ -66,8 +61,8 @@ body {
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #8c4a21ca;
-    box-shadow: 0 0 0 0.2rem rgba(140, 74, 33, 0.1);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(107, 43, 18, 0.15);
 }
 
 .form-control-lg {
@@ -76,51 +71,40 @@ body {
 
 /* Custom Button Styles */
 .btn-primary {
-    background-color: #8c4a21ca;
-    border-color: #8c4a21ca;
-    color: #fff;
-    padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
 }
 
 .btn-primary:hover {
-    background-color: #8c4a21ca;
-    opacity: 0.9;
-    color: #fff;
-}
-
-.btn-outline-secondary {
-    border-color: #0000003b;
-    color: #131313ca;
+    background-color: #5a2410;
+    border-color: #5a2410;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #470539c5;
-    color: #fff;
-    border-color: transparent;
+    background-color: #f8f9fa;
+    color: var(--secondary-color);
+    border-color: currentColor;
 }
 
 /* Editor Content Styles */
 .ql-editor h1, .ql-editor h2, .ql-editor h3 {
     margin-bottom: 1rem;
     font-weight: bold;
-    color: #222;
+    color: var(--primary-color);
 }
 
 .ql-editor p {
     margin-bottom: 1rem;
     line-height: 1.7;
-    color: #222;
 }
 
 .ql-editor blockquote {
-    border-right: 4px solid #8c4a21ca;
+    border-right: 4px solid var(--secondary-color);
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
-    background-color: #f9f7f0;
+    background-color: #f8f9fa;
     border-radius: 4px;
     font-style: normal;
-    color: #6a6969;
 }
 
 .ql-editor pre.ql-syntax {
