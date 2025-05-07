@@ -330,4 +330,23 @@ body {
     padding: 1.2rem;
     margin: 0.5rem 0;
   }
+
+  /* تحسينات للأجهزة المحمولة */
+  .d-flex {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .d-flex a {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .btn-outline-dark-log,
+  .btn-primary {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
 }
