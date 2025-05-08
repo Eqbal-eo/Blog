@@ -172,11 +172,6 @@ body {
   /* إضافة مسافة صغيرة على اليسار */
 }
 
-.read-more-link:hover {
-  color: #1c21c5c5;
-  /* لون مختلف عند التمرير */
-}
-
 /* القسم والعنوان */
 .section-title {
   text-align: center;
