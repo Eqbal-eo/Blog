@@ -176,7 +176,7 @@ a:hover .blogger-card {
 @media (max-width: 768px) {
     .blogs-section {
         padding: 0.5rem 0.8rem;
-        margin-top: 0.5rem;
+        margin-top: 0.3rem;
     }
 
     /* تحسين مربع البحث */
@@ -218,17 +218,22 @@ a:hover .blogger-card {
     }
 
     .categories-filter.show {
-        display: block;
-        animation: slideDown 0.3s ease-out;
-        margin-bottom: 0.5rem; /* Reduced margin after opening */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        background-color: #ffffff;
+        padding: 6px 8px;
+        border-radius: 0 0 15px 15px;
     }
 
     /* حاوية التصنيفات في وضع الموبايل */
     .categories-container {
-        max-width: 75%;
-        margin: 0 auto 1rem;
-        border-radius: 18px;
+        max-width: 95%;
+        margin: 0 auto 0.8rem;
+        border-radius: 15px;
         overflow: hidden;
+        box-shadow: 0 2px 6px rgba(140, 74, 33, 0.15);
     }
 
     .categories-container:hover {
@@ -242,16 +247,76 @@ a:hover .blogger-card {
         justify-content: center;
         align-items: center;
         padding: 8px 12px;
-        background-color: #8c4a21ca; /* لون خلفية العنوان */
-        color: hsla(0, 0%, 100%, 0.792); /* لون النص */
-        font-size: 1rem;
+        background-color: #8c4a21ca;
+        color: #ffffff;
+        font-size: 0.9rem;
         text-align: center;
         font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
     }
-    .categories-header:hover {
-        background-color: #470539c5; /* لون خلفية العنوان عند التمرير */
+    
+    
+    /* تحسينات أزرار التصنيفات في الموبايل */
+    .categories-filter .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        padding: 3px;
+        margin: 0;
     }
-   
+    
+    .categories-filter .btn {
+        border-radius: 12px !important;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background-color: #f5f1e8;
+        color: #666;
+        border: none;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin: 2px;
+    }
+    
+    .categories-filter .btn:hover {
+        background-color: #ece6d8;
+        transform: translateY(-2px);
+    }
+    
+    .categories-filter .btn.active {
+        background-color: #8c4a21ca;
+        color: #ffffff;
+        box-shadow: 0 3px 6px rgba(140, 74, 33, 0.25);
+    }
+    
+    /* تقليل المساحة بين عنوان الصفحة ومربع البحث */
+    .section-title {
+        margin-bottom: 0.7rem;
+    }
+    
+    /* تقليل الهامش السفلي لمربع البحث */
+    .search-box.mx-auto.mb-4 {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* تقليل الهامش السفلي للقسم الرئيسي */
+    .text-center.mb-5 {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    /* إضافة تأثير انزلاق للقائمة */
+    @keyframes slideDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 }
 
 /* تحسينات إضافية للهواتف الصغيرة */
