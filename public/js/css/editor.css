@@ -218,7 +218,7 @@ body {
 
 .col-md-4 .action-card .form-label {
     font-size: 0.9rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 1rem;
 }
 
 .col-md-4 .action-card .form-control,
@@ -230,7 +230,7 @@ body {
 .col-md-4 .action-card h5 {
     font-size: 1.1rem;
     margin-bottom: 1rem;
-}
+}2
 
 .row.g-4 {
     margin-top: 0;
