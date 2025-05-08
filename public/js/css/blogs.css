@@ -123,6 +123,8 @@ a:hover .blogger-card {
 }
 
 .categories-filter .btn-group {
+    display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 5px;
 }
@@ -150,7 +152,7 @@ a:hover .blogger-card {
 .categories-container {
     width: 100%;
     max-width: 600px;
-    margin: 0;
+    margin: 0 auto;
     cursor: pointer;
 }
 
@@ -159,200 +161,18 @@ a:hover .blogger-card {
     display: none;
 }
 
-@media (max-width: 768px) {
-    .blogs-section {
-        padding: 0.5rem 0.8rem;
-        margin-top: 0.5rem;
-    }
-
-    /* تحسين مربع البحث */
-    .search-box {
-        padding: 0 0.5rem;
-        margin-bottom: 1.5rem;
-        width: 100%;
-    }
-
-    .search-box input {
-        padding: 10px 15px;
-        font-size: 0.95rem;
-        border-radius: 8px;
-        width: 100%;
-        max-width: none;
-    }
-
-    /* حاوية التصنيفات في وضع الموبايل */
-    .categories-container {
-        position: relative;
-        max-width: 50%;
-        margin: 0 auto 1.5rem;
-        border-radius: 8px;
-        background-color: #fff;
-        overflow: hidden;
-        border: 1px solid #b5b3b2ca;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .categories-container:hover {
-        background-color: #f9f7f0;
-    }
-
-    /* عنوان التصنيفات */
-    .categories-header {
+/* أزرار تصفية التصنيفات للشاشات المتوسطة والكبيرة */
+@media (min-width: 768px) {
+    .categories-filter .btn-group {
         display: flex;
-        width: 100%;
         justify-content: center;
-        align-items: center;
-        padding: 8px 12px;
-        background-color: #8c4a21ca; /* لون خلفية العنوان */
-        color: #ffffffca; /* لون النص */
-        font-size: 0.95rem;
-        text-align: center;
-        font-weight: 500;
-    }
-
-    /* تحسين التصنيفات */
-    .categories-filter {
-        display: none;
-        margin: 0;
-        padding: 0.8rem;
-        background-color: #f9f7f0;
-        border-top: 1px solid #57575742;
-        transition: all 0.3s ease;
-        
-    }
-
-    .categories-filter .btn {
+        flex-wrap: wrap;
+        gap: 8px;
         width: 100%;
-        text-align: center;
-        border-radius: 6px !important;
-        padding: 6px 12px;
-        border: 1.5px solid #babab7ca;
-        background-color: #fff;
-        color: #727171ca;
-        margin: 1rem 0;
-    }
-
-
-    /* تأثير الانزلاق للأسفل */
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        margin: 0 auto;
     }
 }
 
-
-@media (max-width: 576px) {
-    .blogs-section {
-        padding-top: 0.5rem;
-        margin-top: 0.5rem;
-    }
-
-    .section-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .search-box {
-        padding: 0 0.8rem;
-    }
-
-    .search-box input {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
-
-    /* حاوية التصنيفات للشاشات الصغيرة */
-    .categories-container {
-        max-width: 65%;
-    }
-
-    .categories-header {
-        padding: 7px 10px;
-        font-size: 0.9rem;
-    }
-
-    .categories-filter {
-        padding: 0.6rem;
-    }
-
-    .categories-filter .btn {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-    }
-
-    .blogger-card {
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-
-    .blogger-name {
-        font-size: 1.1rem;
-    }
-
-    .blogger-bio {
-        font-size: 0.9rem;
-        line-height: 1.5;
-    }
-
-    .articles-count {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
-}
-
-/* تحسين العرض للموبايل */
-@media (max-width: 576px) {
-    .blogs-section { 
-        padding-top: 0.5rem;
-        margin-top: 0.5rem;
-    }
-
-    .section-title {
-        font-size: 1.7rem;
-    }
-
-    .search-box input {
-        padding: 8px 15px;
-        font-size: 0.95rem;
-        width: 100%;
-    }
-        
-
-    .blogger-name {
-        font-size: 1.2rem;
-    }
-
-    .blogger-bio {
-        font-size: 0.95rem;
-    }
-
-    .articles-count {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
-
-    .categories-filter .btn {
-        font-size: 0.9rem;
-        padding: 5px 12px;
-    }
-
-    .categories-toggle {
-        min-width: 100px;
-        max-width: 160px;
-        padding: 6px 12px;
-        font-size: 0.85rem;
-        margin-bottom: 0.8rem;
-    }
-}
-
-/* تحسينات الهاتف المحمول والتابلت */
 @media (max-width: 768px) {
     .blogs-section {
         padding: 0.5rem 0.8rem;
@@ -505,17 +325,48 @@ a:hover .blogger-card {
         height: 100%;
     }
 
+    /* تعديل خاص بأزرار التصنيفات في وضع الآيباد الأفقي */
+    .categories-container {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .categories-filter {
+        width: 80%;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
     .categories-filter .btn-group {
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        margin: 0 auto;
+        width: 100%;
+        display: flex;
     }
+}
 
-    .categories-filter .btn {
-        flex: 0 0 auto;
+/* تنسيق خاص للابتوب */
+@media screen and (min-width: 1181px) {
+    .categories-container {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
     }
-
-    .search-box {
-        max-width: 600px;
+    
+    .categories-filter {
+        width: 70%;
+        margin: 0 auto;
+    }
+    
+    .categories-filter .btn-group {
+        justify-content: center;
+        margin: 0 auto;
+        width: 100%;
+        display: flex;
     }
 }
