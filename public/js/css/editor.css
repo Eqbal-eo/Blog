@@ -15,7 +15,8 @@ body {
     direction: rtl;
     text-align: right;
     font-family: 'Tajawal', sans-serif;
-    font-size: 18px;
+    font-size: 1.1rem;
+    min-height: 300px;
 }
 
 .ql-toolbar {
@@ -27,7 +28,6 @@ body {
     font-family: 'Tajawal', sans-serif !important;
     font-size: 1.1rem;
     height: 400px !important;
-    background-color: white;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
@@ -41,9 +41,9 @@ body {
 
 /* Form Elements */
 .form-control, .form-select {
-    border: 1px solid #dee2e6;
-    padding: 0.75rem 1rem;
     font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
     transition: all 0.3s ease;
 }
 
@@ -66,9 +66,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #8c4a21ca;
-    color: #fff;
-    border: none;
+    background-color: #754219ca;
 }
 
 .btn-outline-secondary:hover {
@@ -273,10 +271,10 @@ body {
 
 .action-card {
     background-color: #ffffff;
-    border-radius: var(--border-radius);
+    border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -284,6 +282,9 @@ body {
     color: #8c4a21ca;
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 /* Media queries for responsiveness */
@@ -296,11 +297,44 @@ body {
     .action-card .form-label {
         font-size: 0.9rem;
     }
+
+    .btn-container {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 @media (max-width: 480px) {
     .action-card {
         margin-top: 1rem;
         padding: 1rem;
+    }
+}
+
+.action-card .btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.action-card .btn {
+    width: auto;
+    min-width: 120px;
+    padding: 0.6rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .action-card .btn {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .action-card .btn-container {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }
