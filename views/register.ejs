@@ -2,16 +2,29 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء حساب جديد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/js/css/login.css">
-    <link rel="stylesheet" href="/js/css/register.css">
-    <link rel="stylesheet" href="/js/css/footer.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب جديد</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/js/css/login.css">
+  <link rel="stylesheet" href="/js/css/register.css">
 
 </head>
+<style>
+  footer {
+    background-color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1rem;
+    color: #5e5d5d;
+    width: 100%;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #cccccc96;
+    margin-top: auto;
+
+  }
+</style>
 
 <body class="bg-light">
 
@@ -34,38 +47,41 @@
               <div class="alert alert-danger text-center">
                 <%= error %>
               </div>
-            <% } %>
+              <% } %>
 
-            <% if (success) { %>
-              <div class="alert alert-success text-center">
-                <%= success %>
-              </div>
-            <% } %>
+                <% if (success) { %>
+                  <div class="alert alert-success text-center">
+                    <%= success %>
+                  </div>
+                  <% } %>
 
-            <form method="POST" action="/register">
-              <div class="mb-3">
-                <label for="username" class="form-label">اسم المستخدم</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="اختر اسمًا مميزًا" required>
-              </div>
+                    <form method="POST" action="/register">
+                      <div class="mb-3">
+                        <label for="username" class="form-label">اسم المستخدم</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                          placeholder="اختر اسمًا مميزًا" required>
+                      </div>
 
-              <div class="mb-3">
-                <label for="email" class="form-label">البريد الإلكتروني</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="أدخل بريدك الإلكتروني" required>
-              </div>
+                      <div class="mb-3">
+                        <label for="email" class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                          placeholder="أدخل بريدك الإلكتروني" required>
+                      </div>
 
-              <div class="mb-3">
-                <label for="password" class="form-label">كلمة المرور</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="اختر كلمة مرور قوية" required>
-              </div>
+                      <div class="mb-3">
+                        <label for="password" class="form-label">كلمة المرور</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                          placeholder="اختر كلمة مرور قوية" required>
+                      </div>
 
-              <div class="d-grid">
-                <button type="submit" class="btn btn-dark">تسجيل</button>
-              </div>
-            </form>
+                      <div class="d-grid">
+                        <button type="submit" class="btn btn-dark">تسجيل</button>
+                      </div>
+                    </form>
 
-            <div class="mt-3 text-center">
-              <a href="/login" class="text-dark">لديك حساب بالفعل؟ سجّل الدخول</a>
-            </div>
+                    <div class="mt-3 text-center">
+                      <a href="/login" class="text-dark">لديك حساب بالفعل؟ سجّل الدخول</a>
+                    </div>
 
           </div>
         </div>
@@ -76,7 +92,7 @@
 
   <!-- Footer -->
   <footer>
-     مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
+    مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
   </footer>
 
 </body>
