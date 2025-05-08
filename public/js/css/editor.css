@@ -219,6 +219,7 @@ body {
 .col-md-4 .action-card .form-label {
     font-size: 0.9rem;
     margin-bottom: 0.3rem;
+    font-weight: bold;
 }
 
 .col-md-4 .action-card .form-control,
@@ -253,4 +254,18 @@ body {
         margin-top: 0;
         padding: 0 1rem;
     }
+}
+
+/* تنسيق حقول إعدادات النشر */
+.action-card .form-select,
+.action-card .form-control {
+    text-align: right;
+    direction: rtl;
+}
+
+.action-card .form-label {
+    text-align: right;
+    width: 100%;
+    display: block;
+    font-weight: bold;
 }
