@@ -77,20 +77,48 @@
     .card-body {
         padding: 0; /* نلغي البادينغ الافتراضي للبطاقة لأننا أضفناه داخل post-content */
     }
+    
     @media screen and (max-width: 768px) {
         .post-title {
             font-size: 1.5rem; /* حجم الخط في الشاشات الصغيرة */
             margin-top: 4rem; /* مسافة من الأعلى في الشاشات الصغيرة */
+            text-align: center; /* توسيط العنوان */
+        }
+
+        .post-info {
+            text-align: center; /* توسيط معلومات التدوينة */
         }
 
         .post-content {
-        font-size: 0.9rem;
-        line-height: 1.8; /* زودت التباعد بين الأسطر لتسهيل القراءة */
-        font-weight: 400;
-        padding: 1rem 1.2rem; /* مسافة من الأعلى والأسفل ومن اليمين واليسار */
-        text-align: right; /* محاذاة النص لليمين */
-    }
+            font-size: 0.9rem;
+            line-height: 1.8;
+            font-weight: 400;
+            padding: 1rem;
+            text-align: right;
+        }
         
+        /* إزالة تأثير البطاقة في الشاشات الصغيرة */
+        .card.shadow-sm {
+            box-shadow: none !important;
+            background: transparent;
+            border: none;
+        }
+        
+        /* توسيط المحتوى في الشاشة */
+        .col-md-9 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        /* ضبط عرض المحتوى ليكون في المنتصف */
+        .post-content-container {
+            width: 100%;
+            max-width: 90%;
+            margin: 0 auto;
+        }
     }
 </style>
 
@@ -156,9 +184,8 @@
                         <!-- مربع التدوينة -->
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <div class="card-text post-content">
+                                <div class="card-text post-content post-content-container">
                                     <%- post.content %>
-
                                 </div>
                             </div>
                         </div>
