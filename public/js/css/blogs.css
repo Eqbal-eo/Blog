@@ -225,9 +225,9 @@ a:hover .blogger-card {
 
     /* حاوية التصنيفات في وضع الموبايل */
     .categories-container {
-        max-width: 80%;
+        max-width: 75%;
         margin: 0 auto 1rem;
-        border-radius: 10px;
+        border-radius: 18px;
         overflow: hidden;
     }
 
@@ -243,11 +243,15 @@ a:hover .blogger-card {
         align-items: center;
         padding: 8px 12px;
         background-color: #8c4a21ca; /* لون خلفية العنوان */
-        color: #ffffffca; /* لون النص */
-        font-size: 0.95rem;
+        color: hsla(0, 0%, 100%, 0.792); /* لون النص */
+        font-size: 1rem;
         text-align: center;
         font-weight: 500;
     }
+    .categories-header:hover {
+        background-color: #470539c5; /* لون خلفية العنوان عند التمرير */
+    }
+   
 }
 
 /* تحسينات إضافية للهواتف الصغيرة */
@@ -258,10 +262,11 @@ a:hover .blogger-card {
 
     .blogger-card {
         padding: 1rem;
+        margin: 0;
     }
 
-    .categories-filter .btn {
-        flex: 0 0 100%;
+    .row.g-4 {
+        row-gap: 0.5rem !important; /* تقليل المسافة أكثر في الهواتف */
     }
 }
 
@@ -292,34 +297,17 @@ a:hover .blogger-card {
 
     .row.g-4 {
         margin: 0;
+        row-gap: 0.8rem !important; /* تقليل المسافة بين البطاقات */
     }
 
     .col-md-6, .col-lg-4 {
         width: 100%;
-        padding: 0 1rem;
+        padding: 0 0.8rem;
     }
 
     .blogger-card {
-        margin: 0 0 1.5rem 0;
-        padding: 2rem;
-    }
-
-    .categories-filter .btn-group {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 0.5rem;
-    }
-
-    .categories-filter .btn {
-        width: 100%;
         margin: 0;
-        border-radius: 8px !important;
-    }
-
-    .search-box input {
-        width: calc(100% - 2rem);
-        margin: 0 1rem;
+        padding: 1.5rem;
     }
 }
 
