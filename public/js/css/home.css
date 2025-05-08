@@ -277,11 +277,10 @@ body {
 
 @media (max-width: 768px) {
   .card {
-    margin: 0.5rem 0;
-    /* فراغ علوي وسفلي بين البطاقات */
-    padding: 0.3rem;
+    margin: 0.3rem 0; /* تقليل الهامش من 0.5rem إلى 0.3rem */
+    padding: 0;
     border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .navbar-toggler:hover {
@@ -327,11 +326,11 @@ body {
 
   .section {
     padding: 0 0.8rem;
-    margin: 2rem auto;
+    margin: 1rem auto; /* تقليل الهامش من 2rem إلى 1rem */
   }
 
   .card {
-    margin: 0.5rem 0;
+    margin: 0.3rem 0; /* تقليل الهامش من 0.5rem إلى 0.3rem */
     padding: 0;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -367,17 +366,17 @@ body {
   /* تحسين الأقسام */
   .section-title {
     font-size: 1.5rem;
-    margin: 2rem 0 1.5rem;
+    margin: 1.5rem 0 1rem; /* تقليل الهوامش */
   }
 
   .steps {
-    gap: 1rem;
+    gap: 0.8rem; /* تقليل المسافة بين الخطوات */
     padding: 0 0.5rem;
   }
 
   .step {
-    padding: 1.2rem;
-    margin: 0.5rem 0;
+    padding: 1rem; /* تقليل البادنج من 1.2rem إلى 1rem */
+    margin: 0.3rem 0; /* تقليل الهامش من 0.5rem إلى 0.3rem */
   }
 
   /* تحسينات للأجهزة المحمولة */
@@ -418,7 +417,7 @@ body {
 
     /* Latest Posts */
     .section {
-        padding: 2rem 1rem;
+        padding: 1.5rem 1rem; /* تقليل البادنج من 2rem إلى 1.5rem */
     }
 
     .row {
@@ -427,7 +426,7 @@ body {
 
     .col-md-4 {
         width: 100%;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem; /* تقليل الهامش من 1.5rem إلى 1rem */
     }
 
     .card {
@@ -437,8 +436,8 @@ body {
     /* Steps Section */
     .steps {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1rem;
+        gap: 1rem; /* تقليل المسافة من 1.5rem إلى 1rem */
+        padding: 0.8rem; /* تقليل البادنج من 1rem إلى 0.8rem */
     }
 
     .step {
