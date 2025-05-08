@@ -1,13 +1,29 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 70px; /* Adjust this value based on your footer's height */
+}
+
 footer {
     background-color: #ffffff;
     text-align: center;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     font-size: 1rem;
-    color: #222;
-    margin-top: auto;
+    color: #5e5d5d;
     width: 100%;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #cccccc96;
+    
+    /* Fixed footer styles */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
 }
 
 /* Responsive Footer */
@@ -16,12 +32,20 @@ footer {
         padding: 1rem 0;
         font-size: 0.9rem;
     }
+    
+    body {
+        padding-bottom: 60px; /* Adjust for smaller screens */
+    }
 }
 
 @media (max-width: 480px) {
     footer {
         padding: 0.8rem 0;
         font-size: 0.85rem;
+    }
+    
+    body {
+        padding-bottom: 55px; /* Adjust for even smaller screens */
     }
 }
 
