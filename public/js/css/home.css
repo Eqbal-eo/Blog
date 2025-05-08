@@ -259,115 +259,15 @@ body {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(140, 74, 33, 0.08);
-  position: relative;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #8c4a21ca, #470539c5);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: scaleIn 0.5s ease-out;
+  transform-origin: center;
+  backface-visibility: hidden;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(140, 74, 33, 0.15);
-}
-
-.card:hover::before {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-.card-body {
-  padding: 1.8rem;
-}
-
-.card-title {
-  color: #333;
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-.card:hover .card-title {
-  color: #8c4a21ca;
-}
-
-.card-text {
-  color: #666;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin: 1.2rem 0;
-}
-
-.text-muted {
-  color: #888 !important;
-  font-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.read-more-link {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  color: #8c4a21ca;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  position: relative;
-  padding-left: 0.5rem;
-}
-
-.read-more-link::after {
-  content: '←';
-  margin-right: 0.5rem;
-  transition: transform 0.3s ease;
-}
-
-.read-more-link:hover {
-  color: #470539c5;
-}
-
-.read-more-link:hover::after {
-  transform: translateX(-5px);
-}
-
-/* تحسينات للأجهزة اللوحية */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .card {
-    height: calc(100% - 2rem);
-    margin: 1rem 0;
-  }
-  
-  .card-body {
-    padding: 1.5rem;
-  }
-
-  .card-title {
-    font-size: 1.3rem;
-  }
-
-  .card-text {
-    font-size: 1rem;
-    margin: 1rem 0;
-  }
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(140, 74, 33, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -525,28 +425,24 @@ body {
     }
 
     .card {
-        margin: 0 0 1.5rem 0;
-        transform: scale(1.05);
+        margin: 0;
     }
 
-    .card-body {
-        padding: 1.5rem;
+    /* Steps Section */
+    .steps {
+        grid-template-columns: 1fr;
+        gap: 1rem; /* تقليل المسافة من 1.5rem إلى 1rem */
+        padding: 0.8rem; /* تقليل البادنج من 1rem إلى 0.8rem */
     }
 
-    .card-title {
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
+    .step {
+        margin: 0;
+        padding: 2rem;
     }
 
-    .card-text {
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-
-    .col-md-4 {
-        width: 100%;
-        margin-bottom: 1.5rem;
-        padding: 0 1rem;
+    /* CTA Section */
+    .cta {
+        padding: 3rem 1.5rem;
     }
 }
 
@@ -573,28 +469,28 @@ body {
 
     .card {
         height: 100%;
-        transform: scale(1.05);
-        margin-bottom: 1.5rem;
     }
 
-    .card-body {
-        padding: 1.5rem;
+    /* Steps Section */
+    .steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        padding: 2rem;
     }
 
-    .card-title {
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
+    .step {
+        padding: 2.5rem;
     }
 
-    .card-text {
-        font-size: 1.1rem;
-        line-height: 1.6;
+    /* CTA Section */
+    .cta {
+        padding: 4rem 2rem;
     }
 
-    .col-md-4 {
-        width: 33.333%;
-        padding: 0 1rem;
-        margin-bottom: 1.5rem;
+    /* Navigation */
+    .navbar-nav .nav-link {
+        padding: 0.5rem 1.2rem;
+        margin: 0 0.3rem;
     }
 }
 
