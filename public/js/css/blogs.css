@@ -139,7 +139,7 @@ a:hover .blogger-card {
 
 .categories-filter .btn.active { /* زر نشط */
     background-color: #8c4a21ca;
-    color: #fdfdfdb6;
+    color: #fdfdfd;
     border: none;
 }
 
@@ -186,7 +186,8 @@ a:hover .blogger-card {
         width: 100%;
     }
 
-    .search-box input {
+    /* تحسين مربع البحث في وضع الموبايل */
+    .search-box input { 
         padding: 10px 15px;
         font-size: 0.95rem;
         border-radius: 8px;
@@ -197,19 +198,10 @@ a:hover .blogger-card {
     /* زر التصنيفات في وضع الموبايل */
     .categories-toggle {
         display: block;
-        width: auto;
-        min-width: 120px;
-        max-width: 180px;
-        margin: 0 auto 1rem;
-        padding: 8px 16px;
         background-color: #8c4a21ca;
         color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 0.9rem;
+        font-size: 1rem;
         text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
     }
 
     /* تحسين بطاقات المدونين */
@@ -233,15 +225,10 @@ a:hover .blogger-card {
 
     /* حاوية التصنيفات في وضع الموبايل */
     .categories-container {
-        position: relative;
-        max-width: 50%;
-        margin: 0 auto 1.5rem;
-        border-radius: 8px;
-        background-color: #fff;
+        max-width: 88%;
+        margin: 0 auto 1rem;
+        border-radius: 10px;
         overflow: hidden;
-        border: 1px solid #b5b3b2ca;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
     }
 
     .categories-container:hover {
@@ -379,23 +366,3 @@ a:hover .blogger-card {
     }
 }
 
-/* تنسيق خاص للابتوب */
-@media screen and (min-width: 1181px) {
-    .categories-container {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    
-    .categories-filter {
-        margin: 2rem 0 1.5rem;
-    }
-    
-    .categories-filter .btn-group {
-        justify-content: center;
-        margin: 0 auto;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-}
