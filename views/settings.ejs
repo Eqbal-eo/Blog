@@ -121,126 +121,128 @@
         </div>
     </nav>
 
-    <div class="container my-4">
-        <div class="posts-box fadeIn">
-            <h3>
-                <i class="bi bi-gear me-2"></i>
-                <strong>إعدادات المدونة</strong>
-            </h3>
+    <main>
+        <div class="container my-4">
+            <div class="posts-box fadeIn">
+                <h3>
+                    <i class="bi bi-gear me-2"></i>
+                    <strong>إعدادات المدونة</strong>
+                </h3>
 
-            <% if (typeof error !== 'undefined' && error) { %>
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <%= error %>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <% } %>
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
 
-            <form action="/settings" method="POST" enctype="multipart/form-data" class="mt-4">
-                <!-- الملف الشخصي -->
-                <div class="settings-section">
-                    <h4 class="section-title">
-                        <i class="bi bi-person-circle"></i>
-                        الملف الشخصي <small class="text-helper">(سيظهر في بطاقة المدونة)</small>
-                    </h4>
-                    
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-4">
-                                <label for="display_name_ar" class="form-label">الاسم العربي المعروض</label>
-                                <input type="text" class="form-control" id="display_name_ar" name="display_name_ar" 
-                                    value="<%= user && user.display_name_ar ? user.display_name_ar : '' %>" 
-                                    placeholder="الاسم الذي سيظهر في المدونات">
-                                <small class="text-helper">سيظهر هذا الاسم في المدونات بدلاً من اسم المستخدم</small>
-                            </div>
+                <form action="/settings" method="POST" enctype="multipart/form-data" class="mt-4">
+                    <!-- الملف الشخصي -->
+                    <div class="settings-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-person-circle"></i>
+                            الملف الشخصي <small class="text-helper">(سيظهر في بطاقة المدونة)</small>
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="display_name_ar" class="form-label">الاسم العربي المعروض</label>
+                                    <input type="text" class="form-control" id="display_name_ar" name="display_name_ar" 
+                                        value="<%= user && user.display_name_ar ? user.display_name_ar : '' %>" 
+                                        placeholder="الاسم الذي سيظهر في المدونات">
+                                    <small class="text-helper">سيظهر هذا الاسم في المدونات بدلاً من اسم المستخدم</small>
+                                </div>
 
-                            <div class="mb-4">
-                                <label for="bio" class="form-label">نبذة تعريفية</label>
-                                <textarea class="form-control" id="bio" name="bio" rows="3" 
-                                    placeholder="اكتب نبذة قصيرة عن نفسك"><%= user ? user.bio : '' %></textarea>
-                                <small class="text-helper">ستظهر هذه النبذة في صفحة المؤلف الخاصة بك</small>
+                                <div class="mb-4">
+                                    <label for="bio" class="form-label">نبذة تعريفية</label>
+                                    <textarea class="form-control" id="bio" name="bio" rows="3" 
+                                        placeholder="اكتب نبذة قصيرة عن نفسك"><%= user ? user.bio : '' %></textarea>
+                                    <small class="text-helper">ستظهر هذه النبذة في صفحة المؤلف الخاصة بك</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- إعدادات المدونة -->
-                <div class="settings-section">
-                    <h4 class="section-title">
-                        <i class="bi bi-journal-text"></i>
-                        إعدادات المدونة
-                    </h4>
+                    <!-- إعدادات المدونة -->
+                    <div class="settings-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-journal-text"></i>
+                            إعدادات المدونة
+                        </h4>
 
-                    <div class="mb-4">
-                        <label for="blog_title" class="form-label">عنوان المدونة</label>
-                        <input type="text" class="form-control" id="blog_title" name="blog_title" 
-                            value="<%= settings ? settings.blog_title : '' %>" 
-                            placeholder="أدخل عنوان مدونتك" required>
-                        <small class="text-helper">سيظهر هذا العنوان في رأس صفحتك الرئيسية</small>
+                        <div class="mb-4">
+                            <label for="blog_title" class="form-label">عنوان المدونة</label>
+                            <input type="text" class="form-control" id="blog_title" name="blog_title" 
+                                value="<%= settings ? settings.blog_title : '' %>" 
+                                placeholder="أدخل عنوان مدونتك" required>
+                            <small class="text-helper">سيظهر هذا العنوان في رأس صفحتك الرئيسية</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="blog_description" class="form-label">وصف المدونة</label>
+                            <textarea class="form-control" id="blog_description" name="blog_description" 
+                                rows="3" placeholder="أدخل وصفاً مختصراً لمدونتك"><%= settings ? settings.blog_description : '' %></textarea>
+                            <small class="text-helper">يساعد هذا الوصف القراء في فهم محتوى مدونتك</small>
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="blog_description" class="form-label">وصف المدونة</label>
-                        <textarea class="form-control" id="blog_description" name="blog_description" 
-                            rows="3" placeholder="أدخل وصفاً مختصراً لمدونتك"><%= settings ? settings.blog_description : '' %></textarea>
-                        <small class="text-helper">يساعد هذا الوصف القراء في فهم محتوى مدونتك</small>
+                    <!-- معلومات الاتصال -->
+                    <div class="settings-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-envelope"></i>
+                            معلومات الاتصال
+                        </h4>
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope-fill contact-icon"></i>
+                                البريد الإلكتروني
+                            </label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                value="<%= settings ? settings.email : '' %>"
+                                placeholder="أدخل بريدك الإلكتروني">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="contact_info" class="form-label">
+                                <i class="bi bi-chat-dots-fill contact-icon"></i>
+                                معلومات التواصل الإضافية
+                            </label>
+                            <textarea class="form-control" id="contact_info" name="contact_info" 
+                                rows="3" placeholder="مثال: حسابات التواصل الاجتماعي، رقم الهاتف، إلخ..."><%= settings ? settings.contact_info : '' %></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <!-- معلومات الاتصال -->
-                <div class="settings-section">
-                    <h4 class="section-title">
-                        <i class="bi bi-envelope"></i>
-                        معلومات الاتصال
-                    </h4>
+                    <!-- محتوى الصفحات -->
+                    <div class="settings-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-file-text"></i>
+                         نبذة عن المدونة
+                        </h4>
 
-                    <div class="mb-4">
-                        <label for="email" class="form-label">
-                            <i class="bi bi-envelope-fill contact-icon"></i>
-                            البريد الإلكتروني
-                        </label>
-                        <input type="email" class="form-control" id="email" name="email" 
-                            value="<%= settings ? settings.email : '' %>"
-                            placeholder="أدخل بريدك الإلكتروني">
+                        <div class="mb-4">
+                            <textarea class="form-control" id="about_text" name="about_text" 
+                                rows="5" placeholder="اختياري.."><%= settings ? settings.about_text : '' %></textarea>
+                            <small class="text-helper">سيظهر هذا النص في صفحة "عن المدونة"</small>
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="contact_info" class="form-label">
-                            <i class="bi bi-chat-dots-fill contact-icon"></i>
-                            معلومات التواصل الإضافية
-                        </label>
-                        <textarea class="form-control" id="contact_info" name="contact_info" 
-                            rows="3" placeholder="مثال: حسابات التواصل الاجتماعي، رقم الهاتف، إلخ..."><%= settings ? settings.contact_info : '' %></textarea>
+                    <div class="settings-section text-center">
+                        <button type="submit" class="btn btn-primary  px-5">
+                            <i class="bi bi-check2-circle me-2"></i>
+                            حفظ الإعدادات
+                        </button>
+                        <a href="/dashboard" class="btn btn-outline-secondary  px-4">
+                            
+                            إلغاء
+                        </a>
                     </div>
-                </div>
-
-                <!-- محتوى الصفحات -->
-                <div class="settings-section">
-                    <h4 class="section-title">
-                        <i class="bi bi-file-text"></i>
-                     نبذة عن المدونة
-                    </h4>
-
-                    <div class="mb-4">
-                        <textarea class="form-control" id="about_text" name="about_text" 
-                            rows="5" placeholder="اختياري.."><%= settings ? settings.about_text : '' %></textarea>
-                        <small class="text-helper">سيظهر هذا النص في صفحة "عن المدونة"</small>
-                    </div>
-                </div>
-
-                <div class="settings-section text-center">
-                    <button type="submit" class="btn btn-primary  px-5">
-                        <i class="bi bi-check2-circle me-2"></i>
-                        حفظ الإعدادات
-                    </button>
-                    <a href="/dashboard" class="btn btn-outline-secondary  px-4">
-                        
-                        إلغاء
-                    </a>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="container">

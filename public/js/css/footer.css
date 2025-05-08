@@ -1,12 +1,21 @@
 html {
     height: 100%;
+    margin: 0;
 }
 
 body {
-    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 footer {
+    flex-shrink: 0;
     background-color: #ffffff;
     text-align: center;
     padding: 1rem 0;
@@ -15,23 +24,20 @@ footer {
     width: 100%;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #cccccc96;
-    margin-top: 2rem;
-
+    margin-top: auto;
 }
 
 /* Responsive Footer */
 @media (max-width: 768px) {
     footer {
-        padding: 1rem 0;
+        padding: 0.8rem 0;
         font-size: 0.9rem;
     }
-
-
 }
 
 @media (max-width: 480px) {
     footer {
-        padding: 0.8rem 0;
+        padding: 0.7rem 0;
         font-size: 0.85rem;
     }
 }

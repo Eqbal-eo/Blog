@@ -215,126 +215,128 @@
         </div>
     </nav>
 
-    <!-- Author Header -->
-    <div class="container mt-5">
-        <div class="author-header">
-            <h1 class="author-name"><%= author.name %></h1>
-            <p class="author-bio"><%= author.bio %></p>
-        </div>
+    <main>
+        <!-- Author Header -->
+        <div class="container mt-5">
+            <div class="author-header">
+                <h1 class="author-name"><%= author.name %></h1>
+                <p class="author-bio"><%= author.bio %></p>
+            </div>
 
-        <!-- Tab Navigation -->
-        <ul class="nav nav-tabs" id="authorTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
-                    التدوينات
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
-                    معلومات التواصل
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">
-                    عن المدونة
-                </button>
-            </li>
-        </ul>
+            <!-- Tab Navigation -->
+            <ul class="nav nav-tabs" id="authorTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
+                        التدوينات
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
+                        معلومات التواصل
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">
+                        عن المدونة
+                    </button>
+                </li>
+            </ul>
 
-        <!-- Tab Content -->
-        <div class="tab-content" id="authorTabsContent">
-            <!-- Posts Tab -->
-            <div class="tab-pane fade show active" id="posts" role="tabpanel">
-                <div class="content-container">
-                    <% if (posts && posts.length > 0) { %>
-                        <% posts.forEach(function(post) { %>
-                            <article class="post-card">
-                                <h2 class="post-title"><%= post.title %></h2>
-                                <div class="post-excerpt">
-                                    <%= post.content.substring(0, 200).replace(/(<([^>]+)>)/gi, "") %>...
+            <!-- Tab Content -->
+            <div class="tab-content" id="authorTabsContent">
+                <!-- Posts Tab -->
+                <div class="tab-pane fade show active" id="posts" role="tabpanel">
+                    <div class="content-container">
+                        <% if (posts && posts.length > 0) { %>
+                            <% posts.forEach(function(post) { %>
+                                <article class="post-card">
+                                    <h2 class="post-title"><%= post.title %></h2>
+                                    <div class="post-excerpt">
+                                        <%= post.content.substring(0, 200).replace(/(<([^>]+)>)/gi, "") %>...
+                                    </div>
+                                    <div class="post-meta">
+                                        <span class="post-category">
+                                            <%= {
+                                                'politics': 'سياسة',
+                                                'history': 'تاريخ',
+                                                'economics': 'اقتصاد',
+                                                'technology': 'تكنلوجيا',
+                                                'literature': 'أدب',
+                                                'medicine': 'طب'
+                                            }[post.category] || post.category %>
+                                        </span>
+                                        <a href="/article/<%= post.id %>" class="read-more">اقرأ المزيد...</a>
+                                    </div>
+                                </article>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="no-content">
+                                <h3>لا توجد تدوينات بعد</h3>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Contact Tab -->
+                <div class="tab-pane fade" id="contact" role="tabpanel">
+                    <div class="content-container">
+                        <div class="contact-info">
+                            <% if (settings.contact_info || settings.email) { %>
+                                <% if (settings.email) { %>
+                                    <div class="info-item">
+                                        <div class="info-label">البريد الإلكتروني:</div>
+                                        <div class="info-content"><%= settings.email %></div>
+                                    </div>
+                                <% } %>
+                                <% if (settings.contact_info) { %>
+                                    <div class="info-item">
+                                        <div class="info-label">معلومات التواصل:</div>
+                                        <div class="info-content"><%- settings.contact_info %></div>
+                                    </div>
+                                <% } %>
+                            <% } else { %>
+                                <div class="no-content">
+                                    <h3>لم يتم إضافة معلومات التواصل بعد</h3>
                                 </div>
-                                <div class="post-meta">
-                                    <span class="post-category">
-                                        <%= {
-                                            'politics': 'سياسة',
-                                            'history': 'تاريخ',
-                                            'economics': 'اقتصاد',
-                                            'technology': 'تكنلوجيا',
-                                            'literature': 'أدب',
-                                            'medicine': 'طب'
-                                        }[post.category] || post.category %>
-                                    </span>
-                                    <a href="/article/<%= post.id %>" class="read-more">اقرأ المزيد...</a>
-                                </div>
-                            </article>
-                        <% }); %>
-                    <% } else { %>
-                        <div class="no-content">
-                            <h3>لا توجد تدوينات بعد</h3>
+                            <% } %>
                         </div>
-                    <% } %>
-                </div>
-            </div>
-
-            <!-- Contact Tab -->
-            <div class="tab-pane fade" id="contact" role="tabpanel">
-                <div class="content-container">
-                    <div class="contact-info">
-                        <% if (settings.contact_info || settings.email) { %>
-                            <% if (settings.email) { %>
-                                <div class="info-item">
-                                    <div class="info-label">البريد الإلكتروني:</div>
-                                    <div class="info-content"><%= settings.email %></div>
-                                </div>
-                            <% } %>
-                            <% if (settings.contact_info) { %>
-                                <div class="info-item">
-                                    <div class="info-label">معلومات التواصل:</div>
-                                    <div class="info-content"><%- settings.contact_info %></div>
-                                </div>
-                            <% } %>
-                        <% } else { %>
-                            <div class="no-content">
-                                <h3>لم يتم إضافة معلومات التواصل بعد</h3>
-                            </div>
-                        <% } %>
                     </div>
                 </div>
-            </div>
 
-            <!-- About Tab -->
-            <div class="tab-pane fade" id="about" role="tabpanel">
-                <div class="content-container">
-                    <div class="blog-settings">
-                        <% if (settings.blog_title || settings.blog_description || settings.about_text) { %>
-                            <% if (settings.blog_title) { %>
-                                <div class="info-item">
-                                    <div class="info-label">عنوان المدونة:</div>
-                                    <div class="info-content"><%= settings.blog_title %></div>
+                <!-- About Tab -->
+                <div class="tab-pane fade" id="about" role="tabpanel">
+                    <div class="content-container">
+                        <div class="blog-settings">
+                            <% if (settings.blog_title || settings.blog_description || settings.about_text) { %>
+                                <% if (settings.blog_title) { %>
+                                    <div class="info-item">
+                                        <div class="info-label">عنوان المدونة:</div>
+                                        <div class="info-content"><%= settings.blog_title %></div>
+                                    </div>
+                                <% } %>
+                                <% if (settings.blog_description) { %>
+                                    <div class="info-item">
+                                        <div class="info-label">وصف المدونة:</div>
+                                        <div class="info-content"><%= settings.blog_description %></div>
+                                    </div>
+                                <% } %>
+                                <% if (settings.about_text) { %>
+                                    <div class="info-item">
+                                        <div class="info-label">نبذة عن المدونة:</div>
+                                        <div class="info-content"><%- settings.about_text %></div>
+                                    </div>
+                                <% } %>
+                            <% } else { %>
+                                <div class="no-content">
+                                    <h3>لم يتم إضافة معلومات عن المدونة بعد</h3>
                                 </div>
                             <% } %>
-                            <% if (settings.blog_description) { %>
-                                <div class="info-item">
-                                    <div class="info-label">وصف المدونة:</div>
-                                    <div class="info-content"><%= settings.blog_description %></div>
-                                </div>
-                            <% } %>
-                            <% if (settings.about_text) { %>
-                                <div class="info-item">
-                                    <div class="info-label">نبذة عن المدونة:</div>
-                                    <div class="info-content"><%- settings.about_text %></div>
-                                </div>
-                            <% } %>
-                        <% } else { %>
-                            <div class="no-content">
-                                <h3>لم يتم إضافة معلومات عن المدونة بعد</h3>
-                            </div>
-                        <% } %>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer>

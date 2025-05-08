@@ -120,51 +120,53 @@
         </div>
     </nav>
 
-    <!-- تدوينة فردية -->
-    <section class="section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-9 mb-4">
-                    <!-- عنوان التدوينة خارج مربع التدوينة -->
-                    <h1 class="post-title">
-                        <%= post.title %>
-                    </h1>
+    <main>
+        <!-- تدوينة فردية -->
+        <section class="section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 mb-4">
+                        <!-- عنوان التدوينة خارج مربع التدوينة -->
+                        <h1 class="post-title">
+                            <%= post.title %>
+                        </h1>
 
-                    <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
-                    <div class="post-info">
-                        <small>
-                            بواسطة <%= post.users.displayName %> 
-                            <span>-</span> 
-                            نُشرت في <%= formatDate(post.created_at) %>
-                            <% if (post.category) { %>
-                                <span>-</span>
-                                <span class="post-category">
-                                    <%= {
-                                        'politics': 'سياسة',
-                                        'history': 'تاريخ',
-                                        'economics': 'اقتصاد',
-                                        'technology': 'تكنلوجيا',
-                                        'literature': 'أدب',
-                                        'medicine': 'طب'
-                                    }[post.category] || post.category %>
-                                </span>
-                            <% } %>
-                        </small>
-                    </div>
+                        <!-- معلومات التدوينة (اسم الناشر والتاريخ) خارج المربع -->
+                        <div class="post-info">
+                            <small>
+                                بواسطة <%= post.users.displayName %> 
+                                <span>-</span> 
+                                نُشرت في <%= formatDate(post.created_at) %>
+                                <% if (post.category) { %>
+                                    <span>-</span>
+                                    <span class="post-category">
+                                        <%= {
+                                            'politics': 'سياسة',
+                                            'history': 'تاريخ',
+                                            'economics': 'اقتصاد',
+                                            'technology': 'تكنلوجيا',
+                                            'literature': 'أدب',
+                                            'medicine': 'طب'
+                                        }[post.category] || post.category %>
+                                    </span>
+                                <% } %>
+                            </small>
+                        </div>
 
-                    <!-- مربع التدوينة -->
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="card-text post-content">
-                                <%- post.content %>
+                        <!-- مربع التدوينة -->
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="card-text post-content">
+                                    <%- post.content %>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
