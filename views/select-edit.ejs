@@ -60,94 +60,96 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container my-4">
-        <div class="posts-box fadeIn">
-            <h3>
-                <i class="bi bi-pencil-square me-2"></i>
-                <strong>تعديل تدوينة</strong>
-            </h3>
+    <main>
+        <!-- Main Content -->
+        <div class="container my-4">
+            <div class="posts-box fadeIn">
+                <h3>
+                    <i class="bi bi-pencil-square me-2"></i>
+                    <strong>تعديل تدوينة</strong>
+                </h3>
 
-            <% if (posts.length === 0) { %>
-                <div class="alert alert-info mt-4">
-                    <i class="bi bi-info-circle me-2"></i>
-                    لا توجد تدوينات لتعديلها.
-                </div>
-            <% } else { %>
-                <form id="editForm" method="POST" class="mt-4">
-                    <input type="hidden" name="_method" value="PUT">
-                    
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <div class="mb-4">
-                                <label for="postSelector" class="form-label fw-bold">اختر التدوينة</label>
-                                <select id="postSelector" class="form-select form-select-lg" required>
-                                    <option disabled selected>اختر تدوينة لتعديلها</option>
-                                    <% posts.forEach((post, i) => { %>
-                                        <option value="<%= post.id %>" data-index="<%= i %>"><%= post.title %></option>
-                                    <% }) %>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="title" class="form-label fw-bold">عنوان التدوينة</label>
-                                <input type="text" class="form-control form-control-lg" id="title" name="title" required
-                                    placeholder="أدخل عنوان التدوينة هنا...">
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="editor" class="form-label fw-bold">محتوى التدوينة</label>
-                                <div id="editor" class="rounded"></div>
-                                <input type="hidden" name="content" id="contentInput">
-                            </div>
-
-                            <div class="action-card mt-4">
-                                <h5 class="mb-3">
-                                    <i class="bi bi-gear-fill me-2"></i>
-                                    إعدادات النشر
-                                </h5>
-
-                                <div class="mb-3">
-                                    <label for="category" class="form-label">تصنيف التدوينة</label>
-                                    <select class="form-select" id="category" name="category" required>
-                                        <option value="" disabled selected>اختر تصنيفاً</option>
-                                        <option value="politics">سياسة</option>
-                                        <option value="history">تاريخ</option>
-                                        <option value="economics">اقتصاد</option>
-                                        <option value="technology">تكنلوجيا</option>
-                                        <option value="literature">أدب</option>
-                                        <option value="medicine">طب</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">حالة التدوينة</label>
-                                    <select id="status" name="status" class="form-select" required>
-                                        <option value="published">منشورة</option>
-                                        <option value="draft">مسودة</option>
+                <% if (posts.length === 0) { %>
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle me-2"></i>
+                        لا توجد تدوينات لتعديلها.
+                    </div>
+                <% } else { %>
+                    <form id="editForm" method="POST" class="mt-4">
+                        <input type="hidden" name="_method" value="PUT">
+                        
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <label for="postSelector" class="form-label fw-bold">اختر التدوينة</label>
+                                    <select id="postSelector" class="form-select form-select-lg" required>
+                                        <option disabled selected>اختر تدوينة لتعديلها</option>
+                                        <% posts.forEach((post, i) => { %>
+                                            <option value="<%= post.id %>" data-index="<%= i %>"><%= post.title %></option>
+                                        <% }) %>
                                     </select>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="created_at" class="form-label">تاريخ النشر</label>
-                                    <input type="datetime-local" class="form-control" id="created_at" name="created_at" required>
+                                    <label for="title" class="form-label fw-bold">عنوان التدوينة</label>
+                                    <input type="text" class="form-control form-control-lg" id="title" name="title" required
+                                        placeholder="أدخل عنوان التدوينة هنا...">
                                 </div>
 
-                                <div class="btn-container">
-                                    <button type="submit" class="btn btn-primary">
-                                        حفظ التعديلات
-                                    </button>
-                                    <a href="/dashboard" class="btn btn-outline-secondary">
-                                        إلغاء
-                                    </a>
+                                <div class="mb-4">
+                                    <label for="editor" class="form-label fw-bold">محتوى التدوينة</label>
+                                    <div id="editor" class="rounded"></div>
+                                    <input type="hidden" name="content" id="contentInput">
+                                </div>
+
+                                <div class="action-card mt-4">
+                                    <h5 class="mb-3">
+                                        <i class="bi bi-gear-fill me-2"></i>
+                                        إعدادات النشر
+                                    </h5>
+
+                                    <div class="mb-3">
+                                        <label for="category" class="form-label">تصنيف التدوينة</label>
+                                        <select class="form-select" id="category" name="category" required>
+                                            <option value="" disabled selected>اختر تصنيفاً</option>
+                                            <option value="politics">سياسة</option>
+                                            <option value="history">تاريخ</option>
+                                            <option value="economics">اقتصاد</option>
+                                            <option value="technology">تكنلوجيا</option>
+                                            <option value="literature">أدب</option>
+                                            <option value="medicine">طب</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">حالة التدوينة</label>
+                                        <select id="status" name="status" class="form-select" required>
+                                            <option value="published">منشورة</option>
+                                            <option value="draft">مسودة</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="created_at" class="form-label">تاريخ النشر</label>
+                                        <input type="datetime-local" class="form-control" id="created_at" name="created_at" required>
+                                    </div>
+
+                                    <div class="btn-container">
+                                        <button type="submit" class="btn btn-primary">
+                                            حفظ التعديلات
+                                        </button>
+                                        <a href="/dashboard" class="btn btn-outline-secondary">
+                                            إلغاء
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            <% } %>
+                    </form>
+                <% } %>
+            </div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="container">

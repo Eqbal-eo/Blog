@@ -58,78 +58,80 @@
         </div>
     </nav>
 
-    <div class="container">
-        <!-- Stats Section -->
-        <div class="stats-container fadeIn">
-            <div class="stat-card">
-                <i class="bi bi-file-text h1 text-primary"></i>
-                <div class="stat-number"><%= posts.length %></div>
-                <div class="stat-label">إجمالي التدوينات</div>
-            </div>
-            <div class="stat-card">
-                <i class="bi bi-eye h1 text-success"></i>
-                <div class="stat-number">0</div>
-                <div class="stat-label">إجمالي المشاهدات</div>
-            </div>
-            <div class="stat-card">
-                <i class="bi bi-chat-dots h1 text-info"></i>
-                <div class="stat-number">0</div>
-                <div class="stat-label">إجمالي التعليقات</div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="dashboard-actions fadeIn">
-            <a href="/posts/create" class="action-card text-decoration-none">
-                <i class="bi bi-plus-circle h2 text-success"></i>
-                <h5 class="mt-3">إنشاء تدوينة جديدة</h5>
-                <p class="text-muted">أضف محتوى جديداً إلى مدونتك</p>
-            </a>
-            <a href="/posts/select-edit" class="action-card text-decoration-none">
-                <i class="bi bi-pencil-square h2 text-primary"></i>
-                <h5 class="mt-3">تعديل التدوينات</h5>
-                <p class="text-muted">قم بتحديث المحتوى الموجود</p>
-            </a>
-            <a href="/settings" class="action-card text-decoration-none">
-                <i class="bi bi-gear h2 text-secondary"></i>
-                <h5 class="mt-3">إعدادات الحساب</h5>
-                <p class="text-muted">تخصيص إعدادات حسابك</p>
-            </a>
-        </div>
-
-        <!-- Recent Posts -->
-        <div class="posts-box fadeIn">
-            <h3>
-                <i class="bi bi-clock-history me-2"></i>
-                <strong>تدويناتك الأخيرة</strong>
-            </h3>
-
-            <% if (posts.length === 0) { %>
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle me-2"></i>
-                لا توجد تدوينات بعد.
-            </div>
-            <% } else { %>
-            <% posts.forEach(post => { %>
-            <div class="post-content">
-                <div class="post-title">
-                    <i class="bi bi-file-text me-2"></i>
-                    <%= post.title %>
+    <main>
+        <div class="container">
+            <!-- Stats Section -->
+            <div class="stats-container fadeIn">
+                <div class="stat-card">
+                    <i class="bi bi-file-text h1 text-primary"></i>
+                    <div class="stat-number"><%= posts.length %></div>
+                    <div class="stat-label">إجمالي التدوينات</div>
                 </div>
-                <div class="post-full-content">
-                    <%- post.content %>
-                    <div class="mt-3 text-muted">
-                        <small>
-                            <i class="bi bi-calendar3"></i>
-                            <%= new Date(post.created_at).toLocaleString('ar-SA') %>
-                        </small>
+                <div class="stat-card">
+                    <i class="bi bi-eye h1 text-success"></i>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">إجمالي المشاهدات</div>
+                </div>
+                <div class="stat-card">
+                    <i class="bi bi-chat-dots h1 text-info"></i>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">إجمالي التعليقات</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="dashboard-actions fadeIn">
+                <a href="/posts/create" class="action-card text-decoration-none">
+                    <i class="bi bi-plus-circle h2 text-success"></i>
+                    <h5 class="mt-3">إنشاء تدوينة جديدة</h5>
+                    <p class="text-muted">أضف محتوى جديداً إلى مدونتك</p>
+                </a>
+                <a href="/posts/select-edit" class="action-card text-decoration-none">
+                    <i class="bi bi-pencil-square h2 text-primary"></i>
+                    <h5 class="mt-3">تعديل التدوينات</h5>
+                    <p class="text-muted">قم بتحديث المحتوى الموجود</p>
+                </a>
+                <a href="/settings" class="action-card text-decoration-none">
+                    <i class="bi bi-gear h2 text-secondary"></i>
+                    <h5 class="mt-3">إعدادات الحساب</h5>
+                    <p class="text-muted">تخصيص إعدادات حسابك</p>
+                </a>
+            </div>
+
+            <!-- Recent Posts -->
+            <div class="posts-box fadeIn">
+                <h3>
+                    <i class="bi bi-clock-history me-2"></i>
+                    <strong>تدويناتك الأخيرة</strong>
+                </h3>
+
+                <% if (posts.length === 0) { %>
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    لا توجد تدوينات بعد.
+                </div>
+                <% } else { %>
+                <% posts.forEach(post => { %>
+                <div class="post-content">
+                    <div class="post-title">
+                        <i class="bi bi-file-text me-2"></i>
+                        <%= post.title %>
+                    </div>
+                    <div class="post-full-content">
+                        <%- post.content %>
+                        <div class="mt-3 text-muted">
+                            <small>
+                                <i class="bi bi-calendar3"></i>
+                                <%= new Date(post.created_at).toLocaleString('ar-SA') %>
+                            </small>
+                        </div>
                     </div>
                 </div>
+                <% }); %>
+                <% } %>
             </div>
-            <% }); %>
-            <% } %>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="container">

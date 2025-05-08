@@ -62,82 +62,80 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>مدونات <span class="highlight">آفاق</span></h1>
-        <p>منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد</p>
-        <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
-            <a href="/register" class="btn btn-primary">ابدأ مدونتك الآن</a>
-            <a href="/blogs" class="btn btn-outline-dark-blog">تصفح المدونات</a>
-        </div>
-    </section>
-    <div class="custom-divider"></div>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>مدونات <span class="highlight">آفاق</span></h1>
+            <p>منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد</p>
+            <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+                <a href="/register" class="btn btn-primary">ابدأ مدونتك الآن</a>
+                <a href="/blogs" class="btn btn-outline-dark-blog">تصفح المدونات</a>
+            </div>
+        </section>
+        <div class="custom-divider"></div>
 
-   <!-- Latest Posts Section -->
-<section class="section">
-    <div class="container">
-        <h2 class="section-title text-center">التدوينات الأخيرة </h2>
-        <div class="row justify-content-center">
-            <% posts.slice(0, 3).forEach(post=> { %>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <!-- عنوان التدوينة -->
-                            <h5 class="card-title">
-                                <%= post.title %>
-                            </h5>
+        <!-- Latest Posts Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title text-center">التدوينات الأخيرة </h2>
+                <div class="row justify-content-center">
+                    <% posts.slice(0, 3).forEach(post=> { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <!-- عنوان التدوينة -->
+                                    <h5 class="card-title">
+                                        <%= post.title %>
+                                    </h5>
 
-                            <!-- اسم الكاتب -->
-                            <small class="text-muted d-block" dir="rtl">بواسطة <%= post.users.displayName %> - <%= formatDate(post.created_at) %></small>
+                                    <!-- اسم الكاتب -->
+                                    <small class="text-muted d-block" dir="rtl">بواسطة <%= post.users.displayName %> - <%= formatDate(post.created_at) %></small>
 
-                            <!-- مقتطف النص -->
-                            <p class="card-text text-secondary">
-                                <%= post.content.substring(0, 100).replace(/(<([^>]+)>)/gi, "") %>...
-                            </p>
+                                    <!-- مقتطف النص -->
+                                    <p class="card-text text-secondary">
+                                        <%= post.content.substring(0, 100).replace(/(<([^>]+)>)/gi, "") %>...
+                                    </p>
 
-                            <!-- اقرأ المزيد -->
-                            <a href="/article/<%= post.id %>" class="read-more-link">اقرأ المزيد..</a>
+                                    <!-- اقرأ المزيد -->
+                                    <a href="/article/<%= post.id %>" class="read-more-link">اقرأ المزيد..</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <% }) %>
                 </div>
-                <% }) %>
-        </div>
-    </div>
-</section>
-
-        
-    </section>
-    <div class="custom-divider"></div>
-
-    <!-- How It Works -->
-    <section class="section">
-        <h2 class="section-title">كيف تعمل المنصة؟</h2>
-        <div class="steps">
-            <div class="step">
-                <span class="number">1</span>
-                <h4>سجل حساباً</h4>
-                <p>أنشئ حساباً مجانياً وابدأ رحلتك التدوينية</p>
             </div>
-            <div class="step">
-                <span class="number">2</span>
-                <h4>خصّص مدونتك</h4>
-                <p>أضف معلوماتك وصمم صفحات "من أنا" و"اتصل بي"</p>
-            </div>
-            <div class="step">
-                <span class="number">3</span>
-                <h4>انشر مقالاتك</h4>
-                <p>اكتب وانشر مقالاتك باستخدام محرر نصوص متقدم</p>
-            </div>
-        </div>
-    </section>
-    <div class="custom-divider"></div>
+        </section>
 
-    <!-- Call to Action -->
-    <section class="cta">
-        <h2>انضم إلى مجتمع الكتّاب والمفكرين</h2>
-        <p>شارك أفكارك وآرائك مع العالم وانضم إلى نقاشات فكرية وثقافية عميقة</p>
-        <a href="/register" class="btn btn-primary">سجل الآن مجاناً</a>
-    </section>
+        <!-- How It Works -->
+        <section class="section">
+            <h2 class="section-title">كيف تعمل المنصة؟</h2>
+            <div class="steps">
+                <div class="step">
+                    <span class="number">1</span>
+                    <h4>سجل حساباً</h4>
+                    <p>أنشئ حساباً مجانياً وابدأ رحلتك التدوينية</p>
+                </div>
+                <div class="step">
+                    <span class="number">2</span>
+                    <h4>خصّص مدونتك</h4>
+                    <p>أضف معلوماتك وصمم صفحات "من أنا" و"اتصل بي"</p>
+                </div>
+                <div class="step">
+                    <span class="number">3</span>
+                    <h4>انشر مقالاتك</h4>
+                    <p>اكتب وانشر مقالاتك باستخدام محرر نصوص متقدم</p>
+                </div>
+            </div>
+        </section>
+        <div class="custom-divider"></div>
+
+        <!-- Call to Action -->
+        <section class="cta">
+            <h2>انضم إلى مجتمع الكتّاب والمفكرين</h2>
+            <p>شارك أفكارك وآرائك مع العالم وانضم إلى نقاشات فكرية وثقافية عميقة</p>
+            <a href="/register" class="btn btn-primary">سجل الآن مجاناً</a>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>

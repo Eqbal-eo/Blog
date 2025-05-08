@@ -225,7 +225,7 @@ a:hover .blogger-card {
 
     /* حاوية التصنيفات في وضع الموبايل */
     .categories-container {
-        max-width: 88%;
+        max-width: 80%;
         margin: 0 auto 1rem;
         border-radius: 10px;
         overflow: hidden;
