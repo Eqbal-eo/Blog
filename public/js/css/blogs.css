@@ -121,8 +121,6 @@ a:hover .blogger-card {
 .categories-filter {
     margin: 1rem 0 1.5rem;
 }
-    
-    
 
 .categories-filter .btn-group {
     flex-wrap: wrap;
@@ -148,6 +146,19 @@ a:hover .blogger-card {
     display: none;
 }
 
+/* حاوية التصنيفات */
+.categories-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* عنوان التصنيفات */
+.categories-header {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .blogs-section {
         padding: 0.5rem 0.8rem;
@@ -169,44 +180,68 @@ a:hover .blogger-card {
         max-width: none;
     }
 
-    /* زر التصنيفات في وضع الموبايل */
-    .categories-toggle {
-        display: block;
-        width: auto;
-        min-width: 150px;
-        max-width: 180px;
-        margin: 0 auto 1rem;
-        padding: 8px 16px;
-        background-color: #8c4a21ca;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        text-align: center;
+    /* حاوية التصنيفات في وضع الموبايل */
+    .categories-container {
+        position: relative;
+        max-width: 50%;
+        margin: 0 auto 1.5rem;
+        border-radius: 8px;
+        background-color: #fff;
+        overflow: hidden;
+        border: 1px solid #b5b3b2ca;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s ease;
     }
 
-    /* تحسين بطاقات المدونين */
-    .blogger-card {
-        margin: 0.5rem 0;
-        padding: 1.2rem;
-        border-radius: 12px;
+    .categories-container:hover {
+        background-color: #f9f7f0;
+    }
+
+    /* عنوان التصنيفات */
+    .categories-header {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 12px;
+        background-color: #ffffff;
+        color: #353434ca;
+        font-size: 0.95rem;
+        text-align: center;
+        font-weight: 500;
     }
 
     /* تحسين التصنيفات */
     .categories-filter {
         display: none;
+        margin: 0;
+        padding: 0.8rem;
+        background-color: #fff;
+        border-top: 1px solid #575757ca;
         transition: all 0.3s ease;
     }
 
-    .categories-filter.show {
-        
-        animation: slideDown 0.3s ease-out;
-        width: 60%;
-        margin: 0 auto;
-        display: flex;
-        
+    .categories-filter .btn {
+        width: 100%;
+        text-align: right;
+        border-radius: 6px !important;
+        padding: 6px 12px;
+        border: 1px solid #babab7ca;
+        background-color: #fff;
+        color: #575757ca;
+    }
+
+
+    /* تأثير الانزلاق للأسفل */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 }
 
@@ -231,12 +266,23 @@ a:hover .blogger-card {
         font-size: 0.9rem;
     }
 
-    .categories-toggle {
-        min-width: 100px;
-        max-width: 140px;
-        padding: 6px 12px;
+    /* حاوية التصنيفات للشاشات الصغيرة */
+    .categories-container {
+        max-width: 65%;
+    }
+
+    .categories-header {
+        padding: 7px 10px;
+        font-size: 0.9rem;
+    }
+
+    .categories-filter {
+        padding: 0.6rem;
+    }
+
+    .categories-filter .btn {
+        padding: 5px 10px;
         font-size: 0.85rem;
-        margin-bottom: 0.8rem;
     }
 
     .blogger-card {
@@ -256,11 +302,6 @@ a:hover .blogger-card {
     .articles-count {
         font-size: 0.8rem;
         padding: 4px 8px;
-    }
-
-    .categories-filter .btn {
-        font-size: 0.9rem;
-        padding: 5px 12px;
     }
 }
 

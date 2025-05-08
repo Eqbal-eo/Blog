@@ -41,16 +41,22 @@
                 <div class="search-box mx-auto mb-4">
                     <input type="text" class="form-control" placeholder="ابحث عن مدون أو موضوع في المدونات والكتاب">
                 </div>
-                <button class="categories-toggle" id="categoriesToggle">التصنيفات</button>
-                <div class="categories-filter mb-4">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-dark active" data-category="all">الكل</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="politics">سياسة</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="history">تاريخ</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="medicine">طب</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="economics">اقتصاد</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="technology">تكنلوجيا</button>
-                        <button type="button" class="btn btn-outline-dark" data-category="literature">أدب</button>
+                
+                <!-- تصنيفات جديدة موحدة -->
+                <div class="categories-container" id="categoriesToggle">
+                    <div class="categories-header">
+                        <span class="toggle-text">التصنيفات</span>
+                    </div>
+                    <div class="categories-filter mb-4">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-dark active" data-category="all">الكل</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="politics">سياسة</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="history">تاريخ</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="medicine">طب</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="economics">اقتصاد</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="technology">تكنلوجيا</button>
+                            <button type="button" class="btn btn-outline-dark" data-category="literature">أدب</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,13 +111,41 @@
             const categoryButtons = document.querySelectorAll('.categories-filter .btn');
             const bloggerCards = document.querySelectorAll('[data-categories]');
             const searchInput = document.querySelector('.search-box input');
-            const categoriesToggle = document.getElementById('categoriesToggle');
+            const categoriesContainer = document.getElementById('categoriesToggle');
             const categoriesFilter = document.querySelector('.categories-filter');
+            const toggleText = document.querySelector('.toggle-text');
 
             // Toggle categories visibility
-            categoriesToggle.addEventListener('click', function() {
+            categoriesContainer.addEventListener('click', function(event) {
+                // منع الضغط على الأزرار الداخلية من تشغيل هذا الحدث
+                if (event.target.classList.contains('btn')) {
+                    return;
+                }
+                
                 categoriesFilter.classList.toggle('show');
-                this.textContent = categoriesFilter.classList.contains('show') ? 'إخفاء التصنيفات' : 'عرض التصنيفات';
+                
+                if (categoriesFilter.classList.contains('show')) {
+                    toggleText.textContent = 'إخفاء التصنيفات';
+                    // Add active class when categories are shown
+                    categoriesContainer.classList.add('active');
+                } else {
+                    // استعادة النص الأصلي أو المحدد سابقًا
+                    const activeButton = document.querySelector('.categories-filter .btn.active');
+                    if (activeButton && activeButton.dataset.category !== 'all') {
+                        toggleText.textContent = 'التصنيفات: ' + activeButton.textContent;
+                    } else {
+                        toggleText.textContent = 'التصنيفات';
+                    }
+                    // Remove active class when categories are hidden
+                    categoriesContainer.classList.remove('active');
+                }
+            });
+
+            // منع انتشار الحدث عند الضغط على أزرار التصفية
+            document.querySelectorAll('.categories-filter .btn').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
             });
 
             // Category filtering functionality
@@ -122,6 +156,18 @@
                     // Update active button state
                     categoryButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+
+                    // Update toggle button text to show selected category
+                    if (selectedCategory === 'all') {
+                        toggleText.textContent = 'التصنيفات: الكل';
+                    } else {
+                        toggleText.textContent = 'التصنيفات: ' + this.textContent;
+                    }
+
+                    // Hide filter after selection on mobile
+                    if (window.innerWidth <= 768) {
+                        categoriesFilter.classList.remove('show');
+                    }
 
                     filterCards(selectedCategory, searchInput.value);
                 });
