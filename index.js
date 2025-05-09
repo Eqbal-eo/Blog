@@ -13,16 +13,22 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const app = express();
 const PORT = 3000;
 
+// تحديد ما إذا كان التطبيق يعمل في بيئة الإنتاج أو التطوير
+const isProduction = process.env.NODE_ENV === 'production';
+const domain = isProduction ? '.afaq.blog' : 'localhost';
+
 app.use(session({
   secret: 'mySecretKey',
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60, // 1 ساعة
-    httpOnly: true
+    httpOnly: true,
+    secure: isProduction, // استخدم HTTPS فقط في بيئة الإنتاج
+    domain: isProduction ? domain : undefined, // حدد النطاق في بيئة الإنتاج فقط
+    sameSite: isProduction ? 'none' : 'lax' // سماح بالطلبات عبر المواقع في بيئة الإنتاج
   }
 }));
-
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
