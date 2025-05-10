@@ -1,9 +1,19 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../db/db'); // تفاعل مع قاعدة البيانات
+const rateLimit = require('express-rate-limit');
 
-// عملية تسجيل الدخول (POST)
-router.post('/login', (req, res) => {
+// إنشاء محدد عدد محاولات تسجيل الدخول
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 دقيقة
+    max: 5, // 5 محاولات كحد أقصى
+    message: { error: 'تم تجاوز الحد المسموح به من محاولات تسجيل الدخول، يرجى المحاولة بعد 15 دقيقة' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// عملية تسجيل الدخول (POST) مع تطبيق محدد المحاولات
+router.post('/login', loginLimiter, (req, res) => {
     const { username, password } = req.body;
 
     // التحقق من وجود المستخدم في قاعدة البيانات
