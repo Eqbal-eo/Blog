@@ -25,9 +25,9 @@ router.get('/settings', authenticateToken, async (req, res) => {
         console.log('Fetching settings for user:', userId);
 
         // Get user data including bio and display name
-        const { data: user, error: userError } = await supabase
+        const { data: userData, error: userError } = await supabase
             .from('users')
-            .select('bio, display_name_ar')
+            .select('bio, display_name_ar, username')
             .eq('id', userId)
             .single();
 
@@ -54,7 +54,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
         res.render('settings', { 
             settings: settings || {},
             user: {
-                ...user,
+                ...userData,
                 id: userId
             }
         });

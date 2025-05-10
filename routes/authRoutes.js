@@ -155,6 +155,18 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
         const userId = req.user.id;
         console.log('👤 معرف المستخدم:', userId);
         
+        // جلب الاسم العربي للمستخدم
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('display_name_ar')
+            .eq('id', userId)
+            .single();
+            
+        if (userError) {
+            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            throw userError;
+        }
+        
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
@@ -169,7 +181,10 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
         console.log(`📄 تم جلب ${posts.length} منشور بنجاح`);
         
         res.render('dashboard', {
-            user: req.user,
+            user: {
+                ...req.user,
+                display_name_ar: userData.display_name_ar
+            },
             posts
         });
     } catch (err) {
