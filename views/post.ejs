@@ -25,7 +25,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/js/css/home.css">
-    <link rel="stylesheet" href="/js/css/blogs.css">
     <link rel="stylesheet" href="/js/css/footer.css">
     <style>
     html,
@@ -41,11 +40,75 @@
 
     /* Add spacing between navbar and content */
     main {
-        margin-top: 30px; /* Adding space between navbar and main content */
+        margin-top: 40px; /* زيادة المسافة بين navbar والمحتوى */
+        flex: 1 0 auto; /* يجعل المحتوى يأخذ المساحة المتاحة */
+        display: flex;
+        flex-direction: column;
     }
     
     .section {
-        padding-top: 15px; /* Additional padding for the section */
+        padding-top: 20px; /* زيادة الحشو */
+        padding-bottom: 40px; /* مسافة كبيرة في الأسفل لإبعاد المحتوى عن الـfooter */
+        flex-grow: 1; /* تمدد القسم ليملأ المساحة المتاحة */
+    }
+    
+    .container {
+        height: 100%; /* يأخذ ارتفاع الأب */
+    }
+    
+    /* توسيط العناصر في جميع الشاشات */
+    .row.justify-content-center {
+        align-items: center;
+        height: 100%;
+    }
+    
+    .col-md-9 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    footer {
+        flex-shrink: 0; /* يمنع الـfooter من الانكماش */
+        margin-top: auto; /* يضمن بقاء الـfooter في الأسفل */
+        padding-top: 15px; /* مسافة داخلية فوق الـfooter */
+    }
+    
+    /* إلغاء تأثيرات تمرير المؤشر */
+    .navbar-brand:hover,
+    .nav-link:hover,
+    .btn:hover,
+    a:hover {
+        opacity: 1 !important;
+        transform: none !important;
+        box-shadow: none !important;
+        background-color: inherit !important;
+        color: inherit !important;
+        text-decoration: none !important;
+        transition: none !important;
+    }
+    
+    /* إلغاء تأثيرات التحريك والتكبير للبطاقات عند الضغط أو تمرير المؤشر */
+    .card,
+    .card:hover,
+    .card:active,
+    .card:focus,
+    .card-body,
+    .card-body:hover,
+    .card-body:active,
+    .card-body:focus {
+        transform: none !important;
+        transition: none !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important; /* ظل ثابت بدون تغيير */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* ضمان عدم تكبير العناصر عند اللمس على أجهزة الجوال */
+    * {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .post-info {
@@ -53,26 +116,17 @@
         color: #a8a6a6;
         margin-top: 1rem;
         margin-bottom: 1rem;
-        text-align: right;
-    }
-
-    .post-info span {
-        margin-left: 1px;
-    }
-
-    .post-category {
-        display: inline-block;
-        padding: 2px 8px;
-        background-color: #f0f0f0;
-        border-radius: 12px;
-        color: #666;
+        text-align: center; /* تغيير من right إلى center لجميع الشاشات */
+        width: 100%;
     }
 
     .post-title {
         font-weight: bold;
         font-size: 2rem;
-        margin-top: 30px;
+        margin-top: 40px;
         margin-bottom: 15px;
+        text-align: center; /* توسيط العنوان في جميع الشاشات */
+        width: 100%;
     }
 
     .post-content {
@@ -81,6 +135,12 @@
         font-weight: 400;
         padding: 1rem 1.5rem; /* مسافة من الأعلى والأسفل ومن اليمين واليسار */
         text-align: right; /* محاذاة النص لليمين */
+        width: 100%;
+    }
+
+    .card {
+        width: 100%; /* عرض كامل للبطاقة */
+        margin-bottom: 40px; /* مسافة إضافية في الأسفل */
     }
 
     .card-body {
@@ -91,7 +151,6 @@
         .post-title {
             font-size: 1.5rem; /* حجم الخط في الشاشات الصغيرة */
             margin-top: 4rem; /* مسافة من الأعلى في الشاشات الصغيرة */
-            text-align: center; /* توسيط العنوان */
         }
 
         .post-info {
@@ -126,6 +185,26 @@
         .post-content-container {
             width: 100%;
             max-width: 90%;
+            margin: 0 auto;
+        }
+    }
+    
+    /* تخصيص شاشة الآيباد */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+        .section {
+            padding-bottom: 80px; /* مسافة أكبر في الأسفل لشاشات الآيباد */
+        }
+        
+        main {
+            margin-bottom: 30px; /* هامش سفلي إضافي للمحتوى الرئيسي */
+        }
+        
+        .card {
+            margin-bottom: 60px; /* مسافة أكبر أسفل البطاقة في الآيباد */
+        }
+        
+        .post-content-container {
+            width: 95%;
             margin: 0 auto;
         }
     }
