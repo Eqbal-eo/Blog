@@ -200,4 +200,84 @@ router.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
+// حذف الحساب
+router.post('/delete-account', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { password } = req.body;
+
+        // التحقق من كلمة المرور
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('password')
+            .eq('id', userId)
+            .single();
+
+        if (userError) {
+            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            return res.render('settings', {
+                error: 'حدث خطأ أثناء التحقق من كلمة المرور',
+                user: req.user,
+                settings: {}
+            });
+        }
+
+        // مقارنة كلمة المرور
+        const isPasswordValid = await bcrypt.compare(password, userData.password);
+        if (!isPasswordValid) {
+            return res.render('settings', {
+                error: 'كلمة المرور غير صحيحة',
+                user: req.user,
+                settings: {}
+            });
+        }
+
+        // حذف بيانات المستخدم - يتم حذف المنشورات والإعدادات بناءً على العلاقات الخارجية في قاعدة البيانات
+        // 1. حذف الإعدادات أولا
+        const { error: settingsDeleteError } = await supabase
+            .from('settings')
+            .delete()
+            .eq('user_id', userId);
+
+        if (settingsDeleteError) {
+            console.error('خطأ في حذف إعدادات المستخدم:', settingsDeleteError);
+            throw settingsDeleteError;
+        }
+
+        // 2. حذف المنشورات
+        const { error: postsDeleteError } = await supabase
+            .from('posts')
+            .delete()
+            .eq('user_id', userId);
+
+        if (postsDeleteError) {
+            console.error('خطأ في حذف منشورات المستخدم:', postsDeleteError);
+            throw postsDeleteError;
+        }
+
+        // 3. حذف حساب المستخدم نفسه
+        const { error: userDeleteError } = await supabase
+            .from('users')
+            .delete()
+            .eq('id', userId);
+
+        if (userDeleteError) {
+            console.error('خطأ في حذف حساب المستخدم:', userDeleteError);
+            throw userDeleteError;
+        }
+
+        // تسجيل الخروج بعد حذف الحساب
+        res.clearCookie('auth_token');
+        // توجيه المستخدم إلى صفحة تسجيل الدخول مع رسالة نجاح
+        res.render('login', { error: null, success: 'تم حذف حسابك بنجاح' });
+    } catch (err) {
+        console.error('خطأ في حذف الحساب:', err);
+        res.render('settings', {
+            error: 'حدث خطأ أثناء محاولة حذف الحساب، يرجى المحاولة مرة أخرى',
+            user: req.user,
+            settings: {}
+        });
+    }
+});
+
 module.exports = router;

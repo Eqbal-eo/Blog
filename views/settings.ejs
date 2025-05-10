@@ -242,6 +242,26 @@
                         </div>
                     </div>
 
+                    <!-- حذف الحساب -->
+                    <div class="settings-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-exclamation-triangle text-danger"></i>
+                            حذف الحساب
+                        </h4>
+                        
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                            <strong>تحذير:</strong> سيؤدي حذف حسابك إلى إزالة جميع بياناتك ومدوناتك بشكل نهائي. هذا الإجراء لا يمكن التراجع عنه.
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                <i class="bi bi-trash3 me-1"></i>
+                                حذف الحساب
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="settings-section text-center">
                         <button type="submit" class="btn btn-primary  px-5">
                             <i class="bi bi-check2-circle me-2"></i>
@@ -256,6 +276,36 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal تأكيد حذف الحساب -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">تأكيد حذف الحساب</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف حسابك؟</p>
+                    <p class="text-danger"><strong>تحذير:</strong> سيتم حذف جميع بياناتك ومدوناتك بشكل دائم. لا يمكن التراجع عن هذا الإجراء.</p>
+                    
+                    <form id="deleteAccountForm" action="/delete-account" method="POST">
+                        <div class="mb-3">
+                            <label for="password" class="form-label">أدخل كلمة المرور للتأكيد</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteAccountForm').submit();">
+                        <i class="bi bi-trash3 me-1"></i>
+                        حذف الحساب نهائيًا
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
