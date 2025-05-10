@@ -116,6 +116,9 @@
                     <div class="post-title">
                         <i class="bi bi-file-text me-2"></i>
                         <%= post.title %>
+                        <span class="badge <%= post.status === 'published' ? 'bg-success' : 'bg-secondary' %> ms-2">
+                            <%= post.status === 'published' ? 'منشور' : 'مسودة' %>
+                        </span>
                     </div>
                     <div class="post-full-content">
                         <%- post.content %>
