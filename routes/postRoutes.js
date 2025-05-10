@@ -6,8 +6,30 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 // تطبيق middleware على جميع مسارات التدوينات
 router.use(authenticateToken);
 
-router.get('/create', (req, res) => {
-    res.render('create-post');
+router.get('/create', async (req, res) => {
+    try {
+        // جلب الاسم العربي للمستخدم
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('display_name_ar')
+            .eq('id', req.user.id)
+            .single();
+            
+        if (userError) {
+            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            throw userError;
+        }
+        
+        res.render('create-post', {
+            user: {
+                ...req.user,
+                display_name_ar: userData.display_name_ar
+            }
+        });
+    } catch (err) {
+        console.error('خطأ في عرض صفحة إنشاء التدوينة:', err);
+        res.redirect('/dashboard');
+    }
 });
 
 router.post('/create', async (req, res) => {
@@ -42,15 +64,35 @@ router.post('/create', async (req, res) => {
 
 router.get('/select-edit', async (req, res) => {
     try {
+        // جلب الاسم العربي للمستخدم
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('display_name_ar')
+            .eq('id', req.user.id)
+            .single();
+            
+        if (userError) {
+            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            throw userError;
+        }
+        
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.user.id); // استخدام بيانات المستخدم من JWT
+            .eq('user_id', req.user.id);
 
         if (error) throw error;
-        res.render('select-edit', { posts });
+        
+        res.render('select-edit', { 
+            posts,
+            user: {
+                ...req.user,
+                display_name_ar: userData.display_name_ar
+            }
+        });
     } catch (err) {
-        res.send('حدث خطأ');
+        console.error('خطأ في عرض صفحة تحديد التدوينة للتعديل:', err);
+        res.redirect('/dashboard');
     }
 });
 
@@ -85,15 +127,35 @@ router.post('/edit/:id', async (req, res) => {
 
 router.get('/select-delete', async (req, res) => {
     try {
+        // جلب الاسم العربي للمستخدم
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('display_name_ar')
+            .eq('id', req.user.id)
+            .single();
+            
+        if (userError) {
+            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            throw userError;
+        }
+        
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.user.id); // استخدام بيانات المستخدم من JWT
+            .eq('user_id', req.user.id);
 
         if (error) throw error;
-        res.render('select-delete', { posts });
+        
+        res.render('select-delete', { 
+            posts,
+            user: {
+                ...req.user,
+                display_name_ar: userData.display_name_ar
+            }
+        });
     } catch (err) {
-        res.send('حدث خطأ');
+        console.error('خطأ في عرض صفحة تحديد التدوينة للحذف:', err);
+        res.redirect('/dashboard');
     }
 });
 

@@ -45,15 +45,28 @@
                 </ul>
 
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/settings">
-                            <i class="bi bi-gear"></i> الإعدادات
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> <%= user.display_name_ar || user.username %>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="/logout">
-                            <i class="bi bi-box-arrow-left"></i> تسجيل الخروج
-                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/author/<%= user.id %>">
+                                    <i class="bi bi-journal-text me-2"></i>مدونتي
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/settings">
+                                    <i class="bi bi-gear me-2"></i>الإعدادات
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="/logout">
+                                    <i class="bi bi-box-arrow-left me-2"></i>تسجيل الخروج
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
