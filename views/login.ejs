@@ -44,7 +44,13 @@
               <div class="alert alert-danger text-center">
                 <%= error %>
               </div>
-              <% } %>
+            <% } %>
+            
+            <% if (typeof success !== 'undefined' && success) { %>
+              <div class="alert alert-success text-center">
+                <%= success %>
+              </div>
+            <% } %>
 
                 <form action="/login" method="POST">
                   <div class="mb-3">
