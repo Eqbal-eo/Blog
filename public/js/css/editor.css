@@ -200,6 +200,7 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 95px; /* يضمن أن يبقى العنصر مرئياً بعد شريط التنقل */
+    /* Animation removed */
 }
 
 @media (max-width: 768px) {
@@ -276,6 +277,7 @@ body {
     padding: 1.5rem;
     margin-top: 1.5rem;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Transition removed */
 }
 
 .action-card h5 {
@@ -285,6 +287,12 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+/* Adding specific hover style override to prevent border color change */
+.action-card:hover {
+    transform: none;
+    border-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Media queries for responsiveness */

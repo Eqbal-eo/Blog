@@ -145,13 +145,10 @@ html, body {
     padding: 1.5rem;
     border-radius: var(--border-radius);
     text-align: center;
-    transition: var(--transition);
 }
 
 .action-card:hover {
-    transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-    border-color: var(--primary-color);
 }
 
 /* Add icon color styling */
@@ -159,12 +156,10 @@ html, body {
     color: var(--icon-color);
     font-size: 2rem;
     margin-bottom: 1rem;
-    transition: var(--transition);
 }
 
 .action-card:hover i {
     color: var(--secondary-color);
-    transform: scale(1.1);
 }
 
 /* Action card title styling */
