@@ -4,6 +4,7 @@ const supabase = require('../db/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const { authenticateToken } = require('../middleware/authMiddleware');
 
 // استخدام المفتاح السري من متغيرات البيئة
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -147,10 +148,12 @@ router.post('/login', async (req, res) => {
 });
 
 // عرض لوحة التحكم
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', authenticateToken, async (req, res) => {
+    console.log('🔍 الدخول إلى مسار لوحة التحكم');
     try {
         // استخراج بيانات المستخدم من الـوسيط authenticateToken
         const userId = req.user.id;
+        console.log('👤 معرف المستخدم:', userId);
         
         const { data: posts, error } = await supabase
             .from('posts')
@@ -158,15 +161,20 @@ router.get('/dashboard', async (req, res) => {
             .eq('user_id', userId)
             .order('created_at', { ascending: false });
 
-        if (error) throw error;
+        if (error) {
+            console.error('❌ خطأ في جلب المنشورات:', error);
+            throw error;
+        }
 
+        console.log(`📄 تم جلب ${posts.length} منشور بنجاح`);
+        
         res.render('dashboard', {
             user: req.user,
             posts
         });
     } catch (err) {
-        console.error(err);
-        res.send('حدث خطأ');
+        console.error("❌ خطأ في صفحة لوحة التحكم:", err);
+        res.status(500).render('login', { error: 'حدث خطأ أثناء تحميل لوحة التحكم. الرجاء تسجيل الدخول مرة أخرى.' });
     }
 });
 
