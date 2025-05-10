@@ -3,8 +3,15 @@
     --secondary-color: #470539c5;
     --accent-color: #f9f7f0;
     --text-color: #222;
+    --light-text: #666;
+    --border-color: rgba(0, 0, 0, 0.05);
     --border-radius: 8px;
     --transition: all 0.3s ease;
+    --card-bg: white;
+    --hover-bg: #f9f7f0;
+    --icon-color: #8c4a21ca;
+    --card-text-color: #666; /* لون نص البطاقات الرمادي */
+    --nav-link-color: #494949; /* لون نص أزرار النافبار */
 }
 
 html, body {
@@ -14,8 +21,8 @@ html, body {
     font-family: 'Tajawal', sans-serif;
     display: flex;
     flex-direction: column;
-    background-color: #f9f7f0;
-    color: #222;
+    background-color: var(--accent-color);
+    color: var(--text-color);
     line-height: 1.5;
     padding-top: 70px;
 }
@@ -36,12 +43,12 @@ html, body {
 .custom-navbar .navbar-brand {
     font-size: 1.6rem;
     font-weight: 500;
-    color: #8c4a21ca;
+    color: var(--primary-color);
     transition: var(--transition);
 }
 
 .custom-navbar .nav-link {
-    color: #100f0f !important;
+    color: var(--nav-link-color) !important;
     font-size: 1rem;
     margin: 4px 1rem;
     font-weight: 400;
@@ -52,20 +59,21 @@ html, body {
 
 .custom-navbar .nav-link:hover {
     color: #fff !important;
-    background-color: #470539c5;
+    background-color: var(--secondary-color);
 }
 
 /* Dashboard Cards */
 .posts-box {
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: var(--border-radius);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     padding: 0.8rem;
     margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
 }
 
 .posts-box h3 {
-    color: #8c4a21ca;
+    color: var(--primary-color);
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
     position: relative;
@@ -89,7 +97,7 @@ html, body {
     padding: 1.5rem;
     border-radius: var(--border-radius);
     margin-bottom: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
     transition: var(--transition);
     cursor: pointer;
 }
@@ -97,7 +105,7 @@ html, body {
 .post-content:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
-    background-color: white;
+    background-color: var(--card-bg);
 }
 
 .post-title {
@@ -112,7 +120,7 @@ html, body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 0.6s ease, opacity 0.4s ease;
-    color: #666;
+    color: var(--light-text);
     line-height: 1.6;
 }
 
@@ -121,7 +129,7 @@ html, body {
     opacity: 1;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid var(--border-color);
 }
 
 /* Action Buttons */
@@ -133,17 +141,41 @@ html, body {
 }
 
 .action-card {
-    background: white;
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: var(--border-radius);
     text-align: center;
     transition: var(--transition);
-    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .action-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color);
+}
+
+/* Add icon color styling */
+.action-card i, .stat-card i {
+    color: var(--icon-color);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.action-card:hover i {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+/* Action card title styling */
+.action-card h4, .action-card .card-title, .action-card h5 {
+    color: var(--card-text-color);
+    margin: 0.8rem 0;
+    font-weight: 600;
+}
+
+.action-card p {
+    color: var(--card-text-color);
 }
 
 /* Stats Section */
@@ -155,50 +187,59 @@ html, body {
 }
 
 .stat-card {
-    background: white;
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: var(--border-radius);
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
 }
+
 
 .stat-number {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 .stat-label {
-    color: #666;
+    color: var(--light-text);
     margin-top: 0.5rem;
 }
 
 /* Buttons */
 .btn-primary {
-    background-color: #8c4a21ca;
+    background-color: var(--primary-color);
     border: none;
     padding: 0.6rem 1.5rem;
     font-size: 0.9rem;
     color: #fff;
+    transition: var(--transition);
 }
 
 .btn-primary:hover {
-    background-color: #8c4a21ca;
+    background-color: var(--primary-color);
+    opacity: 0.9;
+    transform: translateY(-2px);
     color: #fff;
     border: none;
+    box-shadow: 0 6px 12px rgba(140, 74, 33, 0.15);
 }
 
 .btn-outline-dark {
-    border-color: #0000003b;
-    color: #131313ca;
+    border-color: rgba(0, 0, 0, 0.23);
+    color: var(--text-color);
     padding: 0.6rem 1.5rem;
     font-size: 0.9rem;
+    transition: var(--transition);
 }
 
 .btn-outline-dark:hover {
-    background-color: #470539c5;
+    background-color: var(--secondary-color);
     color: #fff;
     border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(71, 5, 57, 0.15);
 }
 
 /* Responsive Design */
@@ -334,7 +375,7 @@ footer {
     margin-top: auto;
     padding: 1.5rem 0;
     background-color: #ffffff;
-    color: #222;
+    color: var(--text-color);
     text-align: center;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #cccccc96;

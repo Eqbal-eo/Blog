@@ -76,17 +76,17 @@
             <!-- Stats Section -->
             <div class="stats-container fadeIn">
                 <div class="stat-card">
-                    <i class="bi bi-file-text h1 text-primary"></i>
+                    <i class="bi bi-file-text h1"></i>
                     <div class="stat-number"><%= posts.length %></div>
                     <div class="stat-label">إجمالي التدوينات</div>
                 </div>
                 <div class="stat-card">
-                    <i class="bi bi-eye h1 text-success"></i>
+                    <i class="bi bi-eye h1"></i>
                     <div class="stat-number">0</div>
                     <div class="stat-label">إجمالي المشاهدات</div>
                 </div>
                 <div class="stat-card">
-                    <i class="bi bi-chat-dots h1 text-info"></i>
+                    <i class="bi bi-chat-dots h1"></i>
                     <div class="stat-number">0</div>
                     <div class="stat-label">إجمالي التعليقات</div>
                 </div>
@@ -95,19 +95,19 @@
             <!-- Quick Actions -->
             <div class="dashboard-actions fadeIn">
                 <a href="/posts/create" class="action-card text-decoration-none">
-                    <i class="bi bi-plus-circle h2 text-success"></i>
+                    <i class="bi bi-plus-circle h2"></i>
                     <h5 class="mt-3">إنشاء تدوينة جديدة</h5>
-                    <p class="text-muted">أضف محتوى جديداً إلى مدونتك</p>
+                    <p>أضف محتوى جديداً إلى مدونتك</p>
                 </a>
                 <a href="/posts/select-edit" class="action-card text-decoration-none">
-                    <i class="bi bi-pencil-square h2 text-primary"></i>
+                    <i class="bi bi-pencil-square h2"></i>
                     <h5 class="mt-3">تعديل التدوينات</h5>
-                    <p class="text-muted">قم بتحديث المحتوى الموجود</p>
+                    <p>قم بتحديث المحتوى الموجود</p>
                 </a>
                 <a href="/settings" class="action-card text-decoration-none">
-                    <i class="bi bi-gear h2 text-secondary"></i>
+                    <i class="bi bi-gear h2"></i>
                     <h5 class="mt-3">إعدادات الحساب</h5>
-                    <p class="text-muted">تخصيص إعدادات حسابك</p>
+                    <p>تخصيص إعدادات حسابك</p>
                 </a>
             </div>
 
@@ -129,7 +129,7 @@
                     <div class="post-title">
                         <i class="bi bi-file-text me-2"></i>
                         <%= post.title %>
-                        <span class="badge <%= post.status === 'published' ? 'bg-success' : 'bg-secondary' %> ms-2">
+                        <span class="badge <%= post.status === 'published' ? 'bg-primary' : 'bg-secondary' %> ms-2">
                             <%= post.status === 'published' ? 'منشور' : 'مسودة' %>
                         </span>
                     </div>
