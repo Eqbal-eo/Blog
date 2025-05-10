@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
+const cookieParser = require('cookie-parser'); // إضافة معالج الكوكيز
 const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
 
@@ -17,18 +17,8 @@ const PORT = 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const domain = isProduction ? '.afaq.blog' : 'localhost';
 
-app.use(session({
-  secret: 'mySecretKey',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 1000 * 60 * 60, // 1 ساعة
-    httpOnly: true,
-    secure: isProduction, // استخدم HTTPS فقط في بيئة الإنتاج
-    domain: isProduction ? domain : undefined, // حدد النطاق في بيئة الإنتاج فقط
-    sameSite: isProduction ? 'none' : 'lax' // سماح بالطلبات عبر المواقع في بيئة الإنتاج
-  }
-}));
+// استخدام معالج الكوكيز بدلاً من الجلسات
+app.use(cookieParser());
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
