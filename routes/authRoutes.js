@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db/db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+// استخدام المفتاح السري من متغيرات البيئة
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // عرض صفحة التسجيل
 router.get('/register', (req, res) => {
@@ -100,7 +105,6 @@ router.get('/login', (req, res) => {
 
 // معالجة تسجيل الدخول
 router.post('/login', async (req, res) => {
-
     const { username, password } = req.body;
 
     try {
@@ -119,20 +123,22 @@ router.post('/login', async (req, res) => {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
         }
 
-        // تعيين الجلسة
-        req.session.user = {
-            id: users.id,
-            username: users.username
-        };
+        // إنشاء توكن JWT
+        const token = jwt.sign(
+            { id: users.id, username: users.username },
+            JWT_SECRET,
+            { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
+        );
 
-        // تأكيد حفظ الجلسة قبل التوجيه
-        req.session.save(err => {
-            if (err) {
-                console.error('فشل في حفظ الجلسة:', err);
-                return res.render('login', { error: 'فشل في إنشاء الجلسة' });
-            }
-            res.redirect('/dashboard');
+        // تخزين التوكن في كوكيز آمنة
+        res.cookie('auth_token', token, {
+            httpOnly: true, // لا يمكن الوصول إليها من JavaScript
+            secure: process.env.NODE_ENV === 'production', // للاتصالات HTTPS فقط في الإنتاج
+            maxAge: 86400000 // 24 ساعة بالمللي ثانية
         });
+
+        // توجيه المستخدم إلى لوحة التحكم
+        res.redirect('/dashboard');
             
     } catch (err) {
         console.error('حدث خطأ أثناء تسجيل الدخول:', err);
@@ -140,25 +146,22 @@ router.post('/login', async (req, res) => {
     }
 });
 
- 
-
 // عرض لوحة التحكم
 router.get('/dashboard', async (req, res) => {
-    console.log('📥 دخول لوحة التحكم - الجلسة:', req.session);
-
-    if (!req.session.user) return res.redirect('/login');
-
     try {
+        // استخراج بيانات المستخدم من الـوسيط authenticateToken
+        const userId = req.user.id;
+        
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.session.user.id)
+            .eq('user_id', userId)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
 
         res.render('dashboard', {
-            user: req.session.user,
+            user: req.user,
             posts
         });
     } catch (err) {
@@ -169,13 +172,9 @@ router.get('/dashboard', async (req, res) => {
 
 // تسجيل الخروج
 router.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error('فشل في إنهاء الجلسة:', err);
-            return res.redirect('/dashboard');
-        }
-        res.redirect('/login');
-    });
+    // حذف كوكيز التوكن
+    res.clearCookie('auth_token');
+    res.redirect('/login');
 });
 
 module.exports = router;

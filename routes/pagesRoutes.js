@@ -3,6 +3,7 @@ const router = express.Router();
 const supabase = require('../db/db');
 const multer = require('multer');
 const path = require('path');
+const { authenticateToken } = require('../middleware/authMiddleware');
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -16,19 +17,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Middleware to check if user is authenticated
-const checkAuth = (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    next();
-};
-
 // Get settings page
-router.get('/settings', checkAuth, async (req, res) => {
+router.get('/settings', authenticateToken, async (req, res) => {
     try {
-        // الحصول على معرف المستخدم من الجلسة
-        const userId = req.session.user.id;
+        // الحصول على معرف المستخدم من JWT
+        const userId = req.user.id;
         console.log('Fetching settings for user:', userId);
 
         // Get user data including bio and display name
@@ -70,16 +63,16 @@ router.get('/settings', checkAuth, async (req, res) => {
         // تقديم رسالة خطأ أكثر تفصيلاً للمستخدم
         res.status(500).render('settings', {
             settings: {},
-            user: { id: req.session.user.id },
+            user: { id: req.user.id },
             error: 'عذراً، حدث خطأ أثناء جلب الإعدادات. يرجى المحاولة مرة أخرى.'
         });
     }
 });
 
 // Update settings
-router.post('/settings', checkAuth, upload.single('profile_image'), async (req, res) => {
+router.post('/settings', authenticateToken, upload.single('profile_image'), async (req, res) => {
     try {
-        const userId = req.session.user.id;
+        const userId = req.user.id;
         const {
             blog_title,
             blog_description,
@@ -161,7 +154,7 @@ router.post('/settings', checkAuth, upload.single('profile_image'), async (req, 
         console.error('Error in settings update:', err);
         res.status(500).render('settings', {
             settings: req.body,
-            user: { id: req.session.user.id },
+            user: { id: req.user.id },
             error: 'عذراً، حدث خطأ أثناء حفظ الإعدادات. يرجى المحاولة مرة أخرى.'
         });
     }

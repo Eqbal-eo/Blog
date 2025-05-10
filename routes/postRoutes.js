@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/db');
-
-// Middleware للتحقق من تسجيل الدخول
-const checkAuth = (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    next();
-};
+const { authenticateToken } = require('../middleware/authMiddleware');
 
 // تطبيق middleware على جميع مسارات التدوينات
-router.use(checkAuth);
+router.use(authenticateToken);
 
 router.get('/create', (req, res) => {
     res.render('create-post');
@@ -19,7 +12,7 @@ router.get('/create', (req, res) => {
 
 router.post('/create', async (req, res) => {
     const { title, content, status, category, created_at } = req.body;
-    const userId = req.session.user.id;
+    const userId = req.user.id; // استخدام بيانات المستخدم من JWT
 
     if (!title || !content || !category) {
         return res.send('يرجى إدخال جميع الحقول');
@@ -36,7 +29,7 @@ router.post('/create', async (req, res) => {
                 category,
                 user_id: userId,
                 status: postStatus,
-                created_at // Add the created_at field
+                created_at
             }]);
 
         if (error) throw error;
@@ -52,7 +45,7 @@ router.get('/select-edit', async (req, res) => {
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.session.user.id);
+            .eq('user_id', req.user.id); // استخدام بيانات المستخدم من JWT
 
         if (error) throw error;
         res.render('select-edit', { posts });
@@ -79,7 +72,7 @@ router.post('/edit/:id', async (req, res) => {
                 content,
                 category,
                 status: postStatus,
-                created_at // Add the created_at field to the update
+                created_at
             })
             .eq('id', postId);
 
@@ -95,7 +88,7 @@ router.get('/select-delete', async (req, res) => {
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.session.user.id);
+            .eq('user_id', req.user.id); // استخدام بيانات المستخدم من JWT
 
         if (error) throw error;
         res.render('select-delete', { posts });
