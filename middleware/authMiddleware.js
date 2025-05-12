@@ -35,4 +35,23 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-module.exports = { authenticateToken };
+// وسيط للتحقق من صلاحيات المشرف
+const isAdmin = (req, res, next) => {
+    console.log('⚡ التحقق من صلاحيات المشرف:', req.user);
+    
+    if (req.user && req.user.role === 'admin') {
+        console.log('✅ المستخدم لديه صلاحيات المشرف');
+        next();
+    } else {
+        console.log('❌ المستخدم ليس لديه صلاحيات المشرف');
+        res.status(403).render('error', { 
+            message: 'غير مصرح لك بالوصول لهذه الصفحة',
+            error: { status: 403 }
+        });
+    }
+};
+
+module.exports = {
+    authenticateToken,
+    isAdmin
+};

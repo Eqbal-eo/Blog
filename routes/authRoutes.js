@@ -122,11 +122,9 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }
-
-        // إنشاء توكن JWT
+        }        // إنشاء توكن JWT مع تضمين دور المستخدم
         const token = jwt.sign(
-            { id: users.id, username: users.username },
+            { id: users.id, username: users.username, role: users.role },
             JWT_SECRET,
             { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
         );
@@ -154,11 +152,10 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
         // استخراج بيانات المستخدم من الـوسيط authenticateToken
         const userId = req.user.id;
         console.log('👤 معرف المستخدم:', userId);
-        
-        // جلب الاسم العربي للمستخدم
+          // جلب بيانات المستخدم بما فيها الدور والاسم العربي
         const { data: userData, error: userError } = await supabase
             .from('users')
-            .select('display_name_ar')
+            .select('display_name_ar, role')
             .eq('id', userId)
             .single();
             
@@ -167,25 +164,51 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
             throw userError;
         }
         
-        const { data: posts, error } = await supabase
+        const { data: posts, error: postsError } = await supabase
             .from('posts')
             .select('*')
             .eq('user_id', userId)
             .order('created_at', { ascending: false });
 
-        if (error) {
-            console.error('❌ خطأ في جلب المنشورات:', error);
-            throw error;
+        if (postsError) {
+            console.error('❌ خطأ في جلب المنشورات:', postsError);
+            throw postsError;
         }
-
         console.log(`📄 تم جلب ${posts.length} منشور بنجاح`);
+        
+        // جلب آخر الإشعارات للمستخدم
+        const { data: notifications, error: notificationsError } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(3);
+            
+        if (notificationsError) {
+            console.error('❌ خطأ في جلب الإشعارات:', notificationsError);
+            // لا نرغب في إيقاف الصفحة إذا فشل جلب الإشعارات
+            console.log('سيتم متابعة تحميل الصفحة بدون إشعارات');
+        } else {
+            console.log(`🔔 تم جلب ${notifications.length} إشعار بنجاح`);
+        }
+        
+        // التحقق من وجود رسالة نجاح في الكوكيز
+        const successMessage = req.cookies.success_message || null;
+        
+        // إذا كانت موجودة، نحذفها بعد استخدامها
+        if (successMessage) {
+            res.clearCookie('success_message');
+        }
         
         res.render('dashboard', {
             user: {
                 ...req.user,
-                display_name_ar: userData.display_name_ar
+                display_name_ar: userData.display_name_ar,
+                role: userData.role // إضافة دور المستخدم
             },
-            posts
+            posts,
+            notifications: notifications || [],
+            successMessage
         });
     } catch (err) {
         console.error("❌ خطأ في صفحة لوحة التحكم:", err);

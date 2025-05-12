@@ -58,6 +58,13 @@
                                     <i class="bi bi-gear me-2"></i>الإعدادات
                                 </a>
                             </li>
+                            <% if (user.role === 'admin') { %>
+                            <li>
+                                <a class="dropdown-item" href="/admin/pending-posts">
+                                    <i class="bi bi-clock-history me-2"></i>مراجعة المنشورات المعلقة
+                                </a>
+                            </li>
+                            <% } %>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger" href="/logout">
@@ -73,23 +80,40 @@
 
     <main>
         <div class="container">
+            <!-- رسالة النجاح -->
+            <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <%= successMessage %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+            
             <!-- Stats Section -->
-            <div class="stats-container fadeIn">
-                <div class="stat-card">
+            <div class="stats-container fadeIn">                <div class="stat-card">
                     <i class="bi bi-file-text h1"></i>
                     <div class="stat-number"><%= posts.length %></div>
                     <div class="stat-label">إجمالي التدوينات</div>
                 </div>
                 <div class="stat-card">
-                    <i class="bi bi-eye h1"></i>
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">إجمالي المشاهدات</div>
+                    <i class="bi bi-check-circle h1 text-success"></i>
+                    <div class="stat-number"><%= posts.filter(p => p.status === 'published').length %></div>
+                    <div class="stat-label">التدوينات المنشورة</div>
                 </div>
+                <% if (posts.filter(p => p.status === 'pending').length > 0) { %>
                 <div class="stat-card">
-                    <i class="bi bi-chat-dots h1"></i>
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">إجمالي التعليقات</div>
+                    <i class="bi bi-hourglass-split h1 text-warning"></i>
+                    <div class="stat-number"><%= posts.filter(p => p.status === 'pending').length %></div>
+                    <div class="stat-label">بانتظار المراجعة</div>
                 </div>
+                <% } %>
+                <% if (posts.filter(p => p.status === 'rejected').length > 0) { %>
+                <div class="stat-card">
+                    <i class="bi bi-x-circle h1 text-danger"></i>
+                    <div class="stat-number"><%= posts.filter(p => p.status === 'rejected').length %></div>
+                    <div class="stat-label">المنشورات المرفوضة</div>
+                </div>
+                <% } %>
             </div>
 
             <!-- Quick Actions -->
@@ -108,9 +132,45 @@
                     <i class="bi bi-gear h2"></i>
                     <h5 class="mt-3">إعدادات الحساب</h5>
                     <p>تخصيص إعدادات حسابك</p>
-                </a>
-            </div>
+                </a>            </div>
 
+            <!-- Recent Notifications -->
+            <% if (typeof notifications !== 'undefined' && notifications && notifications.length > 0) { %>
+            <div class="posts-box fadeIn">
+                <h3>
+                    <i class="bi bi-bell me-2"></i>
+                    <strong>آخر الإشعارات</strong>
+                    <a href="/notifications" class="float-end fs-6 text-decoration-none">عرض الكل</a>
+                </h3>
+                <div class="list-group mt-3">
+                    <% notifications.slice(0, 3).forEach(notification => { %>
+                    <div class="list-group-item list-group-item-action <%= !notification.is_read ? 'list-group-item-light' : '' %> p-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <% if (notification.type === 'post_approved') { %>
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <% } else if (notification.type === 'post_rejected') { %>
+                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                            <% } else { %>
+                                <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                            <% } %>
+                            <small class="text-muted">
+                                <%= new Date(notification.created_at).toLocaleString('ar-SA') %>
+                            </small>
+                        </div>
+                        <p class="mb-1"><%= notification.message %></p>
+                        <% if (notification.post_id) { %>
+                        <small>
+                            <a href="/posts/edit/<%= notification.post_id %>" class="text-decoration-none">
+                                <i class="bi bi-pencil-square me-1"></i>تعديل التدوينة
+                            </a>
+                        </small>
+                        <% } %>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+            <% } %>
+            
             <!-- Recent Posts -->
             <div class="posts-box fadeIn">
                 <h3>
@@ -123,15 +183,20 @@
                     <i class="bi bi-info-circle me-2"></i>
                     لا توجد تدوينات بعد.
                 </div>
-                <% } else { %>
-                <% posts.forEach(post => { %>
+                <% } else { %>                <% posts.forEach(post => { %>
                 <div class="post-content">
                     <div class="post-title">
                         <i class="bi bi-file-text me-2"></i>
                         <%= post.title %>
-                        <span class="badge <%= post.status === 'published' ? 'bg-primary' : 'bg-secondary' %> ms-2">
-                            <%= post.status === 'published' ? 'منشور' : 'مسودة' %>
-                        </span>
+                        <% if (post.status === 'published') { %>
+                            <span class="badge bg-success ms-2">منشور</span>
+                        <% } else if (post.status === 'draft') { %>
+                            <span class="badge bg-secondary ms-2">مسودة</span>
+                        <% } else if (post.status === 'pending') { %>
+                            <span class="badge bg-warning text-dark ms-2">قيد المراجعة</span>
+                        <% } else if (post.status === 'rejected') { %>
+                            <span class="badge bg-danger ms-2">مرفوض</span>
+                        <% } %>
                     </div>
                     <div class="post-full-content">
                         <%- post.content %>

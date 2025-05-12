@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة المنشورات المعلقة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/js/css/dashboard.css">
+    <link rel="stylesheet" href="/js/css/admin.css">
+</head>
+<body>
+    <%- include('../partials/header') %>
+    
+    <main class="admin-dashboard">
+        <h1>المنشورات المعلقة</h1>
+        
+        <div class="pending-posts">
+            <% if (posts && posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="post-card" data-post-id="<%= post.id %>">
+                        <h2><%= post.title %></h2>
+                        <p class="author">الكاتب: <%= post.author_name %></p>
+                        <div class="post-preview">
+                            <%- post.content.substring(0, 200) + '...' %>
+                        </div>                        <div class="post-actions">
+                            <button class="btn-approve" onclick="approvePost('<%= post.id %>')">موافقة</button>
+                            <button class="btn-reject" onclick="showRejectDialog('<%= post.id %>')">رفض</button>
+                            <a href="/admin/posts/<%= post.id %>/preview" class="btn-preview" target="_blank">معاينة</a>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p class="no-posts">لا توجد منشورات معلقة للمراجعة</p>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- نافذة منبثقة لسبب الرفض -->
+    <div id="reject-dialog" class="modal">
+        <div class="modal-content">
+            <h3>سبب الرفض</h3>
+            <textarea id="rejection-reason" placeholder="اكتب سبب رفض المنشور هنا..."></textarea>
+            <div class="modal-actions">
+                <button onclick="submitReject()">تأكيد الرفض</button>
+                <button onclick="closeRejectDialog()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPostId = null;
+
+        async function approvePost(postId) {
+            try {
+                const response = await fetch(`/admin/posts/${postId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    document.querySelector(`[data-post-id="${postId}"]`).remove();
+                    showNotification('تم نشر المنشور بنجاح');
+                } else {
+                    throw new Error('فشل في الموافقة على المنشور');
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                showNotification('حدث خطأ أثناء محاولة نشر المنشور', 'error');
+            }
+        }
+
+        function showRejectDialog(postId) {
+            currentPostId = postId;
+            document.getElementById('reject-dialog').style.display = 'block';
+        }
+
+        function closeRejectDialog() {
+            document.getElementById('reject-dialog').style.display = 'none';
+            document.getElementById('rejection-reason').value = '';
+            currentPostId = null;
+        }
+
+        async function submitReject() {
+            const reason = document.getElementById('rejection-reason').value;
+            
+            if (!reason.trim()) {
+                showNotification('يرجى كتابة سبب الرفض', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/posts/${currentPostId}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                if (response.ok) {
+                    document.querySelector(`[data-post-id="${currentPostId}"]`).remove();
+                    closeRejectDialog();
+                    showNotification('تم رفض المنشور بنجاح');
+                } else {
+                    throw new Error('فشل في رفض المنشور');
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                showNotification('حدث خطأ أثناء محاولة رفض المنشور', 'error');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            // إضافة كود إظهار الإشعارات هنا
+            alert(message);
+        }
+    </script>
+</body>
+</html>

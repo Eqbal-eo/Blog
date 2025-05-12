@@ -32,18 +32,17 @@ router.get('/create', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
-    const { title, content, status, category, created_at } = req.body;
+router.post('/create', async (req, res) => {    const { title, content, status, category, created_at } = req.body;
     const userId = req.user.id; // استخدام بيانات المستخدم من JWT
 
     if (!title || !content || !category) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    const postStatus = status || 'published';
+    // التحقق من وجود حالة وإلا تعيين الحالة الافتراضية إلى "pending"
+    const postStatus = status || 'pending';
 
-    try {
-        const { error } = await supabase
+    try {        const { error } = await supabase
             .from('posts')
             .insert([{
                 title,
@@ -55,6 +54,17 @@ router.post('/create', async (req, res) => {
             }]);
 
         if (error) throw error;
+        
+        // إذا كانت التدوينة في انتظار المراجعة، عرض رسالة للمستخدم
+        if (postStatus === 'pending') {
+            // يمكن استخدام res.locals لتمرير معلومات النجاح إلى لوحة التحكم
+            // هنا نستخدم جلسة مؤقتة لتخزين رسالة النجاح
+            res.cookie('success_message', 'تم إرسال تدوينتك بنجاح وهي في انتظار مراجعة المشرف', { 
+                maxAge: 5000, // ستختفي بعد 5 ثوان
+                httpOnly: true 
+            });
+        }
+        
         res.redirect('/dashboard');
     } catch (err) {
         console.error('خطأ في إدخال التدوينة:', err);
@@ -79,9 +89,20 @@ router.get('/select-edit', async (req, res) => {
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('user_id', req.user.id);
+            .eq('user_id', req.user.id)
+            .order('created_at', { ascending: false });
 
         if (error) throw error;
+        
+        // ترتيب المنشورات المرفوضة في البداية
+        if (posts) {
+            posts.sort((a, b) => {
+                // وضع المنشورات المرفوضة في البداية
+                if (a.status === 'rejected' && b.status !== 'rejected') return -1;
+                if (a.status !== 'rejected' && b.status === 'rejected') return 1;
+                return 0;
+            });
+        }
         
         res.render('select-edit', { 
             posts,
@@ -98,30 +119,66 @@ router.get('/select-edit', async (req, res) => {
 
 router.post('/edit/:id', async (req, res) => {
     const postId = req.params.id;
-    const { title, content, status, category, created_at } = req.body;
+    const { title, content, status, category, created_at, resubmit } = req.body;
 
     if (!title || !content || !category) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    const postStatus = status || 'published';
+    // التعامل مع إعادة تقديم التدوينات المرفوضة
+    let postStatus = status || 'published';
+    
+    // إذا كانت التدوينة مرفوضة وتم إعادة تقديمها
+    if (resubmit === 'true') {
+        postStatus = 'pending';
+    }
 
     try {
+        // التحقق من حالة التدوينة قبل التعديل
+        const { data: oldPostData, error: fetchError } = await supabase
+            .from('posts')
+            .select('status, rejection_reason')
+            .eq('id', postId)
+            .single();
+            
+        if (fetchError) throw fetchError;
+        
+        const updateData = {
+            title,
+            content,
+            category,
+            status: postStatus,
+            created_at,
+            updated_at: new Date()
+        };
+        
+        // إذا كانت التدوينة مرفوضة سابقاً وتم إعادة تقديمها، نحذف سبب الرفض
+        if (oldPostData.status === 'rejected' && resubmit === 'true') {
+            updateData.rejection_reason = null;
+        }
+
         const { error } = await supabase
             .from('posts')
-            .update({
-                title,
-                content,
-                category,
-                status: postStatus,
-                created_at
-            })
+            .update(updateData)
             .eq('id', postId);
 
         if (error) throw error;
+        
+        // إذا تم إعادة تقديم المنشور بعد الرفض، نضيف رسالة نجاح
+        if (oldPostData.status === 'rejected' && resubmit === 'true') {
+            res.cookie('success_message', 'تم إعادة تقديم التدوينة بنجاح وهي في انتظار المراجعة مرة أخرى', { 
+                maxAge: 5000, 
+                httpOnly: true 
+            });
+        }
+        
         res.redirect('/dashboard');
     } catch (err) {
-        res.send('فشل التعديل');
+        console.error('فشل التعديل:', err);
+        res.status(500).render('error', { 
+            message: 'حدث خطأ أثناء تعديل التدوينة',
+            error: { status: 500 }
+        });
     }
 });
 
