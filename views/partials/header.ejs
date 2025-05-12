@@ -25,23 +25,26 @@
                         حذف تدوينة
                     </a>
                 </li>
-                <% if (user && user.role === 'admin') { %>
+                <% if (user && user.role==='admin' ) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/pending-posts">
+                            <i class="bi bi-clock-history me-1"></i>مراجعة المنشورات المعلقة
+                        </a>
+                    </li>
+                    <% } %> 
+            </ul>
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/pending-posts">
-                        <i class="bi bi-clock-history me-1"></i>مراجعة المنشورات المعلقة
-                    </a>
-                </li>
-                <% } %>
-            </ul>            <ul class="navbar-nav">                <li class="nav-item">
                     <a class="nav-link position-relative" href="/notifications">
-                        <i class="bi bi-bell"></i>
                         <span id="notificationCounter" class="notification-badge"></span>
                     </a>
                 </li>
                 <script src="/js/notifications.js" defer></script>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle me-1"></i> <%= user.display_name_ar || user.username %>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i>
+                        <%= user.display_name_ar || user.username %>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
@@ -54,19 +57,21 @@
                                 <i class="bi bi-gear me-2"></i>الإعدادات
                             </a>
                         </li>
-                        <% if (user.role === 'admin') { %>
-                        <li>
-                            <a class="dropdown-item" href="/admin/pending-posts">
-                                <i class="bi bi-clock-history me-2"></i>مراجعة المنشورات المعلقة
-                            </a>
-                        </li>
-                        <% } %>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item text-danger" href="/logout">
-                                <i class="bi bi-box-arrow-left me-2"></i>تسجيل الخروج
-                            </a>
-                        </li>
+                        <% if (user.role==='admin' ) { %>
+                            <li>
+                                <a class="dropdown-item" href="/admin/pending-posts">
+                                    <i class="bi bi-clock-history me-2"></i>مراجعة المنشورات المعلقة
+                                </a>
+                            </li>
+                            <% } %>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="/logout">
+                                        <i class="bi bi-box-arrow-left me-2"></i>تسجيل الخروج
+                                    </a>
+                                </li>
                     </ul>
                 </li>
             </ul>
