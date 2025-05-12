@@ -3,18 +3,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser'); // إضافة معالج الكوكيز
 const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
-const { createNotificationsTable } = require('./db/init-db'); // استدعاء دالة إنشاء جدول الإشعارات
-
-// التحقق من وجود جداول قاعدة البيانات
-(async () => {
-  try {
-    await createNotificationsTable();
-  } catch (err) {
-    console.error('❌ خطأ أثناء التحقق من جداول قاعدة البيانات:', err);
-    // لا نريد إيقاف تشغيل التطبيق في حال وجود مشاكل في التحقق من قاعدة البيانات
-    // حيث أن الجداول يجب أن تكون مهيأة مسبقًا
-  }
-})();
 
 // استدعاء الراوتات
 const authRoutes = require('./routes/authRoutes');
