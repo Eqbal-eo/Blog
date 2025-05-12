@@ -113,25 +113,25 @@
                                         <option value="literature">أدب</option>
                                         <option value="medicine">طب</option>
                                     </select>
-                                </div>
-
-                                <div class="mb-4">
+                                </div>                                <div class="mb-4">
                                     <label for="status" class="form-label"><strong>حالة التدوينة</strong></label>
                                     <select class="form-select" id="status" name="status">
-                                        <option value="published">منشورة</option>
-                                        <option value="draft">مسودة</option>
+                                        <option value="pending" selected>إرسال للمراجعة</option>
+                                        <option value="draft">حفظ كمسودة</option>
                                     </select>
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="bi bi-info-circle"></i>
+                                        التدوينات المرسلة للمراجعة ستظهر بعد موافقة المشرف عليها.
+                                    </small>
                                 </div>
 
                                 <div class="mb-5">
                                     <label for="created_at" class="form-label"><strong>تاريخ النشر</strong></label>
                                     <input type="datetime-local" class="form-control" id="created_at" name="created_at"
                                         value="<%= new Date().toISOString().slice(0, 16) %>" required>
-                                </div>
-
-                                <div class="btn-container">
+                                </div>                                <div class="btn-container">
                                     <button type="submit" class="btn btn-primary">
-                                        نشر التدوينة
+                                        <span id="submitBtnText">إرسال للمراجعة</span>
                                     </button>
                                     <a href="/dashboard" class="btn btn-secondary">
                                         إلغاء
@@ -184,6 +184,16 @@
 
         // Set default text direction to RTL
         quill.format('direction', 'rtl');
+
+        // تغيير نص زر الإرسال حسب الحالة المختارة
+        document.getElementById('status').addEventListener('change', function() {
+            const submitBtnText = document.getElementById('submitBtnText');
+            if (this.value === 'draft') {
+                submitBtnText.textContent = 'حفظ كمسودة';
+            } else {
+                submitBtnText.textContent = 'إرسال للمراجعة';
+            }
+        });
     </script>
 </body>
 

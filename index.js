@@ -3,12 +3,26 @@ const express = require('express');
 const cookieParser = require('cookie-parser'); // إضافة معالج الكوكيز
 const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
+const { createNotificationsTable } = require('./db/init-db'); // استدعاء دالة إنشاء جدول الإشعارات
+
+// التحقق من وجود جداول قاعدة البيانات
+(async () => {
+  try {
+    await createNotificationsTable();
+  } catch (err) {
+    console.error('❌ خطأ أثناء التحقق من جداول قاعدة البيانات:', err);
+    // لا نريد إيقاف تشغيل التطبيق في حال وجود مشاكل في التحقق من قاعدة البيانات
+    // حيث أن الجداول يجب أن تكون مهيأة مسبقًا
+  }
+})();
 
 // استدعاء الراوتات
 const authRoutes = require('./routes/authRoutes');
 const mainRoutes = require('./routes/mainRoutes');
 const postRoutes = require('./routes/postRoutes');
 const pagesRoutes = require('./routes/pagesRoutes'); 
+const adminRoutes = require('./routes/adminRoutes'); // إضافة مسارات المشرف
+const notificationRoutes = require('./routes/notificationRoutes'); // إضافة مسارات الإشعارات
 
 const app = express();
 const PORT = 3000;
@@ -34,6 +48,8 @@ app.use('/', authRoutes);
 app.use('/', mainRoutes);
 app.use('/posts', postRoutes);
 app.use('/', pagesRoutes);
+app.use('/admin', adminRoutes); // إضافة مسارات المشرف
+app.use('/notifications', notificationRoutes); // إضافة مسارات الإشعارات
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);

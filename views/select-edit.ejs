@@ -76,8 +76,7 @@
     <main>
         <!-- Main Content -->
         <div class="container my-4">
-            <div class="posts-box fadeIn">
-                <h3>
+            <div class="posts-box fadeIn">                <h3>
                     <strong>تعديل تدوينة</strong>
                 </h3>
 
@@ -87,17 +86,34 @@
                         لا توجد تدوينات لتعديلها.
                     </div>
                 <% } else { %>
-                    <form id="editForm" method="POST" class="mt-4">
+                    <!-- عرض سبب الرفض إذا كانت التدوينة مرفوضة -->
+                    <div id="rejectionReasonAlert" class="alert alert-danger mb-4" style="display: none;">
+                        <h5><i class="bi bi-exclamation-triangle-fill me-2"></i>سبب رفض التدوينة</h5>
+                        <p id="rejectionReasonText"></p>
+                    </div>                    <form id="editForm" method="POST" class="mt-4">
                         <input type="hidden" name="_method" value="PUT">
+                        <!-- إضافة حقل لتحديد ما إذا كانت التدوينة سيتم إعادة تقديمها -->
+                        <input type="hidden" name="resubmit" id="resubmitInput" value="false">
                         
                         <div class="row g-4">
                             <div class="col-12">
                                 <div class="mb-4">
-                                    <label for="postSelector" class="form-label fw-bold">اختر التدوينة</label>
-                                    <select id="postSelector" class="form-select form-select-lg" required>
+                                    <label for="postSelector" class="form-label fw-bold">اختر التدوينة</label><select id="postSelector" class="form-select form-select-lg" required>
                                         <option disabled selected>اختر تدوينة لتعديلها</option>
                                         <% posts.forEach((post, i) => { %>
-                                            <option value="<%= post.id %>" data-index="<%= i %>"><%= post.title %></option>
+                                            <% if (post.status === 'rejected') { %>
+                                                <option value="<%= post.id %>" data-index="<%= i %>" data-status="<%= post.status %>" class="text-danger">
+                                                    <%= post.title %> (مرفوضة)
+                                                </option>
+                                            <% } else if (post.status === 'pending') { %>
+                                                <option value="<%= post.id %>" data-index="<%= i %>" data-status="<%= post.status %>" class="text-warning">
+                                                    <%= post.title %> (قيد المراجعة)
+                                                </option>
+                                            <% } else { %>
+                                                <option value="<%= post.id %>" data-index="<%= i %>" data-status="<%= post.status %>">
+                                                    <%= post.title %>
+                                                </option>
+                                            <% } %>
                                         <% }) %>
                                     </select>
                                 </div>
@@ -139,11 +155,20 @@
                                             <option value="published">منشورة</option>
                                             <option value="draft">مسودة</option>
                                         </select>
-                                    </div>
-
-                                    <div class="mb-5">
+                                    </div>                                    <div class="mb-5">
                                         <label for="created_at" class="form-label"><strong>تاريخ النشر</strong></label>
                                         <input type="datetime-local" class="form-control" id="created_at" name="created_at" required>
+                                    </div>
+
+                                    <div id="resubmitArea" class="mb-4 alert alert-warning" style="display: none;">
+                                        <h5><i class="bi bi-arrow-clockwise me-2"></i>إعادة تقديم التدوينة</h5>
+                                        <p>تم رفض هذه التدوينة سابقاً. بعد تعديلها، يمكنك إعادة تقديمها للمراجعة مرة أخرى.</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="resubmitCheck">
+                                            <label class="form-check-label" for="resubmitCheck">
+                                                إعادة تقديم التدوينة للمراجعة بعد التعديل
+                                            </label>
+                                        </div>
                                     </div>
 
                                     <div class="btn-container">
@@ -196,21 +221,28 @@
             });
 
             // Set default text direction to RTL
-            quill.format('direction', 'rtl');
-
-            const postSelector = document.getElementById('postSelector');
+            quill.format('direction', 'rtl');            const postSelector = document.getElementById('postSelector');
             const titleInput = document.getElementById('title');
             const contentInput = document.getElementById('contentInput');
             const statusSelect = document.getElementById('status');
             const form = document.getElementById('editForm');
+            
+            // العناصر المتعلقة بالتدوينات المرفوضة
+            const rejectionAlert = document.getElementById('rejectionReasonAlert');
+            const rejectionText = document.getElementById('rejectionReasonText');
+            const resubmitArea = document.getElementById('resubmitArea');
+            const resubmitCheck = document.getElementById('resubmitCheck');
+            const resubmitInput = document.getElementById('resubmitInput');
 
             postSelector.addEventListener('change', function() {
-                const selectedIndex = this.options[this.selectedIndex].dataset.index;
+                const selectedOption = this.options[this.selectedIndex];
+                const selectedIndex = selectedOption.dataset.index;
                 const post = posts[selectedIndex];
+                const postStatus = selectedOption.dataset.status;
 
                 titleInput.value = post.title;
                 quill.root.innerHTML = post.content;
-                statusSelect.value = post.status;
+                statusSelect.value = postStatus === 'rejected' ? 'draft' : (post.status || 'published');
                 document.getElementById('category').value = post.category || '';
 
                 // Format the date for datetime-local input
@@ -219,7 +251,37 @@
                 document.getElementById('created_at').value = formattedDate;
 
                 form.action = `/posts/edit/${post.id}`;
+                
+                // إذا كانت التدوينة مرفوضة، عرض سبب الرفض وخيار إعادة التقديم
+                if (postStatus === 'rejected') {
+                    rejectionText.textContent = post.rejection_reason || 'لم يتم تحديد سبب';
+                    rejectionAlert.style.display = 'block';
+                    resubmitArea.style.display = 'block';
+                    // إخفاء خيار النشر المباشر للتدوينات المرفوضة
+                    statusSelect.querySelector('option[value="published"]').disabled = true;
+                } else {
+                    rejectionAlert.style.display = 'none';
+                    resubmitArea.style.display = 'none';
+                    // إعادة تفعيل خيار النشر المباشر
+                    if (statusSelect.querySelector('option[value="published"]')) {
+                        statusSelect.querySelector('option[value="published"]').disabled = false;
+                    }
+                }
             });
+
+            // التعامل مع إعادة تقديم التدوينة المرفوضة
+            if (resubmitCheck) {
+                resubmitCheck.addEventListener('change', function() {
+                    resubmitInput.value = this.checked ? 'true' : 'false';
+                    
+                    if (this.checked) {
+                        // إذا تم اختيار إعادة التقديم، تغيير الزر ليعبر عن ذلك
+                        document.querySelector('button[type="submit"]').textContent = 'إعادة تقديم للمراجعة';
+                    } else {
+                        document.querySelector('button[type="submit"]').textContent = 'حفظ التعديلات';
+                    }
+                });
+            }
 
             form.addEventListener('submit', function() {
                 contentInput.value = quill.root.innerHTML;
