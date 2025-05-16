@@ -5,29 +5,28 @@ require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // وسيط للتحقق من توكن المصادقة
-const authenticateToken = (req, res, next) => {
-    console.log('⚡ تنفيذ وسيط المصادقة');
+const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Authentication Middleware');
     
-    // استخراج التوكن من الكوكيز
+    // Extract token from cookies
     const token = req.cookies.auth_token;
     
     if (!token) {
-        console.log('❌ لا يوجد توكن في الكوكيز');
+        console.log('❌ No token found in cookies');
         return res.redirect('/login');
     }
 
-    console.log('✅ تم العثور على توكن JWT');
+    console.log('✅ JWT token found');
 
-    // التحقق من صحة التوكن
+    // Verify token
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            // إذا كان التوكن غير صالح أو منتهي الصلاحية
-            console.error('❌ خطأ في التحقق من التوكن:', err);
+            // If token is invalid or expired
+            console.error('❌ Error verifying token:', err);
             res.clearCookie('auth_token');
             return res.redirect('/login');
         }
 
-        console.log('✅ التوكن صالح - بيانات المستخدم:', user);
+        console.log('✅ Token valid - User data:', user);
 
         // تخزين بيانات المستخدم في الطلب للاستخدام لاحقاً
         req.user = user;
@@ -36,14 +35,13 @@ const authenticateToken = (req, res, next) => {
 };
 
 // وسيط للتحقق من صلاحيات المشرف
-const isAdmin = (req, res, next) => {
-    console.log('⚡ التحقق من صلاحيات المشرف:', req.user);
+const isAdmin = (req, res, next) => {    console.log('⚡ Verifying Admin Permissions:', req.user);
     
     if (req.user && req.user.role === 'admin') {
-        console.log('✅ المستخدم لديه صلاحيات المشرف');
+        console.log('✅ User has admin permissions');
         next();
     } else {
-        console.log('❌ المستخدم ليس لديه صلاحيات المشرف');
+        console.log('❌ User does not have admin permissions');
         res.status(403).render('error', { 
             message: 'غير مصرح لك بالوصول لهذه الصفحة',
             error: { status: 403 }
