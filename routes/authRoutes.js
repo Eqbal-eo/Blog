@@ -167,15 +167,13 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
             .from('posts')
             .select('*')
             .eq('user_id', userId)
-            .order('created_at', { ascending: false });
-
-        if (postsError) {
-            console.error('❌ خطأ في جلب المنشورات:', postsError);
+            .order('created_at', { ascending: false });        if (postsError) {
+            console.error('❌ Error fetching posts:', postsError);
             throw postsError;
         }
-        console.log(`📄 تم جلب ${posts.length} منشور بنجاح`);
+        console.log(`📄 Successfully fetched ${posts.length} posts`);
         
-        // جلب آخر الإشعارات للمستخدم
+        // Fetch latest notifications for user
         const { data: notifications, error: notificationsError } = await supabase
             .from('notifications')
             .select('*')
@@ -184,11 +182,11 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
             .limit(3);
             
         if (notificationsError) {
-            console.error('❌ خطأ في جلب الإشعارات:', notificationsError);
-            // لا نرغب في إيقاف الصفحة إذا فشل جلب الإشعارات
-            console.log('سيتم متابعة تحميل الصفحة بدون إشعارات');
+            console.error('❌ Error fetching notifications:', notificationsError);
+            // We don't want to stop the page if notifications fail to load
+            console.log('Will continue loading the page without notifications');
         } else {
-            console.log(`🔔 تم جلب ${notifications.length} إشعار بنجاح`);
+            console.log(`🔔 Successfully fetched ${notifications.length} notifications`);
         }
         
         // التحقق من وجود رسالة نجاح في الكوكيز
