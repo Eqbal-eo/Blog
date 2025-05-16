@@ -146,12 +146,11 @@ router.post('/login', async (req, res) => {
 });
 
 // عرض لوحة التحكم
-router.get('/dashboard', authenticateToken, async (req, res) => {
-    console.log('🔍 الدخول إلى مسار لوحة التحكم');
+router.get('/dashboard', authenticateToken, async (req, res) => {    console.log('🔍 Accessing Dashboard Route');
     try {
-        // استخراج بيانات المستخدم من الـوسيط authenticateToken
+        // Extract user data from authenticateToken middleware
         const userId = req.user.id;
-        console.log('👤 معرف المستخدم:', userId);
+        console.log('👤 User ID:', userId);
           // جلب بيانات المستخدم بما فيها الدور والاسم العربي
         const { data: userData, error: userError } = await supabase
             .from('users')
