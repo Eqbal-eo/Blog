@@ -12,8 +12,8 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const adminRoutes = require('./routes/adminRoutes'); // إضافة مسارات المشرف
 const notificationRoutes = require('./routes/notificationRoutes'); // إضافة مسارات الإشعارات
 
-const app = express();
-const PORT = 3000;
+const app = express(); 
+const PORT = 3000; 
 
 // تحديد ما إذا كان التطبيق يعمل في بيئة الإنتاج أو التطوير
 const isProduction = process.env.NODE_ENV === 'production';
