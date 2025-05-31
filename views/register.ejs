@@ -213,7 +213,7 @@ footer a:hover {
 
   <h1><a href="/" style="text-decoration: none; color: inherit;">مدونات آفاق</a></h1>
 
-  <h5>أنشئ حساباً للبدء في الكتابة</h5>
+  <h5>أنشئ حساباً باستخدام كود الدعوة</h5>
 
   <div class="container mt-5">
     <div class="row justify-content-center">
@@ -236,9 +236,15 @@ footer a:hover {
               <div class="alert alert-success text-center">
                 <%= success %>
               </div>
-            <% } %>
+            <% } %>            <form method="POST" action="/register">
+              <div class="mb-3">
+                <label for="inviteCode" class="form-label">كود الدعوة</label>
+                <input type="text" class="form-control" id="inviteCode" name="inviteCode" placeholder="أدخل كود الدعوة المرسل إليك" required>
+                <div class="form-text text-muted" style="font-size: 0.8rem;">
+                  يجب الحصول على كود دعوة من الإدارة لإنشاء حساب جديد
+                </div>
+              </div>
 
-            <form method="POST" action="/register">
               <div class="mb-3">
                 <label for="username" class="form-label">اسم المستخدم</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="اختر اسمًا مميزًا" required>
@@ -257,10 +263,12 @@ footer a:hover {
               <div class="d-grid">
                 <button type="submit" class="btn btn-dark">تسجيل</button>
               </div>
-            </form>
-
-            <div class="mt-3 text-center">
+            </form>            <div class="mt-3 text-center">
               <a href="/login" class="text-dark">لديك حساب بالفعل؟ سجّل الدخول</a>
+            </div>
+
+            <div class="mt-2 text-center">
+              <a href="/blog-request" class="text-muted" style="font-size: 0.9rem;">ليس لديك كود دعوة؟ اطلب إنشاء مدونة</a>
             </div>
 
           </div>

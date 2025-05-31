@@ -59,11 +59,15 @@
                                 <a class="dropdown-item" href="/settings">
                                     <i class="bi bi-gear me-2"></i>الإعدادات
                                 </a>
-                            </li>
-                            <% if (user.role==='admin' ) { %>
+                            </li>                            <% if (user.role==='admin' ) { %>
                                 <li>
                                     <a class="dropdown-item" href="/admin/pending-posts">
                                         <i class="bi bi-clock-history me-2"></i>مراجعة المنشورات المعلقة
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/admin/pending-blog-requests">
+                                        <i class="bi bi-journal-check me-2"></i>طلبات إنشاء المدونات
                                     </a>
                                 </li>
                                 <% } %>
@@ -127,9 +131,7 @@
                                         <div class="stat-label">المنشورات المرفوضة</div>
                                     </div>
                                     <% } %>
-                    </div>
-
-                    <!-- Quick Actions -->
+                    </div>                    <!-- Quick Actions -->
                     <div class="dashboard-actions fadeIn">
                         <a href="/posts/create" class="action-card text-decoration-none">
                             <i class="bi bi-plus-circle h2"></i>
@@ -146,6 +148,13 @@
                             <h5 class="mt-3">إعدادات الحساب</h5>
                             <p>تخصيص إعدادات حسابك</p>
                         </a>
+                        <% if (user.role === 'admin') { %>
+                        <a href="/admin/pending-blog-requests" class="action-card text-decoration-none admin-card">
+                            <i class="bi bi-journal-check h2 text-primary"></i>
+                            <h5 class="mt-3">طلبات إنشاء المدونات</h5>
+                            <p>مراجعة وإدارة طلبات المدونات الجديدة</p>
+                        </a>
+                        <% } %>
                     </div>
 
                     <!-- Recent Notifications -->

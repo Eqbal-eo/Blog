@@ -11,6 +11,7 @@ const postRoutes = require('./routes/postRoutes');
 const pagesRoutes = require('./routes/pagesRoutes'); 
 const adminRoutes = require('./routes/adminRoutes'); // إضافة مسارات المشرف
 const notificationRoutes = require('./routes/notificationRoutes'); // إضافة مسارات الإشعارات
+const blogRequestRoutes = require('./routes/blogRequestRoutes'); // إضافة مسارات طلبات المدونات
 
 const app = express(); 
 const PORT = 3000; 
@@ -38,6 +39,7 @@ app.use('/posts', postRoutes);
 app.use('/', pagesRoutes);
 app.use('/admin', adminRoutes); // إضافة مسارات المشرف
 app.use('/notifications', notificationRoutes); // إضافة مسارات الإشعارات
+app.use('/', blogRequestRoutes); // إضافة مسارات طلبات المدونات
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
