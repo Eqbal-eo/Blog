@@ -18,4 +18,18 @@ router.post('/posts/:postId/reject', adminController.rejectPost);
 // معاينة منشور معلق
 router.get('/posts/:postId/preview', adminController.previewPost);
 
+// ======================== Blog Request Routes ========================
+
+// عرض قائمة طلبات المدونات المعلقة
+router.get('/pending-blog-requests', adminController.getPendingBlogRequests);
+
+// الموافقة على طلب مدونة
+router.post('/blog-requests/:requestId/approve', adminController.approveBlogRequest);
+
+// رفض طلب مدونة
+router.post('/blog-requests/:requestId/reject', adminController.rejectBlogRequest);
+
+// معاينة طلب مدونة
+router.get('/blog-requests/:requestId/preview', adminController.previewBlogRequest);
+
 module.exports = router;

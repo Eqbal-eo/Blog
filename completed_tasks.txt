@@ -1,7 +1,0 @@
-Completed tasks
-1. Added functionality to sort rejected posts at the top in the post editing selection page
-2. Added support for displaying rejection reasons to users
-3. Added ability for users to resubmit rejected posts after making changes
-4. Updated dashboard to show post status statistics
-5. Updated dashboard to show recent notifications
-6. Enhanced notifications system with JavaScript for real-time updates

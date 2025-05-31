@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معاينة طلب المدونة - <%= request.full_name %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/js/css/dashboard.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.7;
+        }
+        
+        .preview-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .preview-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .preview-body {
+            padding: 2rem;
+        }
+        
+        .info-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-section h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 120px;
+        }
+        
+        .info-value {
+            color: #6c757d;
+            flex: 1;
+            text-align: left;
+        }
+        
+        .sample-post {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .sample-post-header {
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .sample-post-title {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sample-post-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .sample-post-content {
+            color: #495057;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .motivation-section {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .motivation-section h4 {
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+        
+        .motivation-text {
+            color: #856404;
+            line-height: 1.7;
+        }
+        
+        .action-buttons {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .btn-floating {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-floating:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .word-count {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #1976d2;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ffc107;
+            color: #212529;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <div class="status-badge">
+                <i class="bi bi-clock me-1"></i>
+                قيد المراجعة
+            </div>
+            <h1 class="mb-2">
+                <i class="bi bi-person-circle me-2"></i>
+                <%= request.full_name %>
+            </h1>
+            <p class="mb-0">طلب إنشاء مدونة جديدة</p>
+            <small class="opacity-75">
+                رقم الطلب: #<%= request.id %>
+            </small>
+        </div>
+        
+        <div class="preview-body">
+            <!-- معلومات شخصية -->
+            <div class="info-section">
+                <h4>
+                    <i class="bi bi-person-badge me-2"></i>
+                    المعلومات الشخصية
+                </h4>
+                <div class="info-item">
+                    <span class="info-label">الاسم الكامل:</span>
+                    <span class="info-value"><%= request.full_name %></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">البريد الإلكتروني:</span>
+                    <span class="info-value"><%= request.email %></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">التخصص:</span>
+                    <span class="info-value"><%= request.specialty %></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">سنوات الخبرة:</span>
+                    <span class="info-value"><%= request.experience_years %> سنة</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">تاريخ التقديم:</span>
+                    <span class="info-value">
+                        <%= new Date(request.created_at).toLocaleDateString('ar-EG', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }) %>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- التدوينة النموذجية -->
+            <div class="info-section">
+                <h4>
+                    <i class="bi bi-file-text me-2"></i>
+                    التدوينة النموذجية
+                </h4>
+                
+                <div class="sample-post">
+                    <div class="sample-post-header">
+                        <h2 class="sample-post-title"><%= request.sample_title %></h2>
+                        <div class="sample-post-meta">
+                            <i class="bi bi-tag me-2"></i>
+                            التصنيف: <%= request.sample_category %>
+                        </div>
+                    </div>
+                    
+                    <div class="sample-post-content">
+                        <%- request.sample_content.replace(/\n/g, '<br>') %>
+                    </div>
+                    
+                    <div class="word-count">
+                        <i class="bi bi-calculator me-1"></i>
+                        عدد الكلمات: <%= request.sample_content.trim().split(/\s+/).length %> كلمة
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الدافع للتدوين -->
+            <div class="motivation-section">
+                <h4>
+                    <i class="bi bi-lightbulb me-2"></i>
+                    الدافع للتدوين
+                </h4>
+                <div class="motivation-text">
+                    <%- request.motivation.replace(/\n/g, '<br>') %>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- أزرار الإجراءات العائمة -->
+    <div class="action-buttons">
+        <button class="btn btn-success btn-floating" onclick="approveRequest()">
+            <i class="bi bi-check-circle me-2"></i>
+            موافقة
+        </button>
+        <button class="btn btn-danger btn-floating" onclick="rejectRequest()">
+            <i class="bi bi-x-circle me-2"></i>
+            رفض
+        </button>
+        <button class="btn btn-secondary btn-floating" onclick="window.close()">
+            <i class="bi bi-arrow-left me-2"></i>
+            إغلاق
+        </button>
+    </div>
+
+    <!-- نافذة منبثقة للموافقة -->
+    <div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        الموافقة على الطلب
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success">
+                        <i class="bi bi-info-circle me-2"></i>
+                        سيتم إنشاء رمز دعوة للمتقدم وإرساله عبر البريد الإلكتروني
+                    </div>
+                    <p>هل أنت متأكد من الموافقة على طلب <strong><%= request.full_name %></strong>؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-success" onclick="confirmApprove()">
+                        <i class="bi bi-check-circle me-1"></i>
+                        تأكيد الموافقة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة للرفض -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                        رفض الطلب
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rejectionReason" class="form-label">سبب الرفض:</label>
+                        <textarea class="form-control" id="rejectionReason" rows="4" 
+                                placeholder="اكتب سبب رفض الطلب بشكل واضح ومفصل..."></textarea>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        سيتم إرسال سبب الرفض للمتقدم عبر البريد الإلكتروني
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmReject()">
+                        <i class="bi bi-x-circle me-1"></i>
+                        تأكيد الرفض
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function approveRequest() {
+            const approveModal = new bootstrap.Modal(document.getElementById('approveModal'));
+            approveModal.show();
+        }
+        
+        function rejectRequest() {
+            const rejectModal = new bootstrap.Modal(document.getElementById('rejectModal'));
+            rejectModal.show();
+        }
+        
+        async function confirmApprove() {
+            try {
+                const response = await fetch(`/admin/blog-requests/<%= request.id %>/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`تم قبول الطلب بنجاح!\nرمز الدعوة: ${result.inviteCode}`);
+                    window.close();
+                } else {
+                    throw new Error(result.message || 'فشل في الموافقة على الطلب');
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                alert('حدث خطأ أثناء محاولة الموافقة على الطلب');
+            }
+        }
+        
+        async function confirmReject() {
+            const reason = document.getElementById('rejectionReason').value;
+            
+            if (!reason.trim()) {
+                alert('يرجى كتابة سبب الرفض');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/blog-requests/<%= request.id %>/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason })
+                });
+                
+                if (response.ok) {
+                    alert('تم رفض الطلب بنجاح');
+                    window.close();
+                } else {
+                    throw new Error('فشل في رفض الطلب');
+                }
+            } catch (error) {
+                console.error('خطأ:', error);
+                alert('حدث خطأ أثناء محاولة رفض الطلب');
+            }
+        }
+    </script>
+</body>
+</html>

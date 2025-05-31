@@ -16,9 +16,35 @@ router.get('/register', (req, res) => {
 
 // معالجة التسجيل
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { inviteCode, username, email, password } = req.body;
 
     try {
+        // التحقق من كود الدعوة أولاً
+        const { data: inviteCodeData, error: inviteError } = await supabase
+            .from('invite_codes')
+            .select('*')
+            .eq('code', inviteCode)
+            .eq('is_used', false)
+            .single();
+
+        if (inviteError || !inviteCodeData) {
+            return res.render('register', {
+                error: 'كود الدعوة غير صحيح أو مستخدم بالفعل',
+                success: null
+            });
+        }
+
+        // التحقق من صلاحية كود الدعوة (30 يوم)
+        const expiryDate = new Date(inviteCodeData.expires_at);
+        const currentDate = new Date();
+        
+        if (currentDate > expiryDate) {
+            return res.render('register', {
+                error: 'كود الدعوة منتهي الصلاحية',
+                success: null
+            });
+        }
+
         // التحقق من وجود المستخدم باستخدام اسم المستخدم
         const { data: existingUser, error: userError } = await supabase
             .from('users')
@@ -83,6 +109,21 @@ router.post('/register', async (req, res) => {
         if (settingsError) {
             console.error('خطأ في إنشاء الإعدادات:', settingsError);
             throw settingsError;
+        }
+
+        // تحديث كود الدعوة لتصبح مستخدمة
+        const { error: updateInviteError } = await supabase
+            .from('invite_codes')
+            .update({
+                is_used: true,
+                used_at: new Date().toISOString(),
+                used_by_user_id: newUser.id
+            })
+            .eq('id', inviteCodeData.id);
+
+        if (updateInviteError) {
+            console.error('خطأ في تحديث كود الدعوة:', updateInviteError);
+            // لا نتوقف هنا لأن المستخدم تم إنشاؤه بنجاح
         }
 
         res.render('register', {
