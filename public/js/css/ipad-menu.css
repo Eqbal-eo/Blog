@@ -1,0 +1,140 @@
+/* تنسيقات القائمة المنسدلة للآيباد */
+
+/* وضع زر القائمة في أقصى اليسار */
+.ipad-menu-button {
+    position: absolute;
+    left: 15px; /* تحديد المسافة من اليسار */
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    z-index: 1050;
+}
+
+[dir="rtl"] .ipad-menu-button {
+    left: auto;
+    right: 15px;
+}
+
+/* تأكد من ظهور القائمة المنسدلة بمجرد فتحها */
+.ipad-menu-button.show {
+    z-index: 1060;
+}
+
+/* زر القائمة المنسدلة */
+#mobileMenuButton {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: transparent;
+    transition: background-color 0.2s ease;
+}
+
+#mobileMenuButton:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+#mobileMenuButton:active {
+    background-color: rgba(0,0,0,0.1);
+}
+
+/* تنسيقات للقائمة المنسدلة */
+.dropdown-menu {
+    min-width: 220px;
+    max-width: 280px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255,255,255,0.98);
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s ease-out,
+                visibility 0.2s ease-out !important;
+}
+
+/* حالة القائمة المنسدلة النشطة */
+.dropdown-menu.show {
+    opacity: 1;
+    transform: translate3d(0, 40px, 0) !important;
+}
+
+/* دعم RTL للقائمة المنسدلة */
+[dir="rtl"] .dropdown-menu {
+    text-align: right;
+}
+
+/* تعديل موقع القائمة المنسدلة لتظهر داخل حدود الشاشة */
+.ipad-menu-button .dropdown-menu {
+    position: absolute;
+    inset: 0px auto auto 0px !important;
+    transform: translate(0px, 40px) !important;
+    min-width: 250px;
+    /* ضمان عدم خروج القائمة من الشاشة على اليسار */
+    left: 0 !important;
+    right: auto !important;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+    position: relative;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0,0,0,0.04);
+}
+
+.dropdown-item:active {
+    background-color: rgba(0,0,0,0.08);
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+    opacity: 0.1;
+}
+
+/* تعديلات مظهر القائمة على الأجهزة المختلفة */
+@media (min-width: 768px) and (max-width: 992px) {
+    .navbar-nav .btn-small {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* تعديلات خاصة بالآيباد في الوضع العمودي */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+    .ipad-menu-button {
+        display: block;
+    }
+    
+    .main-nav {
+        display: none;
+    }
+}
+
+/* Fallback for other tablets */
+@media screen and (max-width: 1024px) {
+    .ipad-menu-button {
+        display: block;
+    }
+    
+    .main-nav {
+        display: none;
+    }
+}
+
+/* تخصيصات إضافية للقائمة المنسدلة في الهواتف والآيباد */
+@media (max-width: 1024px) {
+    .ipad-menu-button .dropdown-menu {
+        max-width: 80vw; /* تحديد عرض أقصى بنسبة من عرض الشاشة */
+        right: auto;
+        left: 0;
+    }
+    
+    /* تصحيح محاذاة العناصر بشكل صريح */
+    .dropdown-item {
+        text-align: right !important;
+    }
+}

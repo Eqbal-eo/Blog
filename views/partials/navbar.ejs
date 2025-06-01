@@ -1,13 +1,38 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md">
-    <div class="container">
+    <div class="container position-relative">
         <a class="navbar-brand fw-bold brand-title" href="/">مدونات آفاق</a>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+          <!-- زر القائمة المنسدلة - يظهر في أقصى الزاوية اليسرى في وضع الآيباد العمودي -->
+        <div class="ipad-menu-button dropdown">
+            <button class="btn btn-outline-dark" type="button" id="mobileMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileMenuButton">
+                <li><a class="dropdown-item text-end" href="/">الرئيسية</a></li>
+                <li><a class="dropdown-item text-end" href="/blogs">المدونات</a></li>
+                <li><a class="dropdown-item text-end" href="/about">عن المنصة</a></li>
+                <% if (typeof hideRequestStatus === 'undefined' || !hideRequestStatus) { %>
+                    <li><a class="dropdown-item text-end" href="/blog-request-status">حالة الطلب</a></li>
+                <% } %>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-end" href="/login">تسجيل الدخول</a></li>
+                <% if (typeof showRegisterButton !== 'undefined' && showRegisterButton) { %>
+                    <li><a class="dropdown-item text-end text-primary fw-bold" href="/register">إنشاء حساب</a></li>
+                <% } else { %>
+                    <li><a class="dropdown-item text-end text-primary fw-bold" href="/blog-request">طلب إنشاء مدونة</a></li>
+                <% } %>
+            </ul>
+        </div>
+        
+        <!-- زر التبديل الأصلي - يظهر فقط على الشاشات الصغيرة جدًا -->
+        <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
             aria-label="Toggle navigation" id="navbar-toggler">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
+        <!-- القائمة العادية للشاشات المتوسطة والكبيرة -->
         <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto gap-1 mb-1 mb-md-0">
+            <ul class="navbar-nav ms-auto gap-1 mb-1 mb-md-0 d-none d-md-flex">
                 <a href="/" class="btn btn-outline-dark btn-small">الرئيسية</a>
                 <a href="/blogs" class="btn btn-outline-dark btn-small">المدونات</a>
                 <a href="/about" class="btn btn-outline-dark btn-small">عن المنصة</a>
@@ -15,7 +40,7 @@
                     <a href="/blog-request-status" class="btn btn-outline-dark btn-small">حالة الطلب</a>
                 <% } %>
             </ul>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-none d-md-flex align-items-center gap-2">
                 <a href="/login" class="btn btn-outline-dark-log px-3 py-2 text-nowrap">تسجيل الدخول</a>
                 <% if (typeof showRegisterButton !== 'undefined' && showRegisterButton) { %>
                     <a href="/register" class="btn btn-primary px-3 py-2 text-nowrap">إنشاء حساب</a>
