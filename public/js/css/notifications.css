@@ -37,6 +37,7 @@
     border: 1px solid #eee;
     border-radius: 8px;
     transition: all 0.3s ease;
+    opacity: 1;
 }
 
 .notification-item.unread {
@@ -83,6 +84,11 @@
     font-size: 3rem;
     margin-bottom: 1rem;
     opacity: 0.5;
+}
+
+/* تأثير الاختفاء التدريجي للإشعارات */
+.notification-item {
+    transition: opacity 0.5s ease;
 }
 
 /* تنسيقات إضافية للأجهزة المحمولة */

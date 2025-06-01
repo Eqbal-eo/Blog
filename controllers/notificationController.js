@@ -8,11 +8,11 @@ const {
 
 // عرض صفحة الإشعارات
 exports.getNotifications = async (req, res) => {
-    try {
-        const userId = req.user.id;
+    try {        const userId = req.user.id;
         const page = parseInt(req.query.page || 1);
         const limit = 10;
         const offset = (page - 1) * limit;
+        const showReadNotifications = req.query.showReadNotifications === 'true';
         
         // جلب بيانات المستخدم بما فيها الدور والاسم العربي
         const { data: userData, error: userError } = await supabase
@@ -24,12 +24,11 @@ exports.getNotifications = async (req, res) => {
         if (userError) {
             console.error('خطأ في جلب بيانات المستخدم:', userError);
             throw userError;
-        }
-
-        // جلب الإشعارات
+        }        // جلب الإشعارات غير المقروءة فقط (أو مع الإشعارات المقروءة بناءً على المعاملة)
         const { success, data: notifications, count, error } = await getUserNotifications(userId, { 
             limit, 
-            offset 
+            offset,
+            showReadNotifications // استخدام القيمة من الاستعلام
         });
 
         if (!success) {
@@ -87,7 +86,21 @@ exports.markAsRead = async (req, res) => {
             throw error;
         }
         
-        res.json({ success: true });
+        // جلب عدد الإشعارات غير المقروءة المتبقية
+        const { count: unreadCount } = await getUnreadNotificationsCount(userId);
+        
+        // إذا نجح الأمر، نقوم بجلب قائمة محدثة من الإشعارات غير المقروءة
+        const { data: remainingNotifications } = await getUserNotifications(userId, { 
+            limit: 10,
+            offset: 0,
+            showReadNotifications: false
+        });
+        
+        res.json({ 
+            success: true, 
+            unreadCount,
+            remainingNotifications
+        });
     } catch (error) {
         console.error('خطأ في تحديد الإشعار كمقروء:', error);
         res.status(500).json({ error: 'حدث خطأ أثناء تحديد الإشعار كمقروء' });
@@ -105,7 +118,15 @@ exports.markAllAsRead = async (req, res) => {
             throw error;
         }
         
-        res.json({ success: true });
+        // جلب عدد الإشعارات غير المقروءة (سيكون صفر بعد التحديث)
+        const { count: unreadCount } = await getUnreadNotificationsCount(userId);
+        
+        // إعادة قائمة إشعارات فارغة بما أن كلها أصبحت مقروءة
+        res.json({ 
+            success: true,
+            unreadCount: 0,
+            remainingNotifications: [] 
+        });
     } catch (error) {
         console.error('خطأ في تحديد جميع الإشعارات كمقروءة:', error);
         res.status(500).json({ error: 'حدث خطأ أثناء تحديد جميع الإشعارات كمقروءة' });
