@@ -1,11 +1,13 @@
 {
   "name": "blog-project",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
+  "main": "index.js",  "scripts": {
     "dev": "nodemon app.js",
     "start": "node index.js",
     "build": "npm install",
+    "validate-env": "node validate-env.js",
+    "check-secrets": "./check-secrets.sh",
+    "setup-hooks": "./setup-hooks.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
