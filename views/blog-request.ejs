@@ -9,14 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/js/css/home.css">
     <link rel="stylesheet" href="/js/css/footer.css">
-    <style>
-        .form-container {
+    <style>        .form-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .form-section {
@@ -119,28 +114,20 @@
                 </div>
             </div>
         </div>
-    </nav>
-
-    <main>
-        <div class="container">
+    </nav>    <main>
+        <div class="container mb-5">
             <div class="page-header">
                 <h1>طلب إنشاء مدونة</h1>
                 <p>نرحب بانضمامك إلى مجتمع الكتّاب والمفكرين. يرجى تعبئة النموذج أدناه مع تدوينة نموذجية لمراجعة طلبك</p>
-            </div>
-
-            <% if (error) { %>
+            </div>            <% if (error) { %>
                 <div class="alert alert-danger" role="alert">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
                     <%= error %>
                 </div>
             <% } %>            <% if (success) { %>
                 <div class="alert alert-success" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <%= success %>
-                    <hr>
+                    <%= success %>                    <hr>
                     <div class="mt-2">
                         <a href="/blog-request-status" class="btn btn-sm btn-outline-success">
-                            <i class="fas fa-search me-1"></i>
                             تتبع حالة الطلب
                         </a>
                     </div>
@@ -148,10 +135,9 @@
             <% } %>
 
             <div class="form-container">
-                <form method="POST" action="/blog-request">
-                    <!-- معلومات شخصية -->
+                <form method="POST" action="/blog-request">                    <!-- معلومات شخصية -->
                     <div class="form-section">
-                        <h3><i class="fas fa-user me-2"></i>المعلومات الشخصية</h3>
+                        <h3>المعلومات الشخصية</h3>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="fullName" class="form-label">الاسم الكامل <span class="required">*</span></label>
@@ -174,11 +160,9 @@
                                        min="0" max="50" required>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- التدوينة النموذجية -->
+                    </div>                    <!-- التدوينة النموذجية -->
                     <div class="form-section">
-                        <h3><i class="fas fa-edit me-2"></i>التدوينة النموذجية</h3>
+                        <h3>التدوينة النموذجية</h3>
                         <div class="mb-3">
                             <label for="sampleTitle" class="form-label">عنوان التدوينة <span class="required">*</span></label>
                             <input type="text" class="form-control" id="sampleTitle" name="sampleTitle" required
@@ -201,21 +185,15 @@
                                       placeholder="اكتب تدوينة كاملة تعبر عن أسلوبك في الكتابة ومستوى المحتوى المتوقع... (الحد الأدنى 250 كلمة)"></textarea>
                             <div class="form-text">يرجى كتابة تدوينة كاملة تعكس مستوى وجودة المحتوى الذي تنوي نشره</div>
                         </div>
-                    </div>
-
-                    <!-- الدافع للتدوين -->
+                    </div>                    <!-- الدافع للتدوين -->
                     <div class="form-section">
-                        <h3><i class="fas fa-heart me-2"></i>الدافع للتدوين</h3>
+                        <h3>الدافع للتدوين</h3>
                         <div class="mb-3">
                             <label for="motivation" class="form-label">لماذا تريد إنشاء مدونة على منصتنا؟ <span class="required">*</span></label>
                             <textarea class="form-control" id="motivation" name="motivation" rows="4" required
                                       placeholder="اشرح دوافعك للتدوين وما تأمل في تحقيقه من خلال المنصة..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="text-center">
+                        </div>                    </div>                    <div class="text-center mb-4">
                         <button type="submit" class="btn btn-submit">
-                            <i class="fas fa-paper-plane me-2"></i>
                             إرسال الطلب
                         </button>
                     </div>
@@ -236,14 +214,13 @@
         sampleContent.parentNode.appendChild(wordCountDiv);        function updateWordCount() {
             const text = sampleContent.value.trim();
             const words = text ? text.split(/\s+/).length : 0;
-            wordCountDiv.textContent = `عدد الكلمات: ${words} (الحد الأدنى: 250)`;
-            
+            wordCountDiv.textContent = `عدد الكلمات: ${words} (الحد الأدنى: 250)`;            
             if (words < 250) {
                 wordCountDiv.style.color = '#e74c3c';
-                wordCountDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-1"></i>عدد الكلمات: ${words} (الحد الأدنى: 250)`;
+                wordCountDiv.innerHTML = `عدد الكلمات: ${words} (الحد الأدنى: 250)`;
             } else {
                 wordCountDiv.style.color = '#27ae60';
-                wordCountDiv.innerHTML = `<i class="fas fa-check me-1"></i>عدد الكلمات: ${words}`;
+                wordCountDiv.innerHTML = `عدد الكلمات: ${words}`;
             }
         }
 
@@ -281,11 +258,9 @@
                 alert('يرجى إدخال عنوان بريد إلكتروني صحيح');
                 email.focus();
                 return false;
-            }
-
-            // إضافة تأثير تحميل على الزر
+            }            // إضافة تأثير تحميل على الزر
             const submitBtn = form.querySelector('.btn-submit');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جارٍ الإرسال...';
+            submitBtn.innerHTML = 'جارٍ الإرسال...';
             submitBtn.disabled = true;
         });
 
