@@ -213,12 +213,12 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
             throw postsError;
         }
         console.log(`📄 Successfully fetched ${posts.length} posts`);
-        
-        // Fetch latest notifications for user
+          // Fetch only unread notifications for user
         const { data: notifications, error: notificationsError } = await supabase
             .from('notifications')
             .select('*')
             .eq('user_id', userId)
+            .eq('is_read', false)
             .order('created_at', { ascending: false })
             .limit(3);
             

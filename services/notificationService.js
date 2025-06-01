@@ -22,12 +22,19 @@ async function createNotification(userId, postId, message, type) {
 }
 
 // الحصول على إشعارات المستخدم
-async function getUserNotifications(userId, options = { limit: 10, offset: 0 }) {
+async function getUserNotifications(userId, options = { limit: 10, offset: 0, showReadNotifications: false }) {
   try {
-    const { data, error, count } = await supabase
+    let query = supabase
       .from('notifications')
       .select('*, posts(*)', { count: 'exact' })
-      .eq('user_id', userId)
+      .eq('user_id', userId);
+    
+    // إذا كانت الخاصية showReadNotifications تساوي false، جلب الإشعارات غير المقروءة فقط
+    if (!options.showReadNotifications) {
+      query = query.eq('is_read', false);
+    }
+    
+    const { data, error, count } = await query
       .order('created_at', { ascending: false })
       .range(options.offset, options.offset + options.limit - 1);
 
