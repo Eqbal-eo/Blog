@@ -13,7 +13,7 @@ const adminRoutes = require('./routes/adminRoutes'); // إضافة مسارات 
 const notificationRoutes = require('./routes/notificationRoutes'); // إضافة مسارات الإشعارات
 const blogRequestRoutes = require('./routes/blogRequestRoutes'); // إضافة مسارات طلبات المدونات
 
-const app = express(); 
+const app = express();
 const PORT = 3000; 
 
 // تحديد ما إذا كان التطبيق يعمل في بيئة الإنتاج أو التطوير

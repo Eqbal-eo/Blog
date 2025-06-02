@@ -3,33 +3,14 @@ body {
   background-color: #f9f7f0;
   color: #222;
   line-height: 1.5;
+  /* لا داعي لإضافة padding-top هنا لأنه تم نقله إلى navbar.css */
 }
 
 h4 {
-
   margin-top: 15px;
 }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
-  background-color: #ffffff;
-  /* التأكد من أن النافبار له خلفية */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  /* إضافة ظل للنافبار */
-  border-bottom: 1px solid #cccccc96;
-  /* الحفاظ على الحدود السفلية */
-}
-
-/* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
-body {
-  padding-top: 80px;
-  /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
-}
+/* تم نقل تنسيقات navbar إلى ملف navbar.css */
 
 .d-flex a {
   display: flex;
@@ -49,28 +30,7 @@ body {
   box-shadow: 0 2px 6px rgba(40, 39, 39, 0.1);
 }
 
-.navbar-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.navbar-nav .nav-link {
-  color: #100f0f;
-  font-size: 1rem;
-  margin: 4px 1rem;
-  font-weight: 400;
-  padding: 0.5rem 2rem;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover {
-  color: #fff;
-  background-color: #470539c5;
-  text-decoration: none;
-}
+/* تم نقل تنسيقات navbar-nav إلى ملف navbar.css */
 
 .brand-title {
   font-size: 1.6rem;
@@ -278,38 +238,7 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .navbar-toggler:hover {
-    background-color: transparent;
-    color: #470539c5;
-    border-color: #470539c5;
-  }
-
-  .navbar-collapse.show+.navbar-toggler {
-    background-color: transparent;
-    color: transparent;
-    overflow-y: auto;     /* تمكين التمرير عند عرض القائمة */
-    max-height: 100vh;     /* تحديد أقصى ارتفاع للقائمة */
-  }
-
-  .navbar-nav {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .navbar-toggler-icon {
-    width: 20px;
-    height: 20px;
-    border: 2px solid transparent;
-    border-radius: 50%;
-  }
-
-  .navbar-nav .nav-link {
-    width: 75%;
-    padding: 0.1rem;
-    text-align: center;
-    margin-bottom: 0.2rem;
-    font-size: 0.9rem;
-  }
+  /* تم نقل تنسيقات navbar إلى ملف navbar.css */
 
   .hero {
     padding: 4rem 2rem;
@@ -480,18 +409,12 @@ body {
 
     .step {
         padding: 2.5rem;
-    }
-
-    /* CTA Section */
+    }    /* CTA Section */
     .cta {
         padding: 4rem 2rem;
     }
 
-    /* Navigation */
-    .navbar-nav .nav-link {
-        padding: 0.5rem 1.2rem;
-        margin: 0 0.3rem;
-    }
+    /* تم نقل تنسيقات Navigation إلى ملف navbar.css */
 }
 
 /* تحسين قسم التدوينات الأخيرة */
@@ -535,16 +458,7 @@ body {
     }
 }
 
-/* تحسين تأثيرات التمرير */
-.navbar {
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.navbar.scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
+/* تم نقل تنسيقات navbar إلى ملف navbar.css */
 
 /* تحسين تأثيرات الأزرار */
 .btn-primary, .btn-outline-dark, .btn-outline-dark-blog, .btn-outline-dark-log {
