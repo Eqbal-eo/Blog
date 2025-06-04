@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
         const totalPages = Math.ceil(totalPosts / postsPerPage);
     
         const { data: posts, error: postsError } = await supabase
-            .from('posts')
+            .from('posts') 
             .select(`
                 *,
                 users (
