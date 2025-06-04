@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
+
+// Explicitly load the .env file
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // استخدام المفتاح السري من متغيرات البيئة
 const getJWTSecret = () => {

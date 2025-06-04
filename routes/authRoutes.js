@@ -3,11 +3,20 @@ const router = express.Router();
 const supabase = require('../db/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
 const { authenticateToken } = require('../middleware/authMiddleware');
+
+// Explicitly load the .env file
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // استخدام المفتاح السري من متغيرات البيئة
 const JWT_SECRET = process.env.JWT_SECRET;
+
+// التحقق من وجود المفتاح السري
+if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not defined in environment variables. This is critical for authentication!');
+}
 
 // عرض صفحة التسجيل
 router.get('/register', (req, res) => {
@@ -154,44 +163,45 @@ router.post('/login', async (req, res) => {
             .from('users')
             .select('*')
             .eq('username', username)
-            .single();
-
-        if (error || !users) {
+            .single();        if (error || !users) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }
-
-        const isMatch = await bcrypt.compare(password, users.password);
+        }        const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }        // إنشاء توكن JWT مع تضمين دور المستخدم        // Make sure we have a JWT secret
+        }
+        
+        // إنشاء توكن JWT مع تضمين دور المستخدم
+        // Make sure we have a JWT secret
         const jwtSecret = process.env.JWT_SECRET;
         if (!jwtSecret) {
             console.error('JWT_SECRET is not defined in environment variables');
             return res.render('login', { error: 'حدث خطأ في إعدادات الخادم. يرجى التواصل مع المسؤول.' });
-        }
+        }        try {
+            const token = jwt.sign(
+                { id: users.id, username: users.username, role: users.role },
+                jwtSecret,
+                { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
+            );
 
-        const token = jwt.sign(
-            { id: users.id, username: users.username, role: users.role },
-            jwtSecret,
-            { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
-        );
+            // تخزين التوكن في كوكيز آمنة
+            res.cookie('auth_token', token, {
+                httpOnly: true, // لا يمكن الوصول إليها من JavaScript
+                secure: process.env.NODE_ENV === 'production', // للاتصالات HTTPS فقط في الإنتاج
+                maxAge: 86400000 // 24 ساعة بالمللي ثانية
+            });
 
-        // تخزين التوكن في كوكيز آمنة
-        res.cookie('auth_token', token, {
-            httpOnly: true, // لا يمكن الوصول إليها من JavaScript
-            secure: process.env.NODE_ENV === 'production', // للاتصالات HTTPS فقط في الإنتاج
-            maxAge: 86400000 // 24 ساعة بالمللي ثانية
-        });
-
-        // توجيه المستخدم إلى لوحة التحكم
-        res.redirect('/dashboard');
-              } catch (err) {
+            // توجيه المستخدم إلى لوحة التحكم
+            res.redirect('/dashboard');
+        } catch (err) {
+            console.error('حدث خطأ أثناء تسجيل الدخول:', err);
+            // Display a more specific error message if it's related to JWT
+            if (err.message && err.message.includes('secretOrPrivateKey')) {
+                console.error('JWT Secret key error:', err.message);
+                return res.render('login', { error: 'حدث خطأ في إعدادات المصادقة. يرجى التواصل مع المسؤول.' });
+            }
+            res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
+        }    } catch (err) {
         console.error('حدث خطأ أثناء تسجيل الدخول:', err);
-        // Display a more specific error message if it's related to JWT
-        if (err.message && err.message.includes('secretOrPrivateKey')) {
-            console.error('JWT Secret key error:', err.message);
-            return res.render('login', { error: 'حدث خطأ في إعدادات المصادقة. يرجى التواصل مع المسؤول.' });
-        }
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
     }
 });

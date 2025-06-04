@@ -1,7 +1,15 @@
-require('dotenv').config();
+// Load environment variables at the very beginning
+const dotenv = require('dotenv');
+const path = require('path');
+
+// Explicitly load the .env file
+const result = dotenv.config({ path: path.resolve(__dirname, '.env') });
+if (result.error) {
+    console.error('Error loading .env file:', result.error);
+}
+
 const express = require('express');
 const cookieParser = require('cookie-parser'); // إضافة معالج الكوكيز
-const path = require('path');
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
 
 // استدعاء الراوتات
@@ -43,6 +51,9 @@ app.use('/', blogRequestRoutes); // إضافة مسارات طلبات المد�
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV}`);
+    console.log(`JWT_SECRET exists: ${!!process.env.JWT_SECRET}`);
+    console.log(`SUPABASE_URL exists: ${!!process.env.SUPABASE_URL}`);
 });
 
 module.exports = app;
