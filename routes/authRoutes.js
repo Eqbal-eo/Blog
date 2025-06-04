@@ -163,10 +163,16 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }        // إنشاء توكن JWT مع تضمين دور المستخدم
+        }        // إنشاء توكن JWT مع تضمين دور المستخدم        // Make sure we have a JWT secret
+        const jwtSecret = process.env.JWT_SECRET;
+        if (!jwtSecret) {
+            console.error('JWT_SECRET is not defined in environment variables');
+            return res.render('login', { error: 'حدث خطأ في إعدادات الخادم. يرجى التواصل مع المسؤول.' });
+        }
+
         const token = jwt.sign(
             { id: users.id, username: users.username, role: users.role },
-            JWT_SECRET,
+            jwtSecret,
             { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
         );
 
@@ -179,9 +185,13 @@ router.post('/login', async (req, res) => {
 
         // توجيه المستخدم إلى لوحة التحكم
         res.redirect('/dashboard');
-            
-    } catch (err) {
+              } catch (err) {
         console.error('حدث خطأ أثناء تسجيل الدخول:', err);
+        // Display a more specific error message if it's related to JWT
+        if (err.message && err.message.includes('secretOrPrivateKey')) {
+            console.error('JWT Secret key error:', err.message);
+            return res.render('login', { error: 'حدث خطأ في إعدادات المصادقة. يرجى التواصل مع المسؤول.' });
+        }
         res.render('login', { error: 'حدث خطأ في الاتصال بقاعدة البيانات' });
     }
 });

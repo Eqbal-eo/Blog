@@ -2,7 +2,13 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 // استخدام المفتاح السري من متغيرات البيئة
-const JWT_SECRET = process.env.JWT_SECRET;
+const getJWTSecret = () => {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        console.error('JWT_SECRET is not defined in environment variables');
+    }
+    return secret;
+};
 
 // وسيط للتحقق من توكن المصادقة
 const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Authentication Middleware');
@@ -15,10 +21,15 @@ const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Au
         return res.redirect('/login');
     }
 
-    console.log('✅ JWT token found');
-
-    // Verify token
-    jwt.verify(token, JWT_SECRET, (err, user) => {
+    console.log('✅ JWT token found');    // Verify token
+    const jwtSecret = getJWTSecret();
+    if (!jwtSecret) {
+        console.error('❌ Cannot verify token: JWT_SECRET is not defined');
+        res.clearCookie('auth_token');
+        return res.redirect('/login');
+    }
+    
+    jwt.verify(token, jwtSecret, (err, user) => {
         if (err) {
             // If token is invalid or expired
             console.error('❌ Error verifying token:', err);
