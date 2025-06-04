@@ -6,13 +6,21 @@ router.get('/', async (req, res) => {
     const postsPerPage = 5;
     const page = parseInt(req.query.page) || 1;
     const start = (page - 1) * postsPerPage;
-    const end = start + postsPerPage - 1;
-
-    try {
-        const { data: settings } = await supabase
+    const end = start + postsPerPage - 1;    try {
+        // جلب الإعدادات مع معالجة حالة عدم وجود بيانات
+        const { data: settings, error: settingsError } = await supabase
             .from('settings')
             .select('*')
+            .limit(1)
             .single();
+            
+        // إذا لم توجد إعدادات، استخدم قيم افتراضية
+        const defaultSettings = {
+            blog_title: 'مدونات آفاق',
+            blog_description: 'منصة للتدوين والنشر'
+        };
+        
+        const finalSettings = settings || defaultSettings;
     
         const { count: totalPosts } = await supabase
             .from('posts')
@@ -43,10 +51,8 @@ router.get('/', async (req, res) => {
             if (post.users) {
                 post.users.displayName = post.users.display_name_ar || post.users.username;
             }
-        });
-    
-        res.render('home', {
-            site: settings,
+        });        res.render('home', {
+            site: finalSettings,
             posts,
             pages: Array.from({ length: totalPages }, (_, i) => totalPages - i),
             currentPage: page

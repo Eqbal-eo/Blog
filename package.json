@@ -1,7 +1,8 @@
 {
   "name": "blog-project",
   "version": "1.0.0",
-  "main": "index.js",  "scripts": {
+  "main": "index.js",
+  "scripts": {
     "dev": "nodemon app.js",
     "start": "node index.js",
     "build": "npm install",
@@ -15,7 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.4",
+    "@supabase/supabase-js": "^2.49.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
