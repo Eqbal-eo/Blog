@@ -168,15 +168,20 @@ router.post('/login', async (req, res) => {
         }        const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }
-        
-        // إنشاء توكن JWT مع تضمين دور المستخدم
+        }            // إنشاء توكن JWT مع تضمين دور المستخدم
         // Make sure we have a JWT secret
         const jwtSecret = process.env.JWT_SECRET;
         if (!jwtSecret) {
             console.error('JWT_SECRET is not defined in environment variables');
             return res.render('login', { error: 'حدث خطأ في إعدادات الخادم. يرجى التواصل مع المسؤول.' });
         }        try {
+            // حفظ معلومات المستخدم في الجلسة
+            req.session.user = {
+                id: users.id,
+                username: users.username,
+                role: users.role
+            };
+            
             const token = jwt.sign(
                 { id: users.id, username: users.username, role: users.role },
                 jwtSecret,
@@ -278,6 +283,14 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
 router.get('/logout', (req, res) => {
     // حذف كوكيز التوكن
     res.clearCookie('auth_token');
+    
+    // تدمير الجلسة
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) console.error('خطأ في تدمير الجلسة:', err);
+        });
+    }
+    
     res.redirect('/login');
 });
 
@@ -345,10 +358,16 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
         if (userDeleteError) {
             console.error('خطأ في حذف حساب المستخدم:', userDeleteError);
             throw userDeleteError;
-        }
-
-        // تسجيل الخروج بعد حذف الحساب
+        }        // تسجيل الخروج بعد حذف الحساب
         res.clearCookie('auth_token');
+        
+        // تدمير الجلسة
+        if (req.session) {
+            req.session.destroy(err => {
+                if (err) console.error('خطأ في تدمير الجلسة:', err);
+            });
+        }
+        
         // توجيه المستخدم إلى صفحة تسجيل الدخول مع رسالة نجاح
         res.render('login', { error: null, success: 'تم حذف حسابك بنجاح' });
     } catch (err) {

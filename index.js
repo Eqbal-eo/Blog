@@ -10,6 +10,7 @@ if (result.error) {
 
 const express = require('express');
 const cookieParser = require('cookie-parser'); // إضافة معالج الكوكيز
+const session = require('express-session'); // إضافة مدير الجلسات
 const db = require('./db/db'); // ملف الاتصال بقاعدة البيانات
 
 // استدعاء الراوتات
@@ -28,8 +29,20 @@ const PORT = 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const domain = isProduction ? '.afaq.blog' : 'localhost';
 
-// استخدام معالج الكوكيز بدلاً من الجلسات
+// استخدام معالج الكوكيز
 app.use(cookieParser());
+
+// إعداد جلسات المستخدم
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        secure: isProduction, // استخدام HTTPS في بيئة الإنتاج فقط
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // يوم واحد
+    }
+}));
 
 // إعداد المحركات وملفات الواجهة
 app.set('view engine', 'ejs');
