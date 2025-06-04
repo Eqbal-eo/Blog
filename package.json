@@ -1,14 +1,14 @@
 {
   "name": "blog-project",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
+  "main": "index.js",  "scripts": {
     "dev": "nodemon app.js",
     "start": "node index.js",
     "build": "npm install",
     "validate-env": "node validate-env.js",
     "check-secrets": "./check-secrets.sh",
     "setup-hooks": "./setup-hooks.sh",
+    "check-supabase": "node check-supabase-status.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.0",
+    "@supabase/supabase-js": "^2.49.8",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",

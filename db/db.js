@@ -7,11 +7,17 @@ const supabase = createClient(
     {
         auth: {
             persistSession: false,
-            autoRefreshToken: false
+            autoRefreshToken: false,
+            detectSessionInUrl: false
         },
         realtime: {
             params: {
                 eventsPerSecond: 10
+            }
+        },
+        global: {
+            headers: {
+                'x-client-info': 'supabase-js-blog@2.49.8'
             }
         }
     }
