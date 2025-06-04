@@ -1,16 +1,17 @@
 require('dotenv').config();
-const supabase = require('./db/db');
+const supabase = require('../db/db');
 
 async function checkTableStructure() {
     try {
         console.log('🔍 Checking invite_codes table structure...');
-        
-        // Attempt test insertion to see errors
+          // Attempt test insertion to see errors
         const { error } = await supabase
             .from('invite_codes')
             .insert([{
                 code: 'TEST123',
                 email: 'test@example.com',
+                full_name: 'Test User',
+                specialty: 'Test Specialty',
                 blog_request_id: 1,
                 expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
                 is_used: false

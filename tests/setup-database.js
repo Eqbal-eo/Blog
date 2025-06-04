@@ -4,7 +4,7 @@
  */
 
 require('dotenv').config();
-const supabase = require('./db/db');
+const supabase = require('../db/db');
 
 async function setupDatabase() {
     console.log('🔧 Setting up database schema...');
