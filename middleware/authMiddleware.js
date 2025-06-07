@@ -5,28 +5,21 @@ require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // وسيط للتحقق من توكن المصادقة
-const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Authentication Middleware');
-    
+const authenticateToken = (req, res, next) => {    
     // Extract token from cookies
     const token = req.cookies.auth_token;
     
     if (!token) {
-        console.log('❌ No token found in cookies');
         return res.redirect('/login');
     }
-
-    console.log('✅ JWT token found');
 
     // Verify token
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
             // If token is invalid or expired
-            console.error('❌ Error verifying token:', err);
             res.clearCookie('auth_token');
             return res.redirect('/login');
         }
-
-        console.log('✅ Token valid - User data:', user);
 
         // تخزين بيانات المستخدم في الطلب للاستخدام لاحقاً
         req.user = user;

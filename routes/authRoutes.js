@@ -162,8 +162,7 @@ router.post('/login', async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
-            return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }        // إنشاء توكن JWT مع تضمين دور المستخدم
+            return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });        }        // إنشاء توكن JWT مع تضمين دور المستخدم
         const token = jwt.sign(
             { id: users.id, username: users.username, role: users.role },
             JWT_SECRET,
