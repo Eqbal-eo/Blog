@@ -15,9 +15,9 @@ This project uses environment variables to protect sensitive information like AP
 
 2. Fill in your own values in the `.env` file:
    ```
-   SUPABASE_URL=your_actual_supabase_url
-   SUPABASE_ANON_KEY=your_actual_supabase_anon_key
-   JWT_SECRET=your_secure_random_string
+   SUPABASE_URL=[YOUR_ACTUAL_SUPABASE_URL]
+   SUPABASE_ANON_KEY=[YOUR_ACTUAL_SUPABASE_ANON_KEY]
+   JWT_SECRET=[YOUR_SECURE_RANDOM_STRING]
    # ... complete all other values
    ```
 

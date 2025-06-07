@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const { getClearCookieOptions } = require('../utils/cookieUtils');
 
 // استخدام المفتاح السري من متغيرات البيئة
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -11,13 +12,11 @@ const authenticateToken = (req, res, next) => {
     
     if (!token) {
         return res.redirect('/login');
-    }
-
-    // Verify token
+    }    // Verify token
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            // If token is invalid or expired
-            res.clearCookie('auth_token');
+            // If token is invalid or expired - clear cookie with proper options
+            res.clearCookie('auth_token', getClearCookieOptions());
             return res.redirect('/login');
         }
 

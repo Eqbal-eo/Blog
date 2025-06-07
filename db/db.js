@@ -19,6 +19,9 @@ const supabase = createClient(
             headers: {
                 'x-client-info': 'supabase-js-blog@2.49.8'
             }
+        },
+        db: {
+            schema: 'public'
         }
     }
 );

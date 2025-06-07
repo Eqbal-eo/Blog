@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { authenticateToken } = require('../middleware/authMiddleware');
+const { getCookieOptions, getClearCookieOptions } = require('../utils/cookieUtils');
 
 // استخدام المفتاح السري من متغيرات البيئة
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -167,14 +168,8 @@ router.post('/login', async (req, res) => {
             { id: users.id, username: users.username, role: users.role },
             JWT_SECRET,
             { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
-        );
-
-        // تخزين التوكن في كوكيز آمنة
-        res.cookie('auth_token', token, {
-            httpOnly: true, // لا يمكن الوصول إليها من JavaScript
-            secure: process.env.NODE_ENV === 'production', // للاتصالات HTTPS فقط في الإنتاج
-            maxAge: 86400000 // 24 ساعة بالمللي ثانية
-        });
+        );        // تخزين التوكن في كوكيز آمنة
+        res.cookie('auth_token', token, getCookieOptions());
 
         // توجيه المستخدم إلى لوحة التحكم
         res.redirect('/dashboard');
@@ -255,8 +250,8 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
 
 // تسجيل الخروج
 router.get('/logout', (req, res) => {
-    // حذف كوكيز التوكن
-    res.clearCookie('auth_token');
+    // حذف كوكيز التوكن مع الإعدادات الصحيحة
+    res.clearCookie('auth_token', getClearCookieOptions());
     res.redirect('/login');
 });
 
@@ -323,11 +318,10 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
 
         if (userDeleteError) {
             console.error('خطأ في حذف حساب المستخدم:', userDeleteError);
-            throw userDeleteError;
-        }
+            throw userDeleteError;        }
 
         // تسجيل الخروج بعد حذف الحساب
-        res.clearCookie('auth_token');
+        res.clearCookie('auth_token', getClearCookieOptions());
         // توجيه المستخدم إلى صفحة تسجيل الدخول مع رسالة نجاح
         res.render('login', { error: null, success: 'تم حذف حسابك بنجاح' });
     } catch (err) {
