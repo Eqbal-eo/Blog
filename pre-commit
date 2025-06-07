@@ -37,8 +37,8 @@ for FILE in $STAGED_FILES; do
   if [[ ! -f "$FILE" ]] || [[ "$(file -b --mime "$FILE" | grep -c '^text/')" -eq 0 ]]; then
     continue
   fi
-    # Skip files that are supposed to have placeholders
-  if [[ "$FILE" == ".env.example" ]] || [[ "$FILE" == *"DEPLOYMENT_REPORT.md" ]] || [[ "$FILE" == *"LOGIN_TROUBLESHOOTING.md" ]] || [[ "$FILE" == *"deploy.sh" ]] || [[ "$FILE" == "README.md" ]] || [[ "$FILE" == *".md" ]]; then
+  # Skip files that are supposed to have placeholders
+  if [[ "$FILE" =~ \.env\.example$ ]] || [[ "$FILE" =~ \.md$ ]] || [[ "$FILE" =~ deploy\.sh$ ]]; then
     continue
   fi
   
