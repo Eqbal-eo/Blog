@@ -173,6 +173,74 @@ html, body {
     color: var(--card-text-color);
 }
 
+/* Admin specific cards - subtle distinction while maintaining consistency */
+.admin-card {
+    border: 2px solid var(--primary-color);
+    background: linear-gradient(135deg, var(--card-bg) 0%, #f8f5f0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.admin-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(140, 74, 33, 0.15);
+    border-color: var(--secondary-color);
+}
+
+.admin-card h5 {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.admin-card i {
+    color: var(--primary-color);
+}
+
+.admin-card:hover i {
+    color: var(--secondary-color);
+}
+
+.admin-stat-card {
+    border: 2px solid var(--primary-color);
+    background: linear-gradient(135deg, var(--card-bg) 0%, #f8f5f0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.admin-stat-card .stat-number {
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.admin-stat-card .stat-label {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.admin-stat-card i {
+    color: var(--primary-color);
+}
+
 /* Stats Section */
 .stats-container {
     display: grid;
