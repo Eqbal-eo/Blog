@@ -17,7 +17,7 @@ transporter.verify((error, success) => {
     if (error) {
         console.log('خطأ في إعداد البريد الإلكتروني:', error);
     } else {
-        console.log('خدمة البريد الإلكتروني جاهزة');
+        console.log('Email service is ready');
     }
 });
 

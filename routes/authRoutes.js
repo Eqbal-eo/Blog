@@ -564,10 +564,47 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
                 user: req.user,
                 settings: {}
             });
-        }
+        }        console.log('🗑️ بدء عملية حذف الحساب للمستخدم:', userId);
 
         // حذف بيانات المستخدم - يتم حذف المنشورات والإعدادات بناءً على العلاقات الخارجية في قاعدة البيانات
-        // 1. حذف الإعدادات أولا
+        // 1. حذف الإشعارات أولا
+        console.log('🔔 حذف الإشعارات...');
+        const { error: notificationsDeleteError } = await supabase
+            .from('notifications')
+            .delete()
+            .eq('user_id', userId);
+
+        if (notificationsDeleteError) {
+            console.error('خطأ في حذف إشعارات المستخدم:', notificationsDeleteError);
+            throw notificationsDeleteError;
+        }
+
+        // 2. تحديث أكواد الدعوة المستخدمة من قبل هذا المستخدم
+        console.log('🎫 تحديث أكواد الدعوة...');
+        const { error: inviteCodesUpdateError } = await supabase
+            .from('invite_codes')
+            .update({ used_by: null })
+            .eq('used_by', userId);
+
+        if (inviteCodesUpdateError) {
+            console.error('خطأ في تحديث أكواد الدعوة:', inviteCodesUpdateError);
+            throw inviteCodesUpdateError;
+        }
+
+        // 3. تحديث طلبات المدونات التي راجعها هذا المستخدم (إذا كان مشرف)
+        console.log('📝 تحديث طلبات المدونات...');
+        const { error: blogRequestsUpdateError } = await supabase
+            .from('blog_requests')
+            .update({ reviewed_by: null })
+            .eq('reviewed_by', userId);
+
+        if (blogRequestsUpdateError) {
+            console.error('خطأ في تحديث طلبات المدونات:', blogRequestsUpdateError);
+            throw blogRequestsUpdateError;
+        }
+
+        // 4. حذف الإعدادات
+        console.log('⚙️ حذف الإعدادات...');
         const { error: settingsDeleteError } = await supabase
             .from('settings')
             .delete()
@@ -578,7 +615,8 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             throw settingsDeleteError;
         }
 
-        // 2. حذف المنشورات
+        // 5. حذف المنشورات
+        console.log('📄 حذف المنشورات...');
         const { error: postsDeleteError } = await supabase
             .from('posts')
             .delete()
@@ -587,9 +625,8 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
         if (postsDeleteError) {
             console.error('خطأ في حذف منشورات المستخدم:', postsDeleteError);
             throw postsDeleteError;
-        }
-
-        // 3. حذف حساب المستخدم نفسه
+        }        // 6. حذف حساب المستخدم نفسه
+        console.log('👤 حذف حساب المستخدم...');
         const { error: userDeleteError } = await supabase
             .from('users')
             .delete()
@@ -599,6 +636,8 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             console.error('خطأ في حذف حساب المستخدم:', userDeleteError);
             throw userDeleteError;
         }
+
+        console.log('✅ تم حذف الحساب بنجاح');
 
         // تسجيل الخروج بعد حذف الحساب
         res.clearCookie('auth_token');
