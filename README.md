@@ -1,76 +1,91 @@
-# مدونات آفاق - Blog Platform
+# Afaq Blogs
 
-## إعداد المشروع محلياً
+A modern Arabic blogging platform designed to empower writers and intellectuals to publish their thoughts and articles across various cultural, intellectual, and political fields.
 
-1. استنسخ المستودع:
+## Features
+
+### For Writers and Bloggers
+- **Personal blog creation** with customizable settings
+- **Advanced text editor** supporting rich formatting and right-to-left direction
+- **Article categorization** (Politics, History, Economics, Technology, Literature, Medicine)
+- **Publication status management** (Draft, Under Review, Published, Rejected)
+- **Personal dashboard** for tracking statistics and articles
+
+### For Readers
+- **Blog browsing** in an organized and attractive way
+- **Search and filtering** by author, topic, or category
+- **Enhanced reading experience** with content-focused design
+
+### For Administration
+- **Blog request system** with comprehensive applicant review
+- **Content management** and article review before publication
+- **Notification system** for communicating with writers
+- **Comprehensive statistics and reports**
+
+## Technologies Used
+
+- **Backend**: Node.js + Express.js
+- **Frontend**: EJS + Bootstrap (RTL)
+- **Database**: Supabase (PostgreSQL)
+- **Editor**: Quill.js
+- **Design**: Custom CSS with Arabic support
+- **Deployment**: Vercel
+
+## Getting Started
+
+### Requirements
+- Node.js (v14 or newer)
+- Supabase account
+- Text editor
+
+### Local Installation
 ```bash
+# Clone the project
 git clone <repository-url>
 cd Blog
-```
 
-2. تثبيت التبعيات:
-```bash
+# Install dependencies
 npm install
-```
 
-3. إعداد متغيرات البيئة:
-```bash
+# Copy environment file and configure it
 cp .env.example .env
-```
-ثم قم بتعديل ملف `.env` وإضافة القيم الصحيحة.
 
-4. تشغيل المشروع:
-```bash
+# Run the project
 npm start
 ```
 
-## النشر على Vercel
+### Required Environment Variables
+Create a `.env` file in the root directory with the following variables:
+- `SUPABASE_URL` - Your Supabase project URL
+- `SUPABASE_ANON_KEY` - Your Supabase anonymous key
+- `JWT_SECRET` - A random secret key for JWT encryption
+- `ZOHO_EMAIL` - Your email for sending notifications
+- `ZOHO_PASSWORD` - Your email app credentials
 
-### إعداد متغيرات البيئة في Vercel:
+Refer to `.env.example` for the exact format.
 
-1. اذهب إلى [vercel.com](https://vercel.com)
-2. اختر مشروعك
-3. اذهب إلى **Settings** → **Environment Variables**
-4. أضف المتغيرات التالية:
+## Project Structure
 
-#### متغيرات قاعدة البيانات:
-- `SUPABASE_URL` - رابط قاعدة بيانات Supabase
-- `SUPABASE_ANON_KEY` - مفتاح Supabase العام
-
-#### متغيرات الأمان:
-- `JWT_SECRET` - مفتاح سري لتشفير JWT
-
-#### متغيرات البريد الإلكتروني:
-- `ZOHO_EMAIL` - بريد الإرسال (مثل: no-reply@yourdomain.com)
-- `ZOHO_PASSWORD` - كلمة مرور البريد
-- `ZOHO_APP_PASSWORD` - كلمة مرور التطبيق (إذا كان مطلوباً)
-- `ADMIN_EMAIL` - بريد المدير
-
-#### متغيرات الموقع:
-- `WEBSITE_URL` - رابط الموقع النهائي
-- `NODE_ENV` - production
-
-### خطوات النشر:
-
-1. ادفع التغييرات إلى GitHub:
-```bash
-git add .
-git commit -m "Update for production"
-git push origin main
+```
+├── controllers/          # Control logic
+├── routes/              # Application routes  
+├── views/               # User interfaces
+├── public/              # Static files
+├── db/                  # Database configuration
+├── middleware/          # Middleware
+└── services/           # Helper services
 ```
 
-2. في Vercel، اربط المستودع وسيتم النشر تلقائياً.
+## Security
 
-## كيف يعمل البريد الإلكتروني في الإنتاج؟
+- Password encryption using bcrypt
+- JWT authentication for sessions
+- CSRF protection
+- Data validation
 
-عندما يكون الموقع مرفوع على النطاق:
+## Contact
 
-1. **متغيرات البيئة**: يقرأ التطبيق المتغيرات من إعدادات Vercel (ليس من ملف .env)
-2. **SMTP**: يتصل بخادم Zoho Mail مباشرة باستخدام البيانات المُعدّة
-3. **الأمان**: جميع البيانات الحساسة محفوظة في متغيرات البيئة الآمنة
+Afaq Blogs - A platform for cultural and intellectual blogging
 
-## ملاحظات مهمة:
-
-- ملف `.env` لا يتم رفعه للمستودع (محمي بـ .gitignore)
-- جميع البيانات الحساسة تُعدّ في لوحة تحكم Vercel
-- التطبيق يعمل تماماً كما يعمل محلياً لكن بالإعدادات المناسبة للإنتاج
+---
+**Note**: This is an open-source project aimed at supporting Arabic content on the internet.
