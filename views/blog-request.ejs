@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب إنشاء مدونة - مدونات آفاق</title>
+    <title>انضم إلى مجتمع مدونات آفاق</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        html, body {
+        /* login.css */
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -17,18 +20,22 @@
             flex-direction: column;
             background-color: #f9f7f0;
         }
+
         .card {
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .btn-dark {
             background-color: #8c4a21ca;
             border-color: transparent;
         }
+
         .btn-dark:hover {
             background-color: #470539c5;
             border-color: transparent;
         }
+
         h1 {
             font-family: 'Tajawal', sans-serif;
             font-size: 2.5rem;
@@ -37,26 +44,206 @@
             margin-top: 30px;
             padding: 0 15px;
         }
+
         .container {
-            margin-top: 30px;
+            margin-top: 50px;
             margin-bottom: 50px;
             padding: 0 15px;
         }
-        .form-control, .form-select {
+
+        .form-control,
+        .form-select {
             font-size: 0.9rem;
             text-align: right;
             direction: rtl;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: border-color 0.3s ease;
         }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8c4a21ca;
+            box-shadow: 0 0 0 0.2rem rgba(140, 74, 33, 0.25);
+        }
+
         .form-label {
-            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
             color: #333;
         }
+
+        .form-control::placeholder {
+            font-size: 0.85rem;
+            text-align: right;
+            direction: rtl;
+            opacity: 0.7;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        h6 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #8c4a21ca;
+        }
+
+        .border-bottom {
+            border-color: #d6d6d6 !important;
+        }
+
         textarea {
-            min-height: 120px;
+            resize: vertical;
         }
-        .sample-content {
-            min-height: 200px;
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-top: 20px;
+            }
+
+            h5 {
+                font-size: 1.1rem;
+                margin-top: 10px;
+            }
+
+            .container {
+                margin-bottom: 40px;
+                padding: 0 10px;
+            }
+
+            .card {
+                margin: 0;
+                border-radius: 10px;
+            }
+
+            .card-body {
+                padding: 20px 15px;
+            }
+
+            .form-label {
+                margin-bottom: 0.2rem;
+                font-size: 0.9rem;
+            }
+
+            .form-control,
+            .form-select {
+                font-size: 16px;
+                padding: 10px 12px;
+                margin-bottom: 15px;
+            }
+
+            .mb-3 {
+                margin-bottom: 0.8rem;
+            }
+
+            .mb-3:last-of-type {
+                margin-bottom: 1.2rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+                margin-top: 5px;
+                font-size: 16px;
+            }
+
+            h6 {
+                font-size: 1rem;
+            }
         }
+
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+            .container {
+                margin-top: 30px;
+                margin-bottom: 40px;
+            }
+
+            .col-md-4 {
+                width: 70%;
+                margin: 0 auto;
+            }
+
+            .card {
+                padding: 0;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .card-header {
+                padding: 10px;
+            }
+
+            .form-control {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
+
+            .btn {
+                padding: 8px 0;
+                margin-top: 5px;
+            }
+
+            .mb-3 {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 15px;
+            }
+
+            .container {
+                margin-bottom: 30px;
+            }
+        }
+
+        /* register.css */
+        h5 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.2rem;
+            color: #5a5a5a;
+            text-align: center;
+            margin-top: 1px;
+            padding: 0 15px;
+        }
+
+        @media (max-width: 768px) {
+            h5 {
+                font-size: 1.1rem;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h5 {
+                font-size: 1rem;
+            }
+        }
+
+        /* footer.css */
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
         footer {
             flex-shrink: 0;
             background-color: #ffffff;
@@ -69,186 +256,195 @@
             border-top: 1px solid #cccccc96;
             margin-top: auto;
         }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 0.8rem 0;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 0.7rem 0;
+                font-size: 0.85rem;
+            }
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
         footer a {
             color: #8c4a21ca;
             text-decoration: none;
             transition: color 0.3s ease;
         }
+
         footer a:hover {
             color: #470539c5;
         }
-        .progress-steps {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
+
+        /* تنسيق الروابط داخل النموذج */
+        a {
+            text-decoration: none !important;
+            transition: color 0.3s ease;
         }
-        .step {
-            text-align: center;
-            position: relative;
-            flex: 1;
-            max-width: 150px;
-        }
-        .step-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #8c4a21ca;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            font-weight: bold;
-        }
-        .step-inactive .step-circle {
-            background-color: #ddd;
-            color: #999;
-        }
-        .step-text {
-            font-size: 0.85rem;
-            color: #666;
-        }
-        .required-asterisk {
-            color: #dc3545;
+
+        a:hover {
+            color: #007bff !important;
         }
     </style>
+
 </head>
 
 <body class="bg-light">
     <h1><a href="/" style="text-decoration: none; color: inherit;">مدونات آفاق</a></h1>
+    <h5>انضم إلى مجتمع الكتّاب والمفكرين</h5>
 
-    <div class="container mt-4">
-        <!-- Progress Steps -->
-        <div class="progress-steps">
-            <div class="step">
-                <div class="step-circle">1</div>
-                <div class="step-text">طلب المدونة</div>
-            </div>
-            <div class="step step-inactive">
-                <div class="step-circle">2</div>
-                <div class="step-text">المراجعة</div>
-            </div>
-            <div class="step step-inactive">
-                <div class="step-circle">3</div>
-                <div class="step-text">كود التفعيل</div>
-            </div>
-            <div class="step step-inactive">
-                <div class="step-circle">4</div>
-                <div class="step-text">إنشاء الحساب</div>
-            </div>
-        </div>
-
+    <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+
                 <div class="card shadow">
-                    <div class="card-header text-center bg-dark text-white">
-                        <h4>طلب إنشاء مدونة جديدة</h4>
-                        <small>يرجى ملء جميع المعلومات المطلوبة بدقة</small>
+                    <div class="card-header text-center text-dark">
+                        <h4>طلب إنشاء مدونة </h4>
+                        <p class="small text-muted mb-0">املأ البيانات التالية لإنشاء مدونتك</p>
                     </div>
 
                     <div class="card-body">
-                        <% if (error) { %>
+                        <% if (typeof error !=='undefined' && error) { %>
                             <div class="alert alert-danger text-center">
                                 <%= error %>
                             </div>
-                        <% } %>
+                            <% } %>
 
-                        <% if (success) { %>
-                            <div class="alert alert-success text-center">
-                                <%= success %>
-                            </div>
-                        <% } %>
+                                <% if (typeof success !=='undefined' && success) { %>
+                                    <div class="alert alert-success text-center">
+                                        <%= success %>
+                                    </div>
+                                    <% } %>
 
-                        <form method="POST" action="/blog-request">
-                            <!-- المعلومات الشخصية -->
-                            <div class="mb-4">
-                                <h5 class="text-dark border-bottom pb-2 mb-3">المعلومات الشخصية</h5>
-                                
-                                <div class="mb-3">
-                                    <label for="full_name" class="form-label">الاسم الكامل <span class="required-asterisk">*</span></label>
-                                    <input type="text" class="form-control" id="full_name" name="full_name" 
-                                           placeholder="اكتب اسمك الكامل كما تريد أن يظهر في المدونة" required>
-                                </div>
+                                        <form method="POST" action="/blog-request">
+                                            <!-- المعلومات الشخصية -->
+                                            <div class="mb-4">
+                                                <h6 class="text-dark border-bottom pb-2 mb-3">المعلومات الشخصية</h6>
 
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">البريد الإلكتروني <span class="required-asterisk">*</span></label>
-                                    <input type="email" class="form-control" id="email" name="email" 
-                                           placeholder="بريدك الإلكتروني الذي سنرسل عليه كود التفعيل" required>
-                                </div>
+                                                <div class="mb-3">
+                                                    <label for="full_name" class="form-label">الاسم الكامل <span
+                                                            style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="full_name"
+                                                        name="full_name"
+                                                        placeholder="اكتب اسمك الكامل كما تريد أن يظهر في المدونة"
+                                                        required>
+                                                </div>
 
-                                <div class="mb-3">
-                                    <label for="specialty" class="form-label">مجال التخصص <span class="required-asterisk">*</span></label>
-                                    <input type="text" class="form-control" id="specialty" name="specialty" 
-                                           placeholder="مثال: الأدب العربي، التاريخ الإسلامي، الاقتصاد، إلخ" required>
-                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">البريد الإلكتروني <span
+                                                            style="color: red;">*</span></label>
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                        placeholder="بريدك الإلكتروني الذي سنرسل عليه كود التفعيل"
+                                                        required>
+                                                </div>
 
-                                <div class="mb-3">
-                                    <label for="experience_years" class="form-label">سنوات الخبرة في المجال <span class="required-asterisk">*</span></label>
-                                    <select class="form-select" id="experience_years" name="experience_years" required>
-                                        <option value="">اختر عدد سنوات الخبرة</option>
-                                        <option value="1">سنة واحدة</option>
-                                        <option value="2">سنتان</option>
-                                        <option value="3">3 سنوات</option>
-                                        <option value="4">4 سنوات</option>
-                                        <option value="5">5 سنوات</option>
-                                        <option value="10">أكثر من 5 سنوات</option>
-                                    </select>
-                                </div>
-                            </div>
+                                                <div class="mb-3">
+                                                    <label for="specialty" class="form-label">مجال التخصص <span
+                                                            style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="specialty"
+                                                        name="specialty"
+                                                        placeholder="مثال: الأدب العربي، التاريخ الإسلامي، الاقتصاد، إلخ"
+                                                        required>
+                                                </div>
 
-                            <!-- نموذج المقال -->
-                            <div class="mb-4">
-                                <h5 class="text-dark border-bottom pb-2 mb-3">نموذج مقال تجريبي</h5>
-                                <p class="text-muted small">اكتب مقالاً قصيراً كنموذج ليراجعه فريق المراجعة</p>
-                                
-                                <div class="mb-3">
-                                    <label for="sample_title" class="form-label">عنوان المقال <span class="required-asterisk">*</span></label>
-                                    <input type="text" class="form-control" id="sample_title" name="sample_title" 
-                                           placeholder="اكتب عنواناً جذاباً لمقالك التجريبي" required>
-                                </div>
+                                                <div class="mb-3">
+                                                    <label for="experience_years" class="form-label">سنوات الخبرة في
+                                                        المجال <span style="color: red;">*</span></label>
+                                                    <select class="form-select" id="experience_years"
+                                                        name="experience_years" required>
+                                                        <option value="">اختر عدد سنوات الخبرة</option>
+                                                        <option value="1">سنة واحدة</option>
+                                                        <option value="2">سنتان</option>
+                                                        <option value="3">3 سنوات</option>
+                                                        <option value="4">4 سنوات</option>
+                                                        <option value="5">5 سنوات</option>
+                                                        <option value="10">أكثر من 5 سنوات</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                <div class="mb-3">
-                                    <label for="sample_category" class="form-label">فئة المقال <span class="required-asterisk">*</span></label>
-                                    <select class="form-select" id="sample_category" name="sample_category" required>
-                                        <option value="">اختر الفئة المناسبة</option>
-                                        <option value="politics">السياسة</option>
-                                        <option value="history">التاريخ</option>
-                                        <option value="economics">الاقتصاد</option>
-                                        <option value="technology">التكنولوجيا</option>
-                                        <option value="literature">الأدب</option>
-                                        <option value="medicine">الطب</option>
-                                    </select>
-                                </div>
+                                            <!-- نموذج المقال -->
+                                            <div class="mb-4">
+                                                <h6 class="text-dark border-bottom pb-2 mb-3">نموذج مقال تجريبي</h6>
+                                                <p class="text-muted small">اكتب مقالاً قصيراً كنموذج ليراجعه المُشرفون
+                                                </p>
 
-                                <div class="mb-3">
-                                    <label for="sample_content" class="form-label">محتوى المقال <span class="required-asterisk">*</span></label>
-                                    <textarea class="form-control sample-content" id="sample_content" name="sample_content" 
-                                              placeholder="اكتب مقالاً تجريبياً لا يقل عن 300 كلمة يعكس أسلوبك في الكتابة ومعرفتك في المجال..." required></textarea>
-                                    <small class="text-muted">الحد الأدنى: 300 كلمة</small>
-                                </div>
-                            </div>
+                                                <div class="mb-3">
+                                                    <label for="sample_title" class="form-label">عنوان المقال <span
+                                                            style="color: red;">*</span></label>
+                                                    <input type="text" class="form-control" id="sample_title"
+                                                        name="sample_title"
+                                                        placeholder="اكتب عنواناً جذاباً لمقالك التجريبي" required>
+                                                </div>
 
-                            <!-- الدافع للانضمام -->
-                            <div class="mb-4">
-                                <h5 class="text-dark border-bottom pb-2 mb-3">الدافع للانضمام</h5>
-                                
-                                <div class="mb-3">
-                                    <label for="motivation" class="form-label">لماذا تريد الانضمام إلى مدونات آفاق؟ <span class="required-asterisk">*</span></label>
-                                    <textarea class="form-control" id="motivation" name="motivation" 
-                                              placeholder="أخبرنا عن دوافعك للانضمام وما تتطلع إلى تقديمه لمجتمع القراء..." required></textarea>
-                                </div>
-                            </div>
+                                                <div class="mb-3">
+                                                    <label for="sample_category" class="form-label">فئة المقال <span
+                                                            style="color: red;">*</span></label>
+                                                    <select class="form-select" id="sample_category"
+                                                        name="sample_category" required>
+                                                        <option value="">اختر الفئة المناسبة</option>
+                                                        <option value="politics">السياسة</option>
+                                                        <option value="history">التاريخ</option>
+                                                        <option value="economics">الاقتصاد</option>
+                                                        <option value="technology">التكنولوجيا</option>
+                                                        <option value="literature">الأدب</option>
+                                                        <option value="medicine">الطب</option>
 
-                            <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-dark btn-lg">إرسال طلب المدونة</button>
-                            </div>
+                                                        <option value="culture">الثقافة</option>
+                                                        <option value="philosophy">الفلسفة</option>
+                                                        <option value="religion">الدين</option>
+                                                        <option value="art">الفن</option>
+                                                        <option value="science">العلوم</option>
+                                                        <option value="other">أخرى</option>
+                                                    </select>
+                                                </div>
 
-                            <div class="text-center">
-                                <a href="/register" class="text-muted">← العودة للخطوة السابقة</a>
-                            </div>
-                        </form>
+                                                <div class="mb-3">
+                                                    <label for="sample_content" class="form-label">محتوى المقال <span
+                                                            style="color: red;">*</span></label>
+                                                    <textarea class="form-control" id="sample_content"
+                                                        name="sample_content"
+                                                        placeholder="اكتب مقالاً تجريبياً لا يقل عن 300 كلمة يعكس أسلوبك في الكتابة ومعرفتك في المجال..."
+                                                        style="min-height: 150px;" required></textarea>
+                                                    <small class="text-muted">الحد الأدنى: 300 كلمة</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- الدافع للانضمام -->
+                                            <div class="mb-4">
+                                                <h6 class="text-dark border-bottom pb-2 mb-3">الدافع للانضمام</h6>
+
+                                                <div class="mb-3">
+                                                    <label for="motivation" class="form-label">لماذا تريد الانضمام إلى
+                                                        مدونات آفاق؟ <span style="color: red;">*</span></label>
+                                                    <textarea class="form-control" id="motivation" name="motivation"
+                                                        placeholder="أخبرنا عن دوافعك للانضمام وما تتطلع إلى تقديمه لمجتمع القراء..."
+                                                        style="min-height: 100px;" required></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-grid mb-1">
+                                                <button type="submit" class="btn btn-dark btn-lg" style="font-size: 1rem;">إرسال الطلب</button>
+                                            </div>
+                                            <div class="text-center mb-1 mt-3">
+                                                <small class="text-muted">
+                                                    لديك حساب بالفعل؟
+                                                    <a href="/login" class="text-dark">سجّل الدخول</a>
+                                                </small>
+                                            </div>
+                                        </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -257,6 +453,7 @@
     <footer>
         مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
     </footer>
+
 </body>
 
 </html>

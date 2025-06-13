@@ -11,7 +11,7 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 // استخدام المفتاح السري من متغيرات البيئة
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// عرض صفحة التسجيل (الصفحة الجديدة)
+// عرض صفحة التسجيل الجديدة (إكمال التسجيل بكود التفعيل)
 router.get('/register', (req, res) => {
     res.render('register', { error: null, success: null });
 });
@@ -54,9 +54,7 @@ router.post('/blog-request', async (req, res) => {
         if (checkError) {
             console.error('خطأ في البحث عن الطلبات السابقة:', checkError);
             throw checkError;
-        }
-
-        if (existingRequest && existingRequest.length > 0) {
+        }        if (existingRequest && existingRequest.length > 0) {
             return res.render('blog-request', {
                 error: 'يوجد طلب مقدم سابقاً بنفس البريد الإلكتروني في انتظار المراجعة',
                 success: null
@@ -91,15 +89,11 @@ router.post('/blog-request', async (req, res) => {
         } catch (emailError) {
             console.error('خطأ في إرسال إشعار المشرفين:', emailError);
             // لا نوقف العملية بسبب فشل إرسال البريد الإلكتروني
-        }
-
-        // توجيه إلى صفحة تأكيد الإرسال
+        }        // توجيه إلى صفحة تأكيد الإرسال
         res.render('request-submitted', { 
             email: email,
             requestId: newRequest.id 
-        });
-
-    } catch (err) {
+        });    } catch (err) {
         console.error('خطأ في إرسال طلب المدونة:', err);
         res.render('blog-request', {
             error: 'حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى',
@@ -108,19 +102,13 @@ router.post('/blog-request', async (req, res) => {
     }
 });
 
-// عرض صفحة إكمال التسجيل
-router.get('/complete-registration', (req, res) => {
-    res.render('complete-registration', { 
-        error: null, 
-        success: null,
-        userInfo: null,
-        invite_code: ''
-    });
-});
 
-// معالجة إكمال التسجيل
-router.post('/complete-registration', async (req, res) => {
-    const { invite_code, username, password, confirm_password, bio } = req.body;
+
+// المسار القديم للتسجيل (سيتم إزالته تدريجياً)
+
+// معالجة التسجيل الجديد (بكود التفعيل)
+router.post('/register', async (req, res) => {
+    const { username, email, invite_code } = req.body;
 
     try {
         // البحث عن كود الدعوة
@@ -137,64 +125,31 @@ router.post('/complete-registration', async (req, res) => {
                 expires_at
             `)
             .eq('code', invite_code.toUpperCase())
-            .single();
-
-        if (codeError || !inviteCodeData) {
-            return res.render('complete-registration', {
+            .single();        if (codeError || !inviteCodeData) {
+            return res.render('register', {
                 error: 'كود التفعيل غير صحيح',
-                success: null,
-                userInfo: null,
-                invite_code: invite_code
+                success: null
             });
-        }
-
-        // التحقق من أن الكود لم يُستخدم من قبل
+        }        // التحقق من أن الكود لم يُستخدم من قبل
         if (inviteCodeData.is_used) {
-            return res.render('complete-registration', {
+            return res.render('register', {
                 error: 'هذا الكود تم استخدامه من قبل',
-                success: null,
-                userInfo: null,
-                invite_code: invite_code
+                success: null
             });
         }
 
         // التحقق من أن الكود لم ينتهِ صلاحيته
         const expirationDate = new Date(inviteCodeData.expires_at);
-        const now = new Date();
-        if (now > expirationDate) {
-            return res.render('complete-registration', {
+        const now = new Date();        if (now > expirationDate) {
+            return res.render('register', {
                 error: 'انتهت صلاحية كود التفعيل، يرجى طلب كود جديد',
-                success: null,
-                userInfo: null,
-                invite_code: invite_code
+                success: null
             });
-        }
-
-        // إذا لم يتم إرسال بيانات إنشاء الحساب، اعرض المعلومات للمستخدم ليكمل
-        if (!username || !password) {
-            return res.render('complete-registration', {
-                error: null,
-                success: 'كود التفعيل صحيح! أكمل إنشاء حسابك أدناه',
-                userInfo: {
-                    full_name: inviteCodeData.full_name,
-                    email: inviteCodeData.email,
-                    specialty: inviteCodeData.specialty
-                },
-                invite_code: invite_code
-            });
-        }
-
-        // التحقق من تطابق كلمات المرور
-        if (password !== confirm_password) {
-            return res.render('complete-registration', {
-                error: 'كلمات المرور غير متطابقة',
-                success: null,
-                userInfo: {
-                    full_name: inviteCodeData.full_name,
-                    email: inviteCodeData.email,
-                    specialty: inviteCodeData.specialty
-                },
-                invite_code: invite_code
+        }        // التحقق من تطابق البريد الإلكتروني
+        if (email !== inviteCodeData.email) {
+            return res.render('register', {
+                error: 'البريد الإلكتروني لا يطابق كود التفعيل',
+                success: null
             });
         }
 
@@ -207,23 +162,16 @@ router.post('/complete-registration', async (req, res) => {
         if (userCheckError) {
             console.error('خطأ في البحث عن المستخدم:', userCheckError);
             throw userCheckError;
-        }
-
-        if (existingUser && existingUser.length > 0) {
-            return res.render('complete-registration', {
+        }        if (existingUser && existingUser.length > 0) {
+            return res.render('register', {
                 error: 'اسم المستخدم مستخدم بالفعل، يرجى اختيار اسم آخر',
-                success: null,
-                userInfo: {
-                    full_name: inviteCodeData.full_name,
-                    email: inviteCodeData.email,
-                    specialty: inviteCodeData.specialty
-                },
-                invite_code: invite_code
+                success: null
             });
         }
 
-        // تشفير كلمة المرور
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // إنشاء كلمة مرور مؤقتة (سيقوم المستخدم بتغييرها عند أول تسجيل دخول)
+        const tempPassword = crypto.randomBytes(8).toString('hex');
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
         // إنشاء المستخدم الجديد
         const { data: newUser, error: createError } = await supabase
@@ -231,7 +179,6 @@ router.post('/complete-registration', async (req, res) => {
             .insert([{
                 username,
                 password: hashedPassword,
-                bio: bio || null,
                 display_name_ar: inviteCodeData.full_name,
                 role: 'user'
             }])
@@ -251,7 +198,7 @@ router.post('/complete-registration', async (req, res) => {
                 email: inviteCodeData.email,
                 blog_title: `مدونة ${inviteCodeData.full_name}`,
                 blog_description: `مدونة متخصصة في ${inviteCodeData.specialty}`,
-                about_text: bio || '',
+                about_text: '',
                 contact_info: inviteCodeData.email
             }]);
 
@@ -274,118 +221,23 @@ router.post('/complete-registration', async (req, res) => {
             console.error('خطأ في تحديث كود الدعوة:', updateCodeError);
         }
 
-        // تسجيل دخول المستخدم تلقائياً
-        const token = jwt.sign(
-            { userId: newUser.id, username: newUser.username },
-            JWT_SECRET,
-            { expiresIn: '30d' }
-        );
-
-        res.cookie('auth_token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 يوم
-        });
-
-        // توجيه إلى صفحة الترحيب
-        res.render('welcome', { 
-            username: newUser.username,
-            displayName: inviteCodeData.full_name
-        });
-
-    } catch (err) {
-        console.error('خطأ في إكمال التسجيل:', err);
-        res.render('complete-registration', {
-            error: 'حدث خطأ أثناء إنشاء الحساب، يرجى المحاولة مرة أخرى',
-            success: null,
-            userInfo: null,
-            invite_code: invite_code || ''
-        });
-    }
-});
-
-// المسار القديم للتسجيل (سيتم إزالته تدريجياً)
-
-// المسار القديم للتسجيل المباشر (احتياطي - للطوارئ فقط)
-router.post('/register-direct', async (req, res) => {
-    const { username, email, password } = req.body;
-
-    try {
-        // التحقق من وجود المستخدم باستخدام اسم المستخدم
-        const { data: existingUser, error: userError } = await supabase
-            .from('users')
-            .select('username')
-            .eq('username', username);
-
-        if (userError) {
-            console.error('خطأ في البحث عن المستخدم:', userError);
-            return res.render('register', {
-                error: 'حدث خطأ أثناء التحقق من البيانات',
-                success: null
-            });
-        }
-
-        // التحقق من وجود البريد الإلكتروني في جدول الإعدادات
-        const { data: existingEmail, error: emailError } = await supabase
-            .from('settings')
-            .select('email')
-            .eq('email', email);
-
-        if (emailError) {
-            console.error('خطأ في البحث عن البريد الإلكتروني:', emailError);
-            return res.render('register', {
-                error: 'حدث خطأ أثناء التحقق من البيانات',
-                success: null
-            });
-        }
-
-        if ((existingUser && existingUser.length > 0) || (existingEmail && existingEmail.length > 0)) {
-            return res.render('register', {
-                error: 'اسم المستخدم أو البريد الإلكتروني مستخدم بالفعل',
-                success: null
-            });
-        }
-
-        // تشفير كلمة المرور
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // إنشاء المستخدم
-        const { data: newUser, error: createError } = await supabase
-            .from('users')
-            .insert([{
+        // إرسال بيانات الدخول عبر البريد الإلكتروني
+        try {
+            await emailService.sendLoginCredentials(
+                email,
+                inviteCodeData.full_name,
                 username,
-                password: hashedPassword
-            }])
-            .select()
-            .single();
-
-        if (createError) {
-            console.error('خطأ في إنشاء المستخدم:', createError);
-            throw createError;
-        }
-
-        // إنشاء إعدادات المستخدم مع البريد الإلكتروني
-        const { error: settingsError } = await supabase
-            .from('settings')
-            .insert([{
-                user_id: newUser.id,
-                email: email
-            }]);
-
-        if (settingsError) {
-            console.error('خطأ في إنشاء الإعدادات:', settingsError);
-            throw settingsError;
-        }
-
-        res.render('register', {
+                tempPassword
+            );
+        } catch (emailError) {
+            console.error('خطأ في إرسال بيانات الدخول:', emailError);
+        }        res.render('register', {
             error: null,
-            success: 'تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول'
-        });
-
-    } catch (err) {
+            success: `تم إنشاء حسابك بنجاح! تم إرسال بيانات الدخول إلى ${email}. يمكنك الآن تسجيل الدخول.`
+        });    } catch (err) {
         console.error('خطأ في التسجيل:', err);
         res.render('register', {
-            error: 'حدث خطأ أثناء إنشاء الحساب',
+            error: 'حدث خطأ أثناء إنشاء الحساب، يرجى المحاولة مرة أخرى',
             success: null
         });
     }

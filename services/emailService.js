@@ -44,9 +44,9 @@ async function sendEmail(to, subject, htmlContent, textContent = '') {
     }
 }
 
-// إرسال كود التفعيل
+// إرسال كود التفعيل - تصميم بسيط ومتناسق
 async function sendInviteCode(email, fullName, inviteCode, specialty) {
-    const subject = 'كود التفعيل - مدونات آفاق';
+    const subject = 'تم قبولك في مدونات آفاق';
     
     const htmlContent = `
         <!DOCTYPE html>
@@ -54,11 +54,18 @@ async function sendInviteCode(email, fullName, inviteCode, specialty) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
             <style>
-                body {
-                    font-family: 'Tahoma', 'Arial', sans-serif;
-                    background-color: #f9f7f0;
+                * {
                     margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: 'Tajawal', sans-serif;
+                    background-color: #f9f7f0;
+                    color: #222;
+                    line-height: 1.6;
                     padding: 20px;
                     direction: rtl;
                 }
@@ -66,72 +73,139 @@ async function sendInviteCode(email, fullName, inviteCode, specialty) {
                     max-width: 600px;
                     margin: 0 auto;
                     background-color: white;
-                    border-radius: 15px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 8px;
                     overflow: hidden;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 }
                 .header {
-                    background-color: #8c4a21;
-                    color: white;
+                    background-color: #f8f9fa;
                     padding: 30px;
                     text-align: center;
+                    border-bottom: 1px solid #e5e5e5;
                 }
                 .header h1 {
-                    margin: 0;
-                    font-size: 2rem;
+                    font-size: 1.8rem;
+                    font-weight: 500;
+                    color: #222;
+                    margin-bottom: 10px;
+                }
+                .header p {
+                    font-size: 1rem;
+                    color: #666;
                 }
                 .content {
-                    padding: 30px;
+                    padding: 40px 30px;
                 }
-                .welcome {
+                .greeting {
                     font-size: 1.2rem;
-                    color: #333;
+                    color: #222;
                     margin-bottom: 20px;
-                }
-                .code-container {
-                    background-color: #f8f9fa;
-                    border: 2px dashed #8c4a21;
-                    border-radius: 10px;
-                    padding: 20px;
                     text-align: center;
-                    margin: 20px 0;
+                }
+                .message {
+                    font-size: 1rem;
+                    color: #555;
+                    margin-bottom: 30px;
+                    line-height: 1.7;
+                    text-align: center;
+                }
+                .specialty {
+                    font-weight: 500;
+                    color: #222;
+                }
+                .code-section {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 25px;
+                    text-align: center;
+                    margin: 30px 0;
+                }
+                .code-label {
+                    font-size: 1rem;
+                    color: #666;
+                    margin-bottom: 15px;
                 }
                 .invite-code {
-                    font-size: 2.5rem;
-                    font-weight: bold;
-                    color: #8c4a21;
-                    letter-spacing: 0.5rem;
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: #222;
+                    letter-spacing: 0.2rem;
+                    font-family: 'Courier New', monospace;
+                    background-color: white;
+                    padding: 15px 20px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 4px;
+                    display: inline-block;
                     margin: 10px 0;
                 }
                 .instructions {
-                    background-color: #e7f3ff;
-                    border-right: 4px solid #0066cc;
-                    padding: 15px;
-                    margin: 20px 0;
-                }
-                .footer {
                     background-color: #f8f9fa;
-                    padding: 20px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 25px;
+                    margin: 30px 0;
+                }
+                .instructions h4 {
+                    font-size: 1.1rem;
+                    color: #222;
+                    margin-bottom: 15px;
+                }
+                .instructions ol {
+                    padding-right: 20px;
+                    color: #555;
+                }
+                .instructions li {
+                    margin-bottom: 8px;
+                    font-size: 0.95rem;
+                }
+                .button-container {
                     text-align: center;
-                    color: #666;
-                    font-size: 0.9rem;
+                    margin: 30px 0;
                 }
                 .button {
                     display: inline-block;
-                    background-color: #8c4a21;
+                    background-color: #222;
                     color: white;
-                    padding: 12px 30px;
+                    padding: 15px 30px;
                     text-decoration: none;
-                    border-radius: 5px;
-                    margin: 10px 0;
+                    border-radius: 4px;
+                    font-size: 1rem;
+                    font-weight: 500;
                 }
-                .warning {
-                    background-color: #fff3cd;
-                    border: 1px solid #ffeaa7;
-                    border-radius: 5px;
-                    padding: 10px;
-                    margin: 15px 0;
-                    color: #856404;
+                .notice {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 20px;
+                    margin: 25px 0;
+                    font-size: 0.9rem;
+                    color: #666;
+                }
+                .footer {
+                    background-color: #f8f9fa;
+                    padding: 25px;
+                    text-align: center;
+                    border-top: 1px solid #e5e5e5;
+                    font-size: 0.9rem;
+                    color: #666;
+                }
+                .footer .brand {
+                    font-weight: 500;
+                    color: #222;
+                    margin-bottom: 5px;
+                }
+                @media (max-width: 600px) {
+                    body {
+                        padding: 10px;
+                    }
+                    .header, .content {
+                        padding: 25px 20px;
+                    }
+                    .invite-code {
+                        font-size: 1.8rem;
+                        letter-spacing: 0.1rem;
+                    }
                 }
             </style>
         </head>
@@ -139,44 +213,51 @@ async function sendInviteCode(email, fullName, inviteCode, specialty) {
             <div class="container">
                 <div class="header">
                     <h1>مدونات آفاق</h1>
-                    <p>مرحباً بك في مجتمع المدونين</p>
+                    <p>منصة التدوين الثقافي والفكري</p>
                 </div>
                 
                 <div class="content">
-                    <div class="welcome">
-                        مرحباً <strong>${fullName}</strong>،
+                    <div class="greeting">
+                        مرحباً <strong>${fullName}</strong>
                     </div>
                     
-                    <p>نحن سعداء لقبولك في مجتمع مدونات آفاق! تم مراجعة طلب إنشاء المدونة الخاص بك في مجال <strong>${specialty}</strong> والموافقة عليه.</p>
+                    <div class="message">
+                        تم قبول طلبك للانضمام إلى مدونات آفاق في مجال <span class="specialty">${specialty}</span>.
+                        <br><br>
+                        يمكنك الآن إكمال إنشاء حسابك باستخدام كود التفعيل أدناه.
+                    </div>
                     
-                    <div class="code-container">
-                        <p><strong>كود التفعيل الخاص بك:</strong></p>
+                    <div class="code-section">
+                        <div class="code-label">كود التفعيل الخاص بك:</div>
                         <div class="invite-code">${inviteCode}</div>
-                        <p><small>استخدم هذا الكود لإكمال إنشاء حسابك</small></p>
                     </div>
                     
                     <div class="instructions">
                         <h4>خطوات إكمال التسجيل:</h4>
                         <ol>
-                            <li>انتقل إلى صفحة إكمال التسجيل</li>
-                            <li>أدخل كود التفعيل أعلاه</li>
-                            <li>اختر اسم المستخدم وكلمة المرور</li>
-                            <li>ابدأ رحلتك في الكتابة!</li>
+                            <li>انقر على الرابط أدناه</li>
+                            <li>أدخل كود التفعيل</li>
+                            <li>أدخل بريدك الإلكتروني واختر اسم المستخدم</li>
+                            <li>اختر كلمة مرور آمنة</li>
+                            <li>ابدأ رحلتك في التدوين</li>
                         </ol>
                     </div>
                     
-                    <div style="text-align: center;">
-                        <a href="${process.env.WEBSITE_URL}/complete-registration" class="button">أكمل التسجيل الآن</a>
+                    <div class="button-container">
+                        <a href="${process.env.WEBSITE_URL}/register" class="button">إكمال التسجيل</a>
                     </div>
-                    
-                    <div class="warning">
-                        <strong>تنبيه مهم:</strong> هذا الكود صالح لمدة 7 أيام فقط من تاريخ الإرسال. يرجى إكمال التسجيل في أقرب وقت ممكن.
+
+                    <div class="notice">
+                        <strong>تنبيه:</strong> هذا الكود صالح لمدة 7 أيام فقط من تاريخ الإرسال.
                     </div>
                 </div>
                 
                 <div class="footer">
-                    <p>مدونات آفاق - منصة للتدوين الثقافي والفكري</p>
-                    <p>هذا بريد إلكتروني تلقائي، يرجى عدم الرد عليه</p>
+                    <div class="brand">مدونات آفاق</div>
+                    <div>منصة للتدوين الثقافي والفكري</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">
+                        © 2025 مدونات آفاق - جميع الحقوق محفوظة
+                    </div>
                 </div>
             </div>
         </body>
@@ -186,16 +267,197 @@ async function sendInviteCode(email, fullName, inviteCode, specialty) {
     const textContent = `
 مرحباً ${fullName}،
 
-تم قبولك في مجتمع مدونات آفاق!
+تم قبول طلبك للانضمام إلى مدونات آفاق في مجال ${specialty}.
 
 كود التفعيل الخاص بك: ${inviteCode}
 
 يرجى زيارة الرابط التالي لإكمال التسجيل:
-${process.env.WEBSITE_URL}/complete-registration
+${process.env.WEBSITE_URL}/register
 
 هذا الكود صالح لمدة 7 أيام فقط.
 
-مدونات آفاق
+مع أطيب التحيات،
+فريق مدونات آفاق
+    `;
+
+    return await sendEmail(email, subject, htmlContent, textContent);
+}
+
+// إرسال إشعار رفض الطلب - تصميم بسيط ومتناسق
+async function sendRejectionNotification(email, fullName, reason) {
+    const subject = 'تحديث حول طلب المدونة - مدونات آفاق';
+    
+    const htmlContent = `
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: 'Tajawal', sans-serif;
+                    background-color: #f9f7f0;
+                    color: #222;
+                    line-height: 1.6;
+                    padding: 20px;
+                    direction: rtl;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: white;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+                .header {
+                    background-color: #f8f9fa;
+                    padding: 30px;
+                    text-align: center;
+                    border-bottom: 1px solid #e5e5e5;
+                }
+                .header h1 {
+                    font-size: 1.8rem;
+                    font-weight: 500;
+                    color: #222;
+                    margin-bottom: 10px;
+                }
+                .header p {
+                    font-size: 1rem;
+                    color: #666;
+                }
+                .content {
+                    padding: 40px 30px;
+                }
+                .greeting {
+                    font-size: 1.2rem;
+                    color: #222;
+                    margin-bottom: 20px;
+                }
+                .message {
+                    font-size: 1rem;
+                    color: #555;
+                    margin-bottom: 25px;
+                    line-height: 1.7;
+                }
+                .reason-section {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 20px;
+                    margin: 25px 0;
+                }
+                .reason-label {
+                    font-size: 1rem;
+                    color: #222;
+                    font-weight: 500;
+                    margin-bottom: 10px;
+                }
+                .reason-text {
+                    font-size: 0.95rem;
+                    color: #555;
+                    line-height: 1.6;
+                }
+                .notice {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 20px;
+                    margin: 25px 0;
+                    font-size: 0.95rem;
+                    color: #555;
+                }
+                .footer {
+                    background-color: #f8f9fa;
+                    padding: 25px;
+                    text-align: center;
+                    border-top: 1px solid #e5e5e5;
+                    font-size: 0.9rem;
+                    color: #666;
+                }
+                .footer .brand {
+                    font-weight: 500;
+                    color: #222;
+                    margin-bottom: 5px;
+                }
+                @media (max-width: 600px) {
+                    body {
+                        padding: 10px;
+                    }
+                    .header, .content {
+                        padding: 25px 20px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>مدونات آفاق</h1>
+                    <p>منصة التدوين الثقافي والفكري</p>
+                </div>
+                
+                <div class="content">
+                    <div class="greeting">
+                        عزيزي/عزيزتي <strong>${fullName}</strong>
+                    </div>
+                    
+                    <div class="message">
+                        نشكرك على اهتمامك بالانضمام إلى مدونات آفاق ووقتك في تقديم الطلب.
+                    </div>
+                    
+                    <div class="message">
+                        نأسف لإعلامك أنه لم يتم قبول طلبك في هذا الوقت للأسباب التالية:
+                    </div>
+                    
+                    <div class="reason-section">
+                        <div class="reason-label">أسباب عدم الموافقة:</div>
+                        <div class="reason-text">${reason}</div>
+                    </div>
+                    
+                    <div class="notice">
+                        يمكنك إعادة تقديم طلب جديد في أي وقت مع مراعاة الملاحظات المذكورة أعلاه. نقدر تفهمك وندعوك للمحاولة مرة أخرى.
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <div style="font-size: 1rem; color: #555;">
+                            شكراً لتفهمك
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <div class="brand">مدونات آفاق</div>
+                    <div>منصة للتدوين الثقافي والفكري</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">
+                        © 2025 مدونات آفاق - جميع الحقوق محفوظة
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    const textContent = `
+عزيزي/عزيزتي ${fullName}،
+
+نشكرك على اهتمامك بالانضمام إلى مدونات آفاق.
+
+نأسف لإعلامك أنه لم يتم قبول طلبك هذه المرة للأسباب التالية:
+
+${reason}
+
+يمكنك إعادة تقديم طلب جديد في أي وقت مع مراعاة الملاحظات المذكورة أعلاه.
+
+شكراً لتفهمك.
+
+فريق مدونات آفاق
     `;
 
     return await sendEmail(email, subject, htmlContent, textContent);
@@ -210,12 +472,52 @@ async function notifyAdminsNewRequest(requestData) {
         <html lang="ar" dir="rtl">
         <head>
             <meta charset="UTF-8">
+            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
             <style>
-                body { font-family: 'Tahoma', 'Arial', sans-serif; direction: rtl; }
-                .container { max-width: 600px; margin: 0 auto; }
-                .header { background-color: #dc3545; color: white; padding: 20px; text-align: center; }
-                .content { padding: 20px; background-color: white; }
-                .info-box { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0; }
+                body {
+                    font-family: 'Tajawal', sans-serif;
+                    background-color: #f9f7f0;
+                    color: #222;
+                    direction: rtl;
+                    margin: 0;
+                    padding: 20px;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: white;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 8px;
+                }
+                .header {
+                    background-color: #f8f9fa;
+                    color: #222;
+                    padding: 25px;
+                    text-align: center;
+                    border-bottom: 1px solid #e5e5e5;
+                }
+                .content {
+                    padding: 30px;
+                }
+                .info-box {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    padding: 20px;
+                    border-radius: 6px;
+                    margin: 15px 0;
+                }
+                .button-container {
+                    text-align: center;
+                    margin: 25px 0;
+                }
+                .button {
+                    background-color: #222;
+                    color: white;
+                    padding: 12px 25px;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-weight: 500;
+                }
             </style>
         </head>
         <body>
@@ -244,11 +546,182 @@ async function notifyAdminsNewRequest(requestData) {
                         <p>${requestData.motivation}</p>
                     </div>
                     
-                    <p style="text-align: center;">
-                        <a href="${process.env.WEBSITE_URL}/admin/blog-requests" 
-                           style="background-color: #8c4a21; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                    <div class="button-container">
+                        <a href="${process.env.WEBSITE_URL}/admin/blog-requests" class="button">
                            مراجعة الطلب
                         </a>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    // إرسال للمشرفين
+    const adminEmail = process.env.ADMIN_EMAIL;
+    return await sendEmail(adminEmail, subject, htmlContent);
+}
+
+// إرسال بيانات الدخول للمستخدم الجديد
+async function sendLoginCredentials(email, fullName, username, tempPassword) {
+    const subject = 'بيانات الدخول - مدونات آفاق';
+    
+    const htmlContent = `
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+            <style>
+                body {
+                    font-family: 'Tajawal', sans-serif;
+                    background-color: #f9f7f0;
+                    color: #222;
+                    margin: 0;
+                    padding: 20px;
+                    direction: rtl;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: white;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+                .header {
+                    background-color: #f8f9fa;
+                    padding: 30px;
+                    text-align: center;
+                    border-bottom: 1px solid #e5e5e5;
+                }
+                .header h1 {
+                    font-size: 1.8rem;
+                    font-weight: 500;
+                    color: #222;
+                    margin-bottom: 10px;
+                }
+                .content {
+                    padding: 30px;
+                }
+                .greeting {
+                    font-size: 1.2rem;
+                    color: #222;
+                    margin-bottom: 20px;
+                }
+                .credentials-container {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 25px;
+                    margin: 25px 0;
+                }
+                .credential-item {
+                    margin: 15px 0;
+                    padding: 15px;
+                    background-color: white;
+                    border-radius: 4px;
+                    border: 1px solid #e5e5e5;
+                }
+                .credential-label {
+                    font-weight: 500;
+                    color: #222;
+                    display: block;
+                    margin-bottom: 8px;
+                }
+                .credential-value {
+                    font-size: 1.1rem;
+                    color: #333;
+                    font-family: 'Courier New', monospace;
+                }
+                .instructions {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    padding: 20px;
+                    border-radius: 6px;
+                    margin: 20px 0;
+                }
+                .notice {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 6px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    color: #666;
+                    font-size: 0.9rem;
+                }
+                .footer {
+                    background-color: #f8f9fa;
+                    padding: 25px;
+                    text-align: center;
+                    border-top: 1px solid #e5e5e5;
+                    color: #666;
+                    font-size: 0.9rem;
+                }
+                .button {
+                    display: inline-block;
+                    background-color: #222;
+                    color: white;
+                    padding: 15px 30px;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    margin: 15px 0;
+                    font-weight: 500;
+                }
+                .button-container {
+                    text-align: center;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>مدونات آفاق</h1>
+                    <p>أهلاً بك في مجتمعنا</p>
+                </div>
+                
+                <div class="content">
+                    <div class="greeting">
+                        مرحباً <strong>${fullName}</strong>
+                    </div>
+                    
+                    <p>تم إنشاء حسابك بنجاح في مدونات آفاق. يمكنك الآن تسجيل الدخول باستخدام البيانات التالية:</p>
+                    
+                    <div class="credentials-container">
+                        <div class="credential-item">
+                            <span class="credential-label">اسم المستخدم:</span>
+                            <span class="credential-value">${username}</span>
+                        </div>
+                        <div class="credential-item">
+                            <span class="credential-label">كلمة المرور المؤقتة:</span>
+                            <span class="credential-value">${tempPassword}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="notice">
+                        <strong>تنبيه أمني:</strong> هذه كلمة مرور مؤقتة. يرجى تغييرها فور تسجيل الدخول الأول من صفحة الإعدادات.
+                    </div>
+                    
+                    <div class="instructions">
+                        <h4>خطوات تسجيل الدخول:</h4>
+                        <ol>
+                            <li>انتقل إلى صفحة تسجيل الدخول</li>
+                            <li>أدخل اسم المستخدم وكلمة المرور أعلاه</li>
+                            <li>غيّر كلمة المرور من الإعدادات</li>
+                            <li>ابدأ في كتابة مقالاتك</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="button-container">
+                        <a href="${process.env.WEBSITE_URL}/login" class="button">تسجيل الدخول</a>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>مدونات آفاق - منصة للتدوين الثقافي والفكري</p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">
+                        © 2025 مدونات آفاق - جميع الحقوق محفوظة
                     </p>
                 </div>
             </div>
@@ -256,53 +729,29 @@ async function notifyAdminsNewRequest(requestData) {
         </html>
     `;
 
-    // إرسال للمشرفين (نفس البريد للتسجيل الداخلي)
-    const adminEmail = process.env.ADMIN_EMAIL;
-    return await sendEmail(adminEmail, subject, htmlContent);
-}
+    const textContent = `
+مرحباً ${fullName}،
 
-// إرسال إشعار رفض الطلب
-async function sendRejectionNotification(email, fullName, reason) {
-    const subject = 'تحديث حول طلب المدونة - مدونات آفاق';
-    
-    const htmlContent = `
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <style>
-                body { font-family: 'Tahoma', 'Arial', sans-serif; direction: rtl; }
-                .container { max-width: 600px; margin: 0 auto; }
-                .header { background-color: #dc3545; color: white; padding: 20px; text-align: center; }
-                .content { padding: 20px; background-color: white; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h2>تحديث حول طلب المدونة</h2>
-                </div>
-                <div class="content">
-                    <p>عزيزي/عزيزتي ${fullName}،</p>
-                    <p>نشكرك على اهتمامك بالانضمام إلى مدونات آفاق.</p>
-                    <p>نأسف لإعلامك أنه لم يتم قبول طلبك هذه المرة للأسباب التالية:</p>
-                    <div style="background-color: #f8d7da; padding: 15px; border-radius: 5px; margin: 15px 0;">
-                        ${reason}
-                    </div>
-                    <p>يمكنك إعادة تقديم طلب جديد في أي وقت مع مراعاة الملاحظات المذكورة أعلاه.</p>
-                    <p>شكراً لتفهمك.</p>
-                </div>
-            </div>
-        </body>
-        </html>
+تم إنشاء حسابك بنجاح في مدونات آفاق!
+
+بيانات الدخول:
+اسم المستخدم: ${username}
+كلمة المرور المؤقتة: ${tempPassword}
+
+يرجى تسجيل الدخول وتغيير كلمة المرور من الإعدادات.
+
+رابط تسجيل الدخول: ${process.env.WEBSITE_URL}/login
+
+مدونات آفاق
     `;
 
-    return await sendEmail(email, subject, htmlContent);
+    return await sendEmail(email, subject, htmlContent, textContent);
 }
 
 module.exports = {
     sendEmail,
     sendInviteCode,
     notifyAdminsNewRequest,
-    sendRejectionNotification
+    sendRejectionNotification,
+    sendLoginCredentials
 };

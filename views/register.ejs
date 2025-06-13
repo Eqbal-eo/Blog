@@ -3,278 +3,245 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>انضم إلى مجتمع مدونات آفاق</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إكمال التسجيل - مدونات آفاق</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-/* login.css */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: 'Tajawal', sans-serif;
-  display: flex;
-  flex-direction: column;
-  background-color: #f9f7f0;
-}
-.card {
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.btn-dark {
-  background-color: #8c4a21ca;
-  border-color: transparent;
-}
-.btn-dark:hover {
-  background-color: #470539c5;
-  border-color: transparent;
-}
-h1 {
-  font-family: 'Tajawal', sans-serif;
-  font-size: 2.5rem;
-  color: #8c4a21ca;
-  text-align: center;
-  margin-top: 30px;
-  padding: 0 15px;
-}
-.container {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding: 0 15px;
-}
-.form-control {
-  font-size: 0.9rem;
-  text-align: right;
-  direction: rtl;
-}
-.form-label {
-  margin-bottom: 0.3rem;
-}
-.form-control::placeholder {
-  font-size: 0.85rem;
-  text-align: right;
-  direction: rtl;
-  opacity: 0.7;
-}
-.mb-3 {
-  margin-bottom: 1rem;
-}
-@media (max-width: 768px) {
-  h1 {
-    font-size: 1.8rem;
-    margin-top: 20px;
-  }
-  .container {
-    margin-bottom: 40px;
-  }
-  .card {
-    margin: 0;
-    border-radius: 10px;
-  }
-  .card-body {
-    padding: 15px;
-  }
-  .form-label {
-    margin-bottom: 0.2rem;
-    font-size: 0.9rem;
-  }
-  .form-control {
-    font-size: 16px;
-    padding: 8px 10px;
-    margin-bottom: 15px;
-  }
-  .mb-3 {
-    margin-bottom: 0.8rem;
-  }
-  .mb-3:last-of-type {
-    margin-bottom: 1.2rem;
-  }
-  .btn {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    font-size: 16px;
-  }
-}
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .container {
-    margin-top: 30px;
-    margin-bottom: 40px;
-  }
-  .col-md-4 {
-    width: 70%;
-    margin: 0 auto;
-  }
-  .card {
-    padding: 0;
-  }
-  .card-body {
-    padding: 15px;
-  }
-  .card-header {
-    padding: 10px;
-  }
-  .form-control {
-    font-size: 1rem;
-    padding: 8px 12px;
-  }
-  .btn {
-    padding: 8px 0;
-    margin-top: 5px;
-  }
-  .mb-3 {
-    margin-bottom: 15px;
-  }
-}
-@media (max-width: 480px) {
-  h1 {
-    font-size: 1.5rem;
-    margin-top: 15px;
-  }
-  .container {
-    margin-bottom: 30px;
-  }
-}
-/* register.css */
-h5 {
-    font-family: 'Tajawal', sans-serif;
-    font-size: 1.2rem;
-    color: #5a5a5a;
-    text-align: center;
-    margin-top: 1px;
-    padding: 0 15px;
-}
-@media (max-width: 768px) {
-    h5 {
-        font-size: 1.1rem;
-        margin-top: 10px;
-    }
-}
-@media (max-width: 480px) {
-    h5 {
-        font-size: 1rem;
-    }
-}
-/* footer.css */
-html {
-    height: 100%;
-    margin: 0;
-}
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-}
-main {
-    flex: 1 0 auto;
-}
-footer {
-    flex-shrink: 0;
-    background-color: #ffffff;
-    text-align: center;
-    padding: 1rem 0;
-    font-size: 1rem;
-    color: #5e5d5d;
-    width: 100%;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid #cccccc96;
-    margin-top: auto;
-}
-@media (max-width: 768px) {
-    footer {
-        padding: 0.8rem 0;
-        font-size: 0.9rem;
-    }
-}
-@media (max-width: 480px) {
-    footer {
-        padding: 0.7rem 0;
-        font-size: 0.85rem;
-    }
-}
-footer p {
-    margin: 0.5rem 0;
-}
-footer a {
-    color: #8c4a21ca;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-footer a:hover {
-    color: #470539c5;
-}
-    </style>
+        /* login.css */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f7f0;
+        }
 
+        /* تنسيق الكرت */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* زر الـ btn-dark */
+        .btn-dark {
+            background-color: #8c4a21ca;
+            border-color: transparent;
+        }
+
+        .btn-dark:hover {
+            background-color: #470539c5;
+            border-color: transparent;
+        }
+
+        /* تنسيق العناوين */
+        h1 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 2.5rem;
+            color: #8c4a21ca;
+            text-align: center;
+            margin-top: 50px;
+            padding: 0 15px;
+        }
+
+        h2 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.75rem;
+            color: #5a5a5a;
+            text-align: center;
+            margin-top: 1px;
+            padding: 0 15px;
+        }
+
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 0 15px;
+        }
+
+        /* تنسيق حقول الإدخال */
+        .form-control {
+            font-size: 0.9rem;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .form-label {
+            margin-bottom: 0.3rem;
+        }
+
+        .form-control::placeholder {
+            font-size: 0.85rem;
+            text-align: right;
+            direction: rtl;
+            opacity: 0.7;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        #invite_code {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Responsive design for mobile and tablet */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-top: 20px;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+                margin-top: 10px;
+            }
+
+            .container {
+                margin-top: 20px;
+                margin-bottom: 40px;
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 15px;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Footer styles */
+        footer {
+            flex-shrink: 0;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 1rem;
+            color: #5e5d5d;
+            width: 100%;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid #cccccc96;
+            margin-top: auto;
+        }        footer a {
+            color: #8c4a21ca;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }        footer a:hover {
+            color: #470539c5;
+        }        /* تنسيق الروابط */
+        a {
+            text-decoration: none !important;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #007bff !important;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
+    <h1><a href="/" style="text-decoration: none; color: inherit;">مدونات آفاق</a></h1>
+    <h2>إكمال التسجيل</h2>
 
-  <h1><a href="/" style="text-decoration: none; color: inherit;">مدونات آفاق</a></h1>
-  <h5>ابدأ رحلتك في التدوين معنا</h5>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-10 col-sm-8 col-md-4">
 
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-10 col-sm-8 col-md-6">
+                <div class="card shadow">
+                    <div class="card-header text-center text-dark">
+                        <h6 class="text-muted">أدخل بياناتك لإكمال إنشاء الحساب</h6>
+                    </div>
 
-        <div class="card shadow">
-          <div class="card-header text-center text-dark">
-            <h5>انضم إلى مجتمع مدونات آفاق</h5>
-          </div>
+                    <div class="card-body">
 
-          <div class="card-body text-center">
-            <div class="mb-4">
-              <i class="fas fa-pen-nib fa-3x text-dark mb-3"></i>
-              <h6 class="text-muted">عملية التسجيل بسيطة وتتم على مراحل</h6>
+                        <% if (error) { %>
+                            <div class="alert alert-danger text-center">
+                                <%= error %>
+                            </div>
+                        <% } %>
+
+                        <% if (typeof success !== 'undefined' && success) { %>
+                            <div class="alert alert-success text-center">
+                                <%= success %>
+                            </div>
+                        <% } %>
+
+                        <form action="/register" method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    <i class="fas me-2"></i>اسم المستخدم
+                                </label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="أدخل اسم المستخدم" required>
+                                <small class="text-muted">سيظهر هذا الاسم في URL مدونتك</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fas me-2"></i>البريد الإلكتروني
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="أدخل البريد الإلكتروني" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="invite_code" class="form-label">
+                                    <i class="fas me-2"></i>كود التفعيل
+                                </label>
+                                <input type="text" class="form-control" id="invite_code" name="invite_code"
+                                    placeholder="*****" required maxlength="6">
+                                <small class="text-muted">أدخل الكود المكون من 6 أحرف المرسل إليك عبر البريد الإلكتروني</small>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="fas me-2"></i>إكمال التسجيل
+                                </button>
+                            </div>
+                        </form>                        <div class="mt-4 text-center">
+                            <small class="text-muted">
+                                ليس لديك حساب؟ 
+                                <a href="/blog-request" class="text-dark">اطلب إنشاء مدونة</a>
+                            </small>
+                        </div>
+
+                        <div class="mt-1 text-center">
+                            <small class="text-muted">
+                                لديك حساب؟ 
+                                <a href="/login" class="text-dark">سجّل الدخول</a>
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-
-            <div class="steps-info mb-4">
-              <div class="step-item mb-3 p-3 border rounded">
-                <div class="step-number bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">1</div>
-                <span class="ms-2">املأ نموذج طلب إنشاء المدونة</span>
-              </div>
-              <div class="step-item mb-3 p-3 border rounded">
-                <div class="step-number bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">2</div>
-                <span class="ms-2">انتظار موافقة فريق المراجعة</span>
-              </div>
-              <div class="step-item mb-3 p-3 border rounded">
-                <div class="step-number bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">3</div>
-                <span class="ms-2">استلام كود التفعيل عبر البريد الإلكتروني</span>
-              </div>
-              <div class="step-item mb-3 p-3 border rounded">
-                <div class="step-number bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">4</div>
-                <span class="ms-2">إكمال إنشاء الحساب والبدء في الكتابة</span>
-              </div>
-            </div>
-
-            <div class="d-grid mb-3">
-              <a href="/blog-request" class="btn btn-dark btn-lg">ابدأ الآن - أنشئ طلب مدونة</a>
-            </div>
-
-            <div class="text-center">
-              <a href="/login" class="text-dark">لديك حساب بالفعل؟ سجّل الدخول</a>
-            </div>
-
-            <div class="mt-3">
-              <small class="text-muted">
-                هل لديك كود تفعيل؟ 
-                <a href="/complete-registration" class="text-dark">أكمل التسجيل هنا</a>
-              </small>
-            </div>
-
-          </div>
         </div>
-
-      </div>
     </div>
-  </div>
 
-  <!-- Footer -->
-  <footer>
-     مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
-  </footer>
+    <!-- Footer -->
+    <footer>
+        مدونات آفاق | منصة للتدوين الثقافي والفكري © 2025
+    </footer>
 
+    <script>
+        // تنسيق حقل كود التفعيل
+        document.getElementById('invite_code').addEventListener('input', function() {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        });
+    </script>
 </body>
 
 </html>
