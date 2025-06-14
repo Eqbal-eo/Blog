@@ -274,26 +274,26 @@ body {
   display: none;
   border: none;
   background: transparent;
-  padding: 0.25rem 0.5rem;
-  font-size: 1.25rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 1rem;
   line-height: 1;
-  color: #470539c5;
-  border: 1px solid #470539c5;
+  color: #6c757d;
+  border: 1px solid #6c757d;
   border-radius: 0.375rem;
 }
 
 .navbar-toggler:focus {
   text-decoration: none;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(71, 5, 57, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
 }
 
 .navbar-toggler-icon {
   display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.2em;
+  height: 1.2em;
   vertical-align: middle;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2871, 5, 57, 0.77%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28108, 117, 125, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
@@ -424,32 +424,31 @@ body {
 }
 
 /* iPad Portrait Mode */
-@media screen and (max-width: 820px) and (orientation: portrait) {
-    /* Navbar Responsive Behavior for iPad Portrait */
+@media screen and (max-width: 820px) and (orientation: portrait) {    /* Navbar Responsive Behavior for iPad Portrait */
     .navbar-toggler {
         display: block !important;
         border: none;
         background: transparent;
-        padding: 0.25rem 0.5rem;
-        font-size: 1.25rem;
+        padding: 0.2rem 0.4rem;
+        font-size: 1rem;
         line-height: 1;
-        color: #470539c5;
-        border: 1px solid #470539c5;
+        color: #6c757d;
+        border: 1px solid #6c757d;
         border-radius: 0.375rem;
     }
 
     .navbar-toggler:focus {
         text-decoration: none;
         outline: 0;
-        box-shadow: 0 0 0 0.25rem rgba(71, 5, 57, 0.25);
+        box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
     }
 
     .navbar-toggler-icon {
         display: inline-block;
-        width: 1.5em;
-        height: 1.5em;
+        width: 1.2em;
+        height: 1.2em;
         vertical-align: middle;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2871, 5, 57, 0.77%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28108, 117, 125, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         background-repeat: no-repeat;
         background-position: center;
         background-size: 100%;
