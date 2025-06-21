@@ -8,89 +8,162 @@ body {
     margin: 0;
 }
 
+/* عنوان الصفحة */
+.section-title {
+    font-size: 2rem;
+    color: #8c4a21ca;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
 .about-section {
-    padding: 80px 20px;
+    padding: 20px;
 }
 
+/* بطاقة عن المنصة */
 .about-card {
-    background: rgba(255, 255, 255, 0.25);
-    /* شفافية خلفية ناعمة */
-    backdrop-filter: blur(10px);
-    /* تأثير بلور خلفي */
-    -webkit-backdrop-filter: blur(10px);
-    /* دعم سفاري */
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 5px 30px 0 rgba(100, 100, 102, 0.1);
-    /* ظل أنعم وعصري */
-    border: 1px solid rgba(98, 96, 96, 0.18);
-    /* حدود خفيفة */
-    max-width: 850px;
-    margin: 0 auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.about-title {
-    font-weight: normal;
-    font-size: 1.6rem;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 30px;
+    cursor: default;
 }
 
-.about-text {
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* شارة المنصة */
+.platform-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #8c4a21ca;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+/* اسم المنصة */
+.platform-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* وصف المنصة */
+.platform-description {
+    color: #666;
     font-size: 1rem;
-    line-height: 2;
-    color: #555;
-    text-align: center;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+/* الميزات */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.feature-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #e7e5e5;
+    border-radius: 11px;
+    font-size: 0.87rem;
+    color: #666;
+    font-weight: 500;
 }
 
 /* استعلامات الوسائط للأجهزة الصغيرة */
 @media (max-width: 768px) {
-    .about-title {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
-
-    .about-text {
-        font-size: 1rem;
-        line-height: 1.8;
-    }
-
-    .about-card {
-        padding: 30px;
-        border-radius: 15px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
     .about-section {
-        padding: 60px 15px;
-        /* مسافة من الجوانب أقل */
-    }
-}
-
-@media (max-width: 480px) {
-    .about-title {
-        font-size: 1.6rem;
+        padding: 15px;
     }
 
-    .about-text {
-        font-size: 1.2rem;
-        line-height: 1.7;
-        text-align: center;
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
     }
 
     .about-card {
         padding: 20px;
-        margin-top: 10px;
-        margin-bottom: 12px;
+        border-radius: 12px;
+        margin: 0.5rem 0;
     }
 
+    .platform-name {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .platform-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .features {
+        gap: 6px;
+        margin-top: 15px;
+    }
+
+    .feature-badge {
+        padding: 3px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
     .about-section {
-        padding: 55px 10px;
-        /* مسافة أقل على الهواتف الصغيرة */
+        padding: 10px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-card {
+        padding: 15px;
+        margin: 0;
+    }
+
+    .platform-name {
+        font-size: 1.1rem;
+    }
+
+    .platform-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .features {
+        gap: 5px;
+        margin-top: 12px;
+    }
+
+    .feature-badge {
+        padding: 2px 8px;
+        font-size: 0.75rem;
+    }
+
+    .platform-badge {
+        top: 10px;
+        left: 10px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
     }
 }

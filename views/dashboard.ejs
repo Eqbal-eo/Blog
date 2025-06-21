@@ -95,18 +95,16 @@
                     <%= successMessage %>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <% } %>
-
-                    <!-- Stats Section -->
+                <% } %>                    <!-- Stats Section -->
                     <div class="stats-container fadeIn">
-                        <div class="stat-card">
+                        <div class="stat-card unified-card">
                             <i class="bi bi-file-text h1"></i>
                             <div class="stat-number">
                                 <%= posts.length %>
                             </div>
                             <div class="stat-label">إجمالي التدوينات</div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card unified-card">
                             <i class="bi bi-check-circle h1 text-success"></i>
                             <div class="stat-number">
                                 <%= posts.filter(p=> p.status === 'published').length %>
@@ -114,7 +112,7 @@
                             <div class="stat-label">التدوينات المنشورة</div>
                         </div>
                         <% if (posts.filter(p=> p.status === 'pending').length > 0) { %>
-                            <div class="stat-card">
+                            <div class="stat-card unified-card">
                                 <i class="bi bi-hourglass-split h1 text-warning"></i>
                                 <div class="stat-number">
                                     <%= posts.filter(p=> p.status === 'pending').length %>
@@ -123,7 +121,7 @@
                             </div>
                             <% } %>
                                 <% if (posts.filter(p=> p.status === 'rejected').length > 0) { %>
-                                    <div class="stat-card">
+                                    <div class="stat-card unified-card">
                                         <i class="bi bi-x-circle h1 text-danger"></i>
                                         <div class="stat-number">
                                             <%= posts.filter(p=> p.status === 'rejected').length %>
@@ -131,7 +129,7 @@
                                     </div>
                                     <% } %>                        <!-- Admin Stats for Blog Requests -->
                         <% if (user.role === 'admin' && blogRequestsStats) { %>
-                            <div class="stat-card admin-stat-card">
+                            <div class="stat-card unified-card admin-stat-card">
                                 <i class="bi bi-file-earmark-person h1"></i>
                                 <div class="stat-number">
                                     <%= blogRequestsStats.pending %>
@@ -139,26 +137,26 @@
                                 <div class="stat-label">طلبات مدونات جديدة</div>
                             </div>
                         <% } %>
-                    </div>                    <!-- Quick Actions -->
+                    </div><!-- Quick Actions -->
                     <div class="dashboard-actions fadeIn">
-                        <a href="/posts/create" class="action-card text-decoration-none">
+                        <a href="/posts/create" class="action-card unified-card text-decoration-none">
                             <i class="bi bi-plus-circle h2"></i>
                             <h5 class="mt-3">إنشاء تدوينة جديدة</h5>
                             <p>أضف محتوى جديداً إلى مدونتك</p>
                         </a>
-                        <a href="/posts/select-edit" class="action-card text-decoration-none">
+                        <a href="/posts/select-edit" class="action-card unified-card text-decoration-none">
                             <i class="bi bi-pencil-square h2"></i>
                             <h5 class="mt-3">تعديل التدوينات</h5>
                             <p>قم بتحديث المحتوى الموجود</p>
                         </a>
-                        <a href="/settings" class="action-card text-decoration-none">
+                        <a href="/settings" class="action-card unified-card text-decoration-none">
                             <i class="bi bi-gear h2"></i>
                             <h5 class="mt-3">إعدادات الحساب</h5>
                             <p>تخصيص إعدادات حسابك</p>
                         </a>
                           <!-- Admin Actions -->
                         <% if (user.role === 'admin') { %>
-                            <a href="/admin/blog-requests" class="action-card admin-card text-decoration-none">
+                            <a href="/admin/blog-requests" class="action-card unified-card admin-card text-decoration-none">
                                 <i class="bi bi-file-earmark-person h2"></i>
                                 <h5 class="mt-3">طلبات المدونات</h5>
                                 <p>مراجعة طلبات إنشاء المدونات الجديدة</p>
