@@ -491,6 +491,88 @@ html, body {
     transform: translate(30%, -30%);
 }
 
+/* Bulk Delete Styles */
+.post-checkbox {
+    transform: scale(1.2);
+}
+
+.post-checkbox:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.list-group-item:has(.post-checkbox:checked) {
+    background-color: rgba(140, 74, 33, 0.05);
+    border-color: rgba(140, 74, 33, 0.2);
+}
+
+.bulk-controls {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.selected-count-badge {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+}
+
+.delete-selected-btn {
+    transition: var(--transition);
+}
+
+.delete-selected-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(140, 74, 33, 0.25);
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* تحسين شكل النافذة المنبثقة */
+.modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* تحسينات للاستجابة */
+@media (max-width: 768px) {
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .d-flex.gap-2 {
+        justify-content: center;
+    }
+    
+    .bulk-controls {
+        text-align: center;
+    }
+}
+
 /* Enhanced Responsive Design */
 @media (max-width: 1200px) {
     .dashboard-actions {

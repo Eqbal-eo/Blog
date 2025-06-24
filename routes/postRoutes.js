@@ -223,12 +223,58 @@ router.post('/delete/:id', async (req, res) => {
         const { error } = await supabase
             .from('posts')
             .delete()
-            .eq('id', postId);
+            .eq('id', postId)
+            .eq('user_id', req.user.id); // التأكد من أن المستخدم يحذف تدوينته فقط
 
         if (error) throw error;
         res.redirect('/posts/select-delete');
     } catch (err) {
+        console.error('خطأ في حذف التدوينة:', err);
         res.send('فشل الحذف');
+    }
+});
+
+// مسار جديد للحذف المتعدد
+router.post('/delete-multiple', async (req, res) => {
+    const { postIds } = req.body;
+    
+    if (!postIds || !Array.isArray(postIds) || postIds.length === 0) {
+        return res.status(400).json({ error: 'لم يتم تحديد تدوينات للحذف' });
+    }
+    
+    try {
+        // التحقق من أن جميع التدوينات المحددة تخص المستخدم الحالي
+        const { data: userPosts, error: checkError } = await supabase
+            .from('posts')
+            .select('id')
+            .eq('user_id', req.user.id)
+            .in('id', postIds);
+            
+        if (checkError) throw checkError;
+        
+        // التأكد من أن عدد التدوينات المسترجعة يطابق عدد التدوينات المرسلة
+        if (userPosts.length !== postIds.length) {
+            return res.status(403).json({ error: 'لا يمكنك حذف تدوينات لا تملكها' });
+        }
+        
+        // حذف التدوينات
+        const { error: deleteError } = await supabase
+            .from('posts')
+            .delete()
+            .eq('user_id', req.user.id)
+            .in('id', postIds);
+            
+        if (deleteError) throw deleteError;
+        
+        res.json({ 
+            success: true, 
+            message: `تم حذف ${postIds.length} تدوينة بنجاح`,
+            deletedCount: postIds.length 
+        });
+        
+    } catch (err) {
+        console.error('خطأ في الحذف المتعدد:', err);
+        res.status(500).json({ error: 'فشل في حذف التدوينات' });
     }
 });
 
