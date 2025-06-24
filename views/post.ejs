@@ -55,11 +55,10 @@
     .container {
         height: 100%; /* يأخذ ارتفاع الأب */
     }
-    
-    /* توسيط العناصر في جميع الشاشات */
+      /* إبقاء المحتوى في الأعلى بدلاً من التوسيط */
     .row.justify-content-center {
-        align-items: center;
-        height: 100%;
+        align-items: flex-start;
+        min-height: 100%;
     }
     
     .col-md-9 {
@@ -108,22 +107,18 @@
     * {
         touch-action: manipulation;
         -webkit-tap-highlight-color: transparent;
-    }
-
-    .post-info {
+    }    .post-info {
         font-size: 0.9rem;
         color: #a8a6a6;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
+        margin-top: 0; /* إلغاء المسافة العلوية */
+        margin-bottom: 20px; /* تقليل المسافة السفلية من 1rem */
         text-align: center; /* تغيير من right إلى center لجميع الشاشات */
         width: 100%;
-    }
-
-    .post-title {
+    }.post-title {
         font-weight: bold;
         font-size: 2rem;
         margin-top: 40px;
-        margin-bottom: 15px;
+        margin-bottom: 8px; /* تقليل المسافة من 15px إلى 8px */
         text-align: center; /* توسيط العنوان في جميع الشاشات */
         width: 100%;
     }
