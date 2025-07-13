@@ -651,3 +651,16 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(140, 74, 33, 0.15);
 }
+
+/* تنسيق blockquote في عرض التدوينات */
+.post-content blockquote {
+    border-right: 4px solid #470539c5;
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background-color: #f9f7f0;
+    border-radius: 4px;
+    font-style: normal;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}

@@ -40,7 +40,7 @@ app.use('/admin', adminRoutes); // إضافة مسارات المشرف
 app.use('/notifications', notificationRoutes); // إضافة مسارات الإشعارات
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`); 
-});
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+}); 
 
-module.exports = app;
+module.exports = app; 

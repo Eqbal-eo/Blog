@@ -143,3 +143,16 @@
     padding: 2rem;
     grid-column: 1 / -1;
 }
+
+/* تنسيق blockquote في لوحة المشرف */
+.post-preview blockquote {
+    border-right: 4px solid #470539c5;
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    background-color: #f9f7f0;
+    border-radius: 4px;
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #333;
+}

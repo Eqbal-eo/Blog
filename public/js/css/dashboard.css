@@ -918,3 +918,16 @@ html, body {
 .fadeIn {
     animation: fadeIn 0.5s ease forwards;
 }
+
+/* تنسيق blockquote في لوحة التحكم */
+.post-full-content blockquote {
+    border-right: 4px solid #470539c5;
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background-color: #f9f7f0;
+    border-radius: 4px;
+    font-style: normal;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #333;
+}
