@@ -48,5 +48,3 @@ CREATE INDEX IF NOT EXISTS idx_invite_codes_expires_at ON public.invite_codes(ex
 COMMENT ON TABLE public.blog_requests IS 'جدول طلبات إنشاء المدونات من المستخدمين الجدد';
 COMMENT ON TABLE public.invite_codes IS 'جدول أكواد التفعيل المرسلة للمستخدمين المقبولين';
 
--- إعطاء صلاحيات للمستخدمين المصرح لهم
--- تأكد من تعديل السياسات في Supabase لتمكين الوصول المناسب
