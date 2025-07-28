@@ -6,7 +6,7 @@ const {
     getUnreadNotificationsCount 
 } = require('../services/notificationService');
 
-// عرض صفحة الإشعارات
+// Display notifications page
 exports.getNotifications = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -14,7 +14,7 @@ exports.getNotifications = async (req, res) => {
         const limit = 10;
         const offset = (page - 1) * limit;
         
-        // جلب بيانات المستخدم بما فيها الدور والاسم العربي
+        // Fetch user data including role and Arabic display name
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar, role')
@@ -22,11 +22,11 @@ exports.getNotifications = async (req, res) => {
             .single();
             
         if (userError) {
-            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            console.error('Error fetching user data:', userError);
             throw userError;
         }
 
-        // جلب الإشعارات
+        // Fetch notifications
         const { success, data: notifications, count, error } = await getUserNotifications(userId, { 
             limit, 
             offset 
@@ -36,10 +36,10 @@ exports.getNotifications = async (req, res) => {
             throw error;
         }
 
-        // جلب عدد الإشعارات غير المقروءة
+        // Get unread notifications count
         const { count: unreadCount } = await getUnreadNotificationsCount(userId);
 
-        // للواجهة API
+        // For API interface
         if (req.xhr || req.headers.accept.indexOf('application/json') !== -1) {
             return res.json({
                 notifications,
@@ -49,7 +49,7 @@ exports.getNotifications = async (req, res) => {
             });
         }
 
-        // للواجهة العادية
+        // For regular interface
         res.render('notifications', {
             user: {
                 ...req.user,
@@ -62,20 +62,20 @@ exports.getNotifications = async (req, res) => {
             unreadCount
         });
     } catch (error) {
-        console.error('خطأ في جلب الإشعارات:', error);
+        console.error('Error fetching notifications:', error);
         
         if (req.xhr || req.headers.accept.indexOf('application/json') !== -1) {
-            return res.status(500).json({ error: 'حدث خطأ أثناء جلب الإشعارات' });
+            return res.status(500).json({ error: 'An error occurred while fetching notifications' });
         }
         
         res.status(500).render('error', { 
-            message: 'حدث خطأ أثناء محاولة جلب الإشعارات',
+            message: 'An error occurred while trying to fetch notifications',
             error: { status: 500 }
         });
     }
 };
 
-// تحديد إشعار كمقروء
+// Mark notification as read
 exports.markAsRead = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -89,12 +89,12 @@ exports.markAsRead = async (req, res) => {
         
         res.json({ success: true });
     } catch (error) {
-        console.error('خطأ في تحديد الإشعار كمقروء:', error);
-        res.status(500).json({ error: 'حدث خطأ أثناء تحديد الإشعار كمقروء' });
+        console.error('Error marking notification as read:', error);
+        res.status(500).json({ error: 'An error occurred while marking notification as read' });
     }
 };
 
-// تحديد جميع الإشعارات كمقروءة
+// Mark all notifications as read
 exports.markAllAsRead = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -107,12 +107,12 @@ exports.markAllAsRead = async (req, res) => {
         
         res.json({ success: true });
     } catch (error) {
-        console.error('خطأ في تحديد جميع الإشعارات كمقروءة:', error);
-        res.status(500).json({ error: 'حدث خطأ أثناء تحديد جميع الإشعارات كمقروءة' });
+        console.error('Error marking all notifications as read:', error);
+        res.status(500).json({ error: 'An error occurred while marking all notifications as read' });
     }
 };
 
-// الحصول على عدد الإشعارات غير المقروءة
+// Get unread notifications count
 exports.getUnreadCount = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -125,7 +125,7 @@ exports.getUnreadCount = async (req, res) => {
         
         res.json({ success: true, count });
     } catch (error) {
-        console.error('خطأ في حساب الإشعارات غير المقروءة:', error);
-        res.status(500).json({ error: 'حدث خطأ أثناء حساب الإشعارات غير المقروءة' });
+        console.error('Error counting unread notifications:', error);
+        res.status(500).json({ error: 'An error occurred while counting unread notifications' });
     }
 };

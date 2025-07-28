@@ -1,12 +1,12 @@
 const supabase = require('../db/db');
 
-// عرض قائمة المنشورات التي تنتظر الموافقة
+// Display list of posts waiting for approval
 exports.getPendingPosts = async (req, res) => {
     try {
-        // استخراج بيانات المستخدم
+        // Extract user data
         const userId = req.user.id;
         
-        // جلب بيانات المستخدم من قاعدة البيانات
+        // Fetch user data from database
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar, role, username')
@@ -14,11 +14,11 @@ exports.getPendingPosts = async (req, res) => {
             .single();
             
         if (userError) {
-            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            console.error('Error fetching user data:', userError);
             throw userError;
         }
 
-        // جلب المنشورات المعلقة
+        // Fetch pending posts
         const { data: posts, error } = await supabase
             .from('posts')
             .select('*')
@@ -27,7 +27,7 @@ exports.getPendingPosts = async (req, res) => {
 
         if (error) throw error;
 
-        // تمرير بيانات المستخدم والمنشورات للعرض
+        // Pass user data and posts to the view
         res.render('admin/pending-posts', { 
             posts,
             user: {
@@ -38,7 +38,7 @@ exports.getPendingPosts = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('خطأ في جلب المنشورات المعلقة:', error);
+        console.error('Error fetching pending posts:', error);
         res.status(500).render('error', { 
             message: 'حدث خطأ أثناء محاولة جلب المنشورات المعلقة',
             error: { status: 500 }
@@ -46,11 +46,11 @@ exports.getPendingPosts = async (req, res) => {
     }
 };
 
-// الموافقة على منشور
+// Approve a post
 exports.approvePost = async (req, res) => {
     const { postId } = req.params;
     
-    try {        // التحقق من وجود المنشور
+    try {        // Check if post exists
         const { data: post, error: fetchError } = await supabase
             .from('posts')
             .select('id, user_id, title')
@@ -58,14 +58,14 @@ exports.approvePost = async (req, res) => {
             .single();
             
         if (fetchError || !post) {
-            console.error('المنشور غير موجود:', fetchError);
+            console.error('Post not found:', fetchError);
             return res.status(404).json({ 
                 error: true, 
                 message: 'المنشور غير موجود' 
             });
         }
         
-        // تحديث حالة المنشور إلى "منشور"
+        // Update post status to "published"
         const { error } = await supabase
             .from('posts')
             .update({ 
@@ -76,7 +76,7 @@ exports.approvePost = async (req, res) => {
 
         if (error) throw error;
 
-        // إرسال إشعار للمؤلف بالموافقة على المنشور
+        // Send notification to author about post approval
         const { createNotification } = require('../services/notificationService');
         const notificationMessage = `تم الموافقة على منشورك "${post.title}" ونشره على المدونة`;
         await createNotification(
@@ -88,7 +88,7 @@ exports.approvePost = async (req, res) => {
 
         res.json({ success: true, message: 'تم نشر المنشور وإرسال إشعار للمؤلف' });
     } catch (error) {
-        console.error('خطأ في الموافقة على المنشور:', error);
+        console.error('Error approving post:', error);
         res.status(500).json({ 
             error: true, 
             message: 'حدث خطأ في عملية الموافقة على المنشور' 
@@ -96,13 +96,13 @@ exports.approvePost = async (req, res) => {
     }
 };
 
-// رفض منشور
+// Reject a post
 exports.rejectPost = async (req, res) => {
     const { postId } = req.params;
     const { reason } = req.body;
     
     try {
-        // الحصول على معلومات المنشور أولاً لمعرفة المؤلف
+        // Get post information first to know the author
         const { data: post, error: fetchError } = await supabase
             .from('posts')
             .select('user_id, title')
@@ -110,14 +110,14 @@ exports.rejectPost = async (req, res) => {
             .single();
             
         if (fetchError || !post) {
-            console.error('المنشور غير موجود:', fetchError);
+            console.error('Post not found:', fetchError);
             return res.status(404).json({ 
                 error: true, 
                 message: 'المنشور غير موجود' 
             });
         }
 
-        // تحديث حالة المنشور إلى "مرفوض"
+        // Update post status to "rejected"
         const { error } = await supabase
             .from('posts')
             .update({ 
@@ -129,7 +129,7 @@ exports.rejectPost = async (req, res) => {
 
         if (error) throw error;
 
-        // إرسال إشعار للمؤلف
+        // Send notification to author
         const { createNotification } = require('../services/notificationService');
         const notificationMessage = `تم رفض منشورك "${post.title}" للأسباب التالية: ${reason}`;
         await createNotification(
@@ -141,7 +141,7 @@ exports.rejectPost = async (req, res) => {
 
         res.json({ success: true, message: 'تم رفض المنشور وإرسال إشعار للمؤلف' });
     } catch (error) {
-        console.error('خطأ في رفض المنشور:', error);
+        console.error('Error rejecting post:', error);
         res.status(500).json({ 
             error: true, 
             message: 'حدث خطأ في عملية رفض المنشور' 
@@ -149,12 +149,12 @@ exports.rejectPost = async (req, res) => {
     }
 };
 
-// معاينة منشور معلق
+// Preview a pending post
 exports.previewPost = async (req, res) => {
     const { postId } = req.params;
     
     try {
-        // جلب معلومات المنشور
+        // Fetch post information
         const { data: post, error: postError } = await supabase
             .from('posts')
             .select('*, users:user_id(*)')
@@ -162,14 +162,14 @@ exports.previewPost = async (req, res) => {
             .single();
             
         if (postError || !post) {
-            console.error('خطأ في جلب بيانات المنشور:', postError);
+            console.error('Error fetching post data:', postError);
             return res.status(404).render('error', { 
                 message: 'المنشور غير موجود',
                 error: { status: 404 }
             });
         }
         
-        // التحقق من أن المنشور معلق أو أن المستخدم مشرف
+        // Verify that the post is pending or user is admin
         if (post.status !== 'pending' && req.user.role !== 'admin') {
             return res.status(403).render('error', { 
                 message: 'غير مصرح لك بالوصول لهذا المنشور',
@@ -177,14 +177,14 @@ exports.previewPost = async (req, res) => {
             });
         }
         
-        // جلب اسم الكاتب
+        // Get author name
         const author = post.users;
         const authorName = author.display_name_ar || author.username;
         
-        // استخراج بيانات المستخدم الحالي
+        // Extract current user data
         const userId = req.user.id;
         
-        // جلب بيانات المستخدم من قاعدة البيانات
+        // Fetch user data from database
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar, role')
@@ -192,11 +192,11 @@ exports.previewPost = async (req, res) => {
             .single();
             
         if (userError) {
-            console.error('خطأ في جلب بيانات المستخدم:', userError);
+            console.error('Error fetching user data:', userError);
             throw userError;
         }
         
-        // تمرير البيانات للعرض
+        // Pass data to the view
         res.render('post', {
             post: { 
                 ...post,
@@ -210,7 +210,7 @@ exports.previewPost = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('خطأ في معاينة المنشور:', error);
+        console.error('Error previewing post:', error);
         res.status(500).render('error', { 
             message: 'حدث خطأ أثناء محاولة عرض المنشور',
             error: { status: 500 }

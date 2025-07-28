@@ -150,9 +150,9 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
             .insert([{
                 code: inviteCode,
                 blog_request_id: requestId,
-                full_name: request.full_name,
-                email: request.email,
-                specialty: request.specialty,
+                full_name: request.full_name, 
+                email: request.email,   
+                specialty: request.specialty, 
                 expires_at: expiresAt.toISOString()
             }]);
 

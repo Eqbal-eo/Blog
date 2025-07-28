@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// استخدام المفتاح السري من متغيرات البيئة
+// use JWT_SECRET from environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// وسيط للتحقق من توكن المصادقة
-const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Authentication Middleware');
-    
+// Middleware to verify authentication token
+const authenticateToken = (req, res, next) => {
+    console.log('⚡ Executing Authentication Middleware');
+
     // Extract token from cookies
     const token = req.cookies.auth_token;
     
@@ -28,15 +29,16 @@ const authenticateToken = (req, res, next) => {    console.log('⚡ Executing Au
 
         console.log('✅ Token valid - User data:', user);
 
-        // تخزين بيانات المستخدم في الطلب للاستخدام لاحقاً
+        // Store user data in request for later use
         req.user = user;
         next();
     });
 };
 
-// وسيط للتحقق من صلاحيات المشرف
-const isAdmin = (req, res, next) => {    console.log('⚡ Verifying Admin Permissions:', req.user);
-    
+// Middleware to verify admin permissions
+const isAdmin = (req, res, next) => {
+    console.log('⚡ Verifying Admin Permissions:', req.user);
+
     if (req.user && req.user.role === 'admin') {
         console.log('✅ User has admin permissions');
         next();

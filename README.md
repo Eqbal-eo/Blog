@@ -38,22 +38,6 @@ A modern Arabic blogging platform designed to empower writers and intellectuals 
 - Supabase account
 - Text editor
 
-### Local Installation
-```bash
-# Clone the project
-git clone <repository-url>
-cd Blog
-
-# Install dependencies
-npm install
-
-# Copy environment file and configure it
-cp .env.example .env
-
-# Run the project
-npm start
-```
-
 ### Required Environment Variables
 Create a `.env` file in the root directory with the following variables:
 - `SUPABASE_URL` - Your Supabase project URL
@@ -85,7 +69,4 @@ Refer to `.env.example` for the exact format.
 
 ## Contact
 
-Afaq Blogs - A platform for cultural and intellectual blogging
-
----
-**Note**: This is an open-source project aimed at supporting Arabic content on the internet.
+eng.mhdeqbal@gmail.com

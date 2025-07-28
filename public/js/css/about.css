@@ -8,7 +8,7 @@ body {
     margin: 0;
 }
 
-/* عنوان الصفحة */
+/* page title */
 .section-title {
     font-size: 2rem;
     color: #8c4a21ca;
@@ -21,7 +21,7 @@ body {
     padding: 20px;
 }
 
-/* بطاقة عن المنصة */
+/* about card */
 .about-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
@@ -40,7 +40,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* شارة المنصة */
+/* platform badge */
 .platform-badge {
     position: absolute;
     top: 15px;
