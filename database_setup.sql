@@ -1,5 +1,4 @@
 -- سكريبت إنشاء الجداول الجديدة في قاعدة البيانات
--- تأكد من تشغيل هذا السكريبت في Supabase SQL Editor
 
 -- إنشاء نوع البيانات للحالات
 CREATE TYPE blog_request_status AS ENUM ('pending', 'approved', 'rejected');
