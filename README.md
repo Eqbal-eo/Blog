@@ -44,7 +44,7 @@ Create a `.env` file in the root directory with the following variables:
 - `SUPABASE_ANON_KEY` - Your Supabase anonymous key
 - `JWT_SECRET` - A random secret key for JWT encryption
 - `ZOHO_EMAIL` - Your email for sending notifications
-- `ZOHO_PASSWORD` - Your email app credentials
+- `ZOHO_PASSWORD` - Your email app credentials 
 
 Refer to `.env.example` for the exact format.
 
