@@ -26,6 +26,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/js/css/home.css">
     <link rel="stylesheet" href="/js/css/footer.css">
+    
+    <!-- إضافة Prism.js للتمييز اللوني للأكواد -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    
     <style>
     html,
     body {
@@ -141,6 +146,277 @@
         padding: 0; /* نلغي البادينغ الافتراضي للبطاقة لأننا أضفناه داخل post-content */
     }
     
+    /* تنسيق الأكواد البرمجية */
+    .post-content pre {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        direction: ltr;
+        text-align: left;
+        font-family: 'Courier New', Consolas, Monaco, monospace;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        position: relative;
+    }
+    
+    /* حاوي الكود مع زر النسخ */
+    .code-container {
+        position: relative;
+        margin: 1.5rem 0;
+    }
+    
+    .code-container pre {
+        margin: 0;
+    }
+    
+    /* زر نسخ الكود */
+    .copy-code-btn {
+        position: absolute;
+        top: 8px;
+        right: 18px;
+        background: #374151;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.2s ease;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-family: 'Tajawal', sans-serif;
+        min-width: auto;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    
+    .copy-code-btn:hover {
+        opacity: 1;
+        background: #4b5563;
+        transform: scale(1.02);
+    }
+    
+    .copy-code-btn.copied {
+        background: #10b981;
+    }
+    
+    .copy-code-btn i {
+        font-size: 10px;
+    }
+    
+    /* تحسين مظهر الكود مع زر النسخ */
+    .code-container pre {
+        padding-top: 35px;
+    }
+    
+    .post-content pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        font-size: inherit;
+        color: inherit;
+    }
+    
+    .post-content code {
+        background-color: #c0c2c3;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-family: 'Courier New', Consolas, Monaco, monospace;
+        font-size: 0.85em;
+        color: #d63384;
+        direction: ltr;
+        display: inline;
+    }
+    
+    /* تحسين عرض الأكواد في Prism.js */
+    .post-content .token.keyword {
+        color: #0000ff;
+        font-weight: bold;
+    }
+    
+    .post-content .token.string {
+        color: #008000;
+    }
+    
+    .post-content .token.comment {
+        color: #008000;
+        font-style: italic;
+    }
+    
+    .post-content .token.number {
+        color: #ff6600;
+    }
+    
+    .post-content .token.function {
+        color: #660e7a;
+    }
+    
+    /* تنسيق أرقام الأسطر */
+    .post-content .line-numbers {
+        background: #f5f5f5;
+        border-right: 1px solid #ddd;
+        padding-right: 10px;
+        margin-right: 10px;
+    }
+    
+    /* تنسيق أزرار المشاركة والطباعة - تصميم احترافي */
+    .post-actions {
+        margin-top: 2rem;
+        padding: 1.5rem 1rem;
+        background:none;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 2px 10px rgba(140, 74, 33, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .post-actions::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #8c4a21ca, #a0552a, #8c4a21ca);
+    }
+    
+    .share-section {
+        text-align: center;
+    }
+    
+    .share-title {
+        color: #8c4a21ca;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+        position: relative;
+        display: inline-block;
+        padding: 0 0.8rem;
+    }
+    
+    .share-title::before,
+    .share-title::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 1px;
+        background: #8c4a21ca;
+        opacity: 0.5;
+    }
+    
+    .share-title::before {
+        right: 100%;
+        margin-right: 8px;
+    }
+    
+    .share-title::after {
+        left: 100%;
+        margin-left: 8px;
+    }
+    
+    .share-title i {
+        margin-left: 0.4rem;
+        color: #8c4a21ca;
+    }
+    
+    .share-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+    
+    .social-btn { 
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1.5px solid #8c4a21ca;
+        background: #ffffff;
+        color: #8c4a21ca;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(140, 74, 33, 0.12);
+    }
+    
+    .social-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #8c4a21ca;
+        transform: scale(0);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 50%;
+    }
+    
+    .social-btn:hover { 
+        transform: translateY(-2px);
+        border-color: #a0552a;
+        box-shadow: 0 4px 15px rgba(140, 74, 33, 0.2);
+    }
+    
+    .social-btn:hover::before {
+        transform: scale(1);
+    }
+    
+    .social-btn:hover i {
+        color: #ffffff;
+        transform: scale(1.05);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .social-btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .social-btn i {
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* تأثيرات خاصة للأزرار المختلفة */
+    .facebook-btn:hover {
+        border-color: #a0552a;
+    }
+    
+    .twitter-btn:hover {
+        border-color: #a0552a;
+    }
+    
+    .whatsapp-btn:hover {
+        border-color: #a0552a;
+    }
+    
+    .linkedin-btn:hover {
+        border-color: #a0552a;
+    }
+    
+    .copy-btn:hover {
+        border-color: #a0552a;
+    }
+    
+    .print-btn:hover {
+        border-color: #a0552a;
+    }
+    
     @media screen and (max-width: 768px) {
         .post-title {
             font-size: 1.5rem; /* حجم الخط في الشاشات الصغيرة */
@@ -172,6 +448,32 @@
             align-items: center;
             padding-left: 10px;
             padding-right: 10px;
+        }
+        
+        /* تحسين أزرار المشاركة في الشاشات الصغيرة */
+        .post-actions {
+            margin-top: 1.5rem;
+            padding: 1.2rem 0.8rem;
+        }
+        
+        .share-title {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .share-title::before,
+        .share-title::after {
+            width: 25px;
+        }
+        
+        .share-buttons {
+            gap: 0.6rem;
+        }
+        
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            font-size: 0.9rem;
         }
         
         /* ضبط عرض المحتوى ليكون في المنتصف */
@@ -266,6 +568,36 @@
                                 <div class="card-text post-content post-content-container">
                                     <%- post.content %>
                                 </div>
+                                
+                                <!-- أزرار المشاركة والطباعة -->
+                                <div class="post-actions">
+                                    <div class="share-section">
+                                        <h6 class="share-title">
+                                            <i class="fas fa-share-alt"></i>
+                                            مشاركة المقال
+                                        </h6>
+                                        <div class="share-buttons">
+                                            <button class="social-btn facebook-btn" onclick="shareOnFacebook()" title="مشاركة على فيسبوك">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </button>
+                                            <button class="social-btn twitter-btn" onclick="shareOnTwitter()" title="مشاركة على تويتر">
+                                                <i class="fab fa-twitter"></i>
+                                            </button>
+                                            <button class="social-btn whatsapp-btn" onclick="shareOnWhatsApp()" title="مشاركة على واتساب">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </button>
+                                            <button class="social-btn linkedin-btn" onclick="shareOnLinkedIn()" title="مشاركة على لينكد إن">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </button>
+                                            <button class="social-btn copy-btn" onclick="copyLink()" title="نسخ الرابط">
+                                                <i class="fas fa-link"></i>
+                                            </button>
+                                            <button class="social-btn print-btn" onclick="printPost()" title="طباعة المقال">
+                                                <i class="fas fa-print"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -280,6 +612,173 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- إضافة Prism.js للتمييز اللوني للأكواد -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    
+    <script>
+        // تفعيل Prism.js لتنسيق الأكواد
+        document.addEventListener('DOMContentLoaded', function() {
+            // البحث عن كل عناصر pre في المحتوى
+            const preElements = document.querySelectorAll('.post-content pre');
+            
+            preElements.forEach(function(pre) {
+                // إنشاء حاوي للكود مع زر النسخ
+                const codeContainer = document.createElement('div');
+                codeContainer.className = 'code-container';
+                
+                // إنشاء زر النسخ
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> نسخ';
+                
+                // إدراج الحاوي مكان عنصر pre الأصلي
+                pre.parentNode.insertBefore(codeContainer, pre);
+                codeContainer.appendChild(copyBtn);
+                codeContainer.appendChild(pre);
+                
+                // إضافة كلاس line-numbers للسطور المرقمة
+                pre.classList.add('line-numbers');
+                
+                // إضافة كلاس اللغة إذا لم يكن موجوداً
+                const codeElement = pre.querySelector('code');
+                if (codeElement && !codeElement.className) {
+                    codeElement.className = 'language-javascript'; // اللغة الافتراضية
+                }
+                
+                // إضافة وظيفة النسخ
+                copyBtn.addEventListener('click', async function() {
+                    try {
+                        const codeText = codeElement ? codeElement.textContent : pre.textContent;
+                        await navigator.clipboard.writeText(codeText);
+                        
+                        // تغيير نص الزر مؤقتاً
+                        const originalHTML = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+                        copyBtn.classList.add('copied');
+                        
+                        setTimeout(function() {
+                            copyBtn.innerHTML = originalHTML;
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                        
+                    } catch (err) {
+                        console.error('فشل في نسخ الكود:', err);
+                        // طريقة بديلة للنسخ
+                        const textArea = document.createElement('textarea');
+                        textArea.value = codeElement ? codeElement.textContent : pre.textContent;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        
+                        const originalHTML = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+                        copyBtn.classList.add('copied');
+                        
+                        setTimeout(function() {
+                            copyBtn.innerHTML = originalHTML;
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    }
+                });
+            });
+            
+            // تفعيل Prism
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        });
+        
+        // وظائف المشاركة والطباعة
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('<%= post.title %>');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+        }
+        
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('<%= post.title %>');
+            const text = encodeURIComponent('اطلعوا على هذا المقال الرائع: ');
+            window.open(`https://twitter.com/intent/tweet?text=${text}${title}&url=${url}`, '_blank', 'width=600,height=400');
+        }
+        
+        function shareOnWhatsApp() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('<%= post.title %>');
+            const text = encodeURIComponent('اطلعوا على هذا المقال الرائع: ');
+            window.open(`https://api.whatsapp.com/send?text=${text}${title}%20${url}`, '_blank');
+        }
+        
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent('<%= post.title %>');
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
+        }
+        
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(function() {
+                // تغيير أيقونة الزر مؤقتاً
+                const btn = event.target.closest('button');
+                const icon = btn.querySelector('i');
+                const originalClass = icon.className;
+                
+                icon.className = 'fas fa-check';
+                btn.style.background = '#8c4a21ca';
+                btn.style.borderColor = '#8c4a21ca';
+                btn.style.color = 'white';
+                
+                setTimeout(function() {
+                    icon.className = originalClass;
+                    btn.style.background = '#ffffff';
+                    btn.style.borderColor = '#8c4a21ca';
+                    btn.style.color = '#8c4a21ca';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('فشل في نسخ الرابط:', err);
+                // طريقة بديلة للنسخ
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // تأكيد بصري للنسخ
+                const btn = event.target.closest('button');
+                const icon = btn.querySelector('i');
+                const originalClass = icon.className;
+                
+                icon.className = 'fas fa-check';
+                btn.style.background = '#8c4a21ca';
+                btn.style.borderColor = '#8c4a21ca';
+                btn.style.color = 'white';
+                
+                setTimeout(function() {
+                    icon.className = originalClass;
+                    btn.style.background = '#ffffff';
+                    btn.style.borderColor = '#8c4a21ca';
+                    btn.style.color = '#8c4a21ca';
+                }, 2000);
+            });
+        }
+        
+        function printPost() {
+            // إخفاء العناصر غير المرغوب في طباعتها
+            const elementsToHide = document.querySelectorAll('nav, .post-actions, footer');
+            elementsToHide.forEach(el => el.style.display = 'none');
+            
+            // طباعة الصفحة
+            window.print();
+            
+            // إعادة إظهار العناصر بعد الطباعة
+            elementsToHide.forEach(el => el.style.display = '');
+        }
+    </script>
 </body>
 
 </html>

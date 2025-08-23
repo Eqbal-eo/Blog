@@ -27,15 +27,15 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// تحليل بيانات النماذج و JSON
+// تحليل بيانات النماذج و JSON 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
  
 // مسارات التطبيق
-app.use('/', authRoutes); 
-app.use('/', mainRoutes);
+app.use('/', authRoutes);   
+app.use('/', mainRoutes);  
 app.use('/posts', postRoutes);
-app.use('/', pagesRoutes); 
+app.use('/', pagesRoutes);  
 app.use('/admin', adminRoutes); // إضافة مسارات المشرف
 app.use('/notifications', notificationRoutes); // إضافة مسارات الإشعارات
 
