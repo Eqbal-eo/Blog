@@ -8,7 +8,7 @@ body {
     margin: 0;
 }
 
-/* page title */
+/* Page title */
 .section-title {
     font-size: 2rem;
     color: #8c4a21ca;
@@ -21,7 +21,7 @@ body {
     padding: 20px;
 }
 
-/* about card */
+/* About card */
 .about-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
@@ -40,7 +40,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* platform badge */
+/* Platform badge */
 .platform-badge {
     position: absolute;
     top: 15px;
@@ -52,7 +52,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* اسم المنصة */
+/* Platform name */
 .platform-name {
     font-size: 1.3rem;
     font-weight: 600;
@@ -61,7 +61,7 @@ body {
     margin-top: 0.5rem;
 }
 
-/* وصف المنصة */
+/* Platform description */
 .platform-description {
     color: #666;
     font-size: 1rem;
@@ -70,7 +70,7 @@ body {
     text-align: justify;
 }
 
-/* الميزات */
+/* Features */
 .features {
     display: flex;
     flex-wrap: wrap;
@@ -88,7 +88,7 @@ body {
     font-weight: 500;
 }
 
-/* استعلامات الوسائط للأجهزة الصغيرة */
+/* Media queries for small devices */
 @media (max-width: 768px) {
     .about-section {
         padding: 15px;

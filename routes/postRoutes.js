@@ -3,12 +3,12 @@ const router = express.Router();
 const supabase = require('../db/db');
 const { authenticateToken } = require('../middleware/authMiddleware');
 
-// تطبيق middleware على جميع مسارات التدوينات
+// Apply middleware to all post routes
 router.use(authenticateToken);
 
 router.get('/create', async (req, res) => {
     try {
-        // جلب الاسم العربي للمستخدم
+        // Fetch user's Arabic name
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar')
@@ -33,13 +33,13 @@ router.get('/create', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {    const { title, content, status, category, created_at } = req.body;
-    const userId = req.user.id; // استخدام بيانات المستخدم من JWT
+    const userId = req.user.id; // Use user data from JWT
 
     if (!title || !content || !category) {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    // التحقق من وجود حالة وإلا تعيين الحالة الافتراضية إلى "pending"
+    // Check if status exists, otherwise set default status to "pending"
     const postStatus = status || 'pending';
 
     try {        const { error } = await supabase
@@ -55,12 +55,12 @@ router.post('/create', async (req, res) => {    const { title, content, status, 
 
         if (error) throw error;
         
-        // إذا كانت التدوينة في انتظار المراجعة، عرض رسالة للمستخدم
+        // If post is pending review, display message to user
         if (postStatus === 'pending') {
-            // يمكن استخدام res.locals لتمرير معلومات النجاح إلى لوحة التحكم
-            // هنا نستخدم جلسة مؤقتة لتخزين رسالة النجاح
+            // Can use res.locals to pass success information to dashboard
+            // Here we use temporary session to store success message
             res.cookie('success_message', 'تم إرسال تدوينتك بنجاح وهي في انتظار مراجعة المشرف', { 
-                maxAge: 5000, // ستختفي بعد 5 ثوان
+                maxAge: 5000, // Will disappear after 5 seconds
                 httpOnly: true 
             });
         }
@@ -74,7 +74,7 @@ router.post('/create', async (req, res) => {    const { title, content, status, 
 
 router.get('/select-edit', async (req, res) => {
     try {
-        // جلب الاسم العربي للمستخدم
+        // Fetch user's Arabic name
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar')
@@ -94,10 +94,10 @@ router.get('/select-edit', async (req, res) => {
 
         if (error) throw error;
         
-        // ترتيب المنشورات المرفوضة في البداية
+        // Sort rejected posts at the beginning
         if (posts) {
             posts.sort((a, b) => {
-                // وضع المنشورات المرفوضة في البداية
+                // Place rejected posts at the beginning
                 if (a.status === 'rejected' && b.status !== 'rejected') return -1;
                 if (a.status !== 'rejected' && b.status === 'rejected') return 1;
                 return 0;
@@ -125,16 +125,16 @@ router.post('/edit/:id', async (req, res) => {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    // التعامل مع إعادة تقديم التدوينات المرفوضة
+    // Handle resubmission of rejected posts
     let postStatus = status || 'published';
     
-    // إذا كانت التدوينة مرفوضة وتم إعادة تقديمها
+    // If post was rejected and is being resubmitted
     if (resubmit === 'true') {
         postStatus = 'pending';
     }
 
     try {
-        // التحقق من حالة التدوينة قبل التعديل
+        // Check post status before editing
         const { data: oldPostData, error: fetchError } = await supabase
             .from('posts')
             .select('status, rejection_reason')
@@ -152,7 +152,7 @@ router.post('/edit/:id', async (req, res) => {
             updated_at: new Date()
         };
         
-        // إذا كانت التدوينة مرفوضة سابقاً وتم إعادة تقديمها، نحذف سبب الرفض
+        // If post was previously rejected and is being resubmitted, delete rejection reason
         if (oldPostData.status === 'rejected' && resubmit === 'true') {
             updateData.rejection_reason = null;
         }
@@ -164,7 +164,7 @@ router.post('/edit/:id', async (req, res) => {
 
         if (error) throw error;
         
-        // إذا تم إعادة تقديم المنشور بعد الرفض، نضيف رسالة نجاح
+        // If post is resubmitted after rejection, add success message
         if (oldPostData.status === 'rejected' && resubmit === 'true') {
             res.cookie('success_message', 'تم إعادة تقديم التدوينة بنجاح وهي في انتظار المراجعة مرة أخرى', { 
                 maxAge: 5000, 
@@ -184,7 +184,7 @@ router.post('/edit/:id', async (req, res) => {
 
 router.get('/select-delete', async (req, res) => {
     try {
-        // جلب الاسم العربي للمستخدم
+        // Fetch user's Arabic name
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar')
@@ -224,7 +224,7 @@ router.post('/delete/:id', async (req, res) => {
             .from('posts')
             .delete()
             .eq('id', postId)
-            .eq('user_id', req.user.id); // التأكد من أن المستخدم يحذف تدوينته فقط
+            .eq('user_id', req.user.id); // Ensure user is deleting only their own post
 
         if (error) throw error;
         res.redirect('/posts/select-delete');
@@ -234,7 +234,7 @@ router.post('/delete/:id', async (req, res) => {
     }
 });
 
-// مسار جديد للحذف المتعدد
+// New route for multiple deletion
 router.post('/delete-multiple', async (req, res) => {
     const { postIds } = req.body;
     
@@ -243,7 +243,7 @@ router.post('/delete-multiple', async (req, res) => {
     }
     
     try {
-        // التحقق من أن جميع التدوينات المحددة تخص المستخدم الحالي
+        // Verify that all selected posts belong to current user
         const { data: userPosts, error: checkError } = await supabase
             .from('posts')
             .select('id')
@@ -252,12 +252,12 @@ router.post('/delete-multiple', async (req, res) => {
             
         if (checkError) throw checkError;
         
-        // التأكد من أن عدد التدوينات المسترجعة يطابق عدد التدوينات المرسلة
+        // Ensure number of retrieved posts matches number of sent posts
         if (userPosts.length !== postIds.length) {
             return res.status(403).json({ error: 'لا يمكنك حذف تدوينات لا تملكها' });
         }
         
-        // حذف التدوينات
+        // Delete posts
         const { error: deleteError } = await supabase
             .from('posts')
             .delete()

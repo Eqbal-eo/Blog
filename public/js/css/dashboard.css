@@ -10,8 +10,8 @@
     --card-bg: white;
     --hover-bg: #f9f7f0;
     --icon-color: #8c4a21ca;
-    --card-text-color: #666; /* لون نص البطاقات الرمادي */
-    --nav-link-color: #494949; /* لون نص أزرار النافبار */
+    --card-text-color: #666; /* Gray card text color */
+    --nav-link-color: #494949; /* Navbar button text color */
 }
 
 html, body {
@@ -475,7 +475,7 @@ html, body {
     box-shadow: 0 6px 12px rgba(71, 5, 57, 0.15);
 }
 
-/* تنسيقات بادج الإشعارات */
+/* Notification badge styles */
 .notification-badge {
     position: absolute;
     top: 0;
@@ -539,10 +539,10 @@ html, body {
 
 .spinner-border-sm {
     width: 1rem;
-    height: 1rem;
+    height: 1.2em;
 }
 
-/* تحسين شكل النافذة المنبثقة */
+/* Improve modal window appearance */
 .modal-content {
     border-radius: var(--border-radius);
     border: none;
@@ -557,7 +557,7 @@ html, body {
     border-top: 1px solid var(--border-color);
 }
 
-/* تحسينات للاستجابة */
+/* Responsive improvements */
 @media (max-width: 768px) {
     .d-flex.justify-content-between {
         flex-direction: column;
@@ -919,7 +919,7 @@ html, body {
     animation: fadeIn 0.5s ease forwards;
 }
 
-/* تنسيق blockquote في لوحة التحكم */
+/* Format blockquote in dashboard */
 .post-full-content blockquote {
     border-right: 4px solid #470539c5;
     margin: 1.5rem 0;

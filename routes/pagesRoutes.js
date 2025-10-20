@@ -20,7 +20,7 @@ const upload = multer({ storage: storage });
 // Get settings page
 router.get('/settings', authenticateToken, async (req, res) => {
     try {
-        // الحصول على معرف المستخدم من JWT
+        // Get user ID from JWT
         const userId = req.user.id;
         console.log('Fetching settings for user:', userId);
 
@@ -43,7 +43,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
             .eq('user_id', userId)
             .single();
 
-        // لا نعتبر عدم وجود إعدادات خطأً
+        // We don't consider missing settings as an error
         if (settingsError && settingsError.code !== 'PGRST116') {
             console.error('Error fetching settings:', settingsError);
             throw settingsError;
@@ -60,7 +60,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
         });
     } catch (err) {
         console.error('Error in settings route:', err);
-        // تقديم رسالة خطأ أكثر تفصيلاً للمستخدم
+        // Provide more detailed error message to user
         res.status(500).render('settings', {
             settings: {},
             user: { id: req.user.id },
@@ -195,19 +195,19 @@ router.get('/contact', async (req, res) => {
         });
     }
 });
-// عرض صفحة المدونات
+// Display blogs page
 router.get('/blogs', async (req, res) => {
     try {
-        // جلب المستخدمين مع نبذهم الشخصية والاسم العربي
+        // Fetch users with their personal bios and Arabic names
         const { data: users, error } = await supabase
             .from('users')
             .select('id, username, bio, display_name_ar');
             
         if (error) throw error;
 
-        // جلب التدوينات والتصنيفات لكل مستخدم
+        // Fetch posts and categories for each user
         const bloggers = await Promise.all(users.map(async (user) => {
-            // جلب التدوينات المنشورة للمستخدم
+            // Fetch published posts for the user
             const { data: posts, error: postsError } = await supabase
                 .from('posts')
                 .select('category')
@@ -216,7 +216,7 @@ router.get('/blogs', async (req, res) => {
 
             if (postsError) throw postsError;
 
-            // استخراج التصنيفات الفريدة من التدوينات
+            // Extract unique categories from posts
             const categories = [...new Set(posts.map(post => post.category).filter(Boolean))];
 
             return {
@@ -235,12 +235,12 @@ router.get('/blogs', async (req, res) => {
     }
 });
 
-// عرض تدوينات الكاتب
+// Display author's posts
 router.get('/author/:id', async (req, res) => {
     try {
         const authorId = req.params.id;
         
-        // جلب معلومات الكاتب
+        // Fetch author information
         const { data: author, error: authorError } = await supabase
             .from('users')
             .select('id, username, bio, display_name_ar')
@@ -249,7 +249,7 @@ router.get('/author/:id', async (req, res) => {
 
         if (authorError) throw authorError;
 
-        // جلب تدوينات الكاتب
+        // Fetch author's posts
         const { data: posts, error: postsError } = await supabase
             .from('posts')
             .select(`
@@ -266,14 +266,14 @@ router.get('/author/:id', async (req, res) => {
 
         if (postsError) throw postsError;
 
-        // جلب إعدادات المدونة الخاصة بالكاتب
+        // Fetch blog settings for the author
         const { data: settings, error: settingsError } = await supabase
             .from('settings')
             .select('blog_title, blog_description, about_text, contact_info, email')
             .eq('user_id', authorId)
             .single();
 
-        // لا نريد أن نوقف العملية إذا لم تكن هناك إعدادات
+        // We don't want to stop the process if there are no settings
         const finalSettings = settingsError ? {} : settings;
 
         res.render('author', {

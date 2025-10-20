@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// إعداد Zoho Mail SMTP
+// Zoho Mail SMTP setup
 const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.eu', // استخدام السيرفر الأوروبي
+    host: 'smtp.zoho.eu', // Using European server
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
         user: process.env.ZOHO_EMAIL, // no-reply@afaq.blog
-        pass: process.env.ZOHO_PASSWORD // كلمة المرور العادية تعمل!
+        pass: process.env.ZOHO_PASSWORD // Regular password works!
     }
 });
 
-// تحقق من الاتصال
+// Verify connection
 transporter.verify((error, success) => {
     if (error) {
         console.log('خطأ في إعداد البريد الإلكتروني:', error);
@@ -21,7 +21,7 @@ transporter.verify((error, success) => {
     }
 });
 
-// إرسال بريد إلكتروني عام
+// Send general email
 async function sendEmail(to, subject, htmlContent, textContent = '') {
     try {
         const mailOptions = {
@@ -44,7 +44,7 @@ async function sendEmail(to, subject, htmlContent, textContent = '') {
     }
 }
 
-// إرسال كود التفعيل - تصميم بسيط ومتناسق
+// Send activation code - simple and consistent design
 async function sendInviteCode(email, fullName, inviteCode, specialty) {
     const subject = 'تم قبولك في مدونات آفاق';
     
@@ -283,7 +283,7 @@ ${process.env.WEBSITE_URL}/register
     return await sendEmail(email, subject, htmlContent, textContent);
 }
 
-// إرسال إشعار رفض الطلب - تصميم بسيط ومتناسق
+// Send request rejection notification - simple and consistent design
 async function sendRejectionNotification(email, fullName, reason) {
     const subject = 'تحديث حول طلب المدونة - مدونات آفاق';
     
@@ -463,7 +463,7 @@ ${reason}
     return await sendEmail(email, subject, htmlContent, textContent);
 }
 
-// إرسال إشعار بوصول طلب جديد للمشرفين
+// Send notification about new request to admins
 async function notifyAdminsNewRequest(requestData) {
     const subject = 'طلب مدونة جديد - مدونات آفاق';
     
@@ -557,12 +557,12 @@ async function notifyAdminsNewRequest(requestData) {
         </html>
     `;
 
-    // إرسال للمشرفين
+    // Send to admins
     const adminEmail = process.env.ADMIN_EMAIL;
     return await sendEmail(adminEmail, subject, htmlContent);
 }
 
-// إرسال بيانات الدخول للمستخدم الجديد
+// Send login credentials to new user
 async function sendLoginCredentials(email, fullName, username, tempPassword) {
     const subject = 'بيانات الدخول - مدونات آفاق';
     

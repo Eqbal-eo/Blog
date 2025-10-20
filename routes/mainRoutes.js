@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
             throw new Error('حدث خطأ أثناء جلب التدوينات');
         }
 
-        // تعديل posts لاستخدام الاسم العربي إذا كان متوفراً
+        // Modify posts to use Arabic name if available
         posts.forEach(post => {
             if (post.users) {
                 post.users.displayName = post.users.display_name_ar || post.users.username;
@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
         res.send(err.message || 'حدث خطأ');
     }
 });    
-// عرض صفحة التدوينة المفردة
+// Display single post page
 router.get('/article/:id', async (req, res) => {
     const postId = req.params.id;
 
@@ -85,12 +85,12 @@ router.get('/article/:id', async (req, res) => {
             .select('*')
             .single();
 
-        // استخدام الاسم العربي إذا كان متوفراً
+        // Use Arabic name if available
         if (post.users) {
             post.users.displayName = post.users.display_name_ar || post.users.username;
         }
 
-        // نحول created_at إلى كائن Date
+        // Convert created_at to Date object
         post.created_at = new Date(post.created_at);
 
         // Render the page with or without settings

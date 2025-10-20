@@ -1,4 +1,4 @@
-/* تنسيقات لوحة تحكم المشرف */
+/* Admin dashboard styles */
 .admin-dashboard {
     padding: 2rem;
     max-width: 1200px;
@@ -11,7 +11,7 @@
     text-align: center;
 }
 
-/* تنسيق بطاقات المنشورات */
+/* Post cards styling */
 .pending-posts {
     display: grid;
     gap: 1.5rem;
@@ -48,7 +48,7 @@
     line-height: 1.6;
 }
 
-/* تنسيق أزرار الإجراءات */
+/* Action buttons styling */
 .post-actions {
     display: flex;
     gap: 0.5rem;
@@ -93,7 +93,7 @@
     background-color: #2980b9;
 }
 
-/* تنسيق النافذة المنبثقة */
+/* Modal window styling */
 .modal {
     display: none;
     position: fixed;
@@ -136,7 +136,7 @@
     gap: 1rem;
 }
 
-/* رسالة عدم وجود منشورات */
+/* No posts message */
 .no-posts {
     text-align: center;
     color: #666;
@@ -144,7 +144,7 @@
     grid-column: 1 / -1;
 }
 
-/* تنسيق blockquote في لوحة المشرف */
+/* Format blockquote in admin panel */
 .post-preview blockquote {
     border-right: 4px solid #470539c5;
     margin: 1rem 0;
