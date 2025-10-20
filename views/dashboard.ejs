@@ -59,7 +59,8 @@
                                 <a class="dropdown-item" href="/settings">
                                     <i class="bi bi-gear me-2"></i>الإعدادات
                                 </a>
-                            </li>                            <% if (user.role==='admin' ) { %>
+                            </li>
+                            <% if (user.role==='admin' ) { %>
                                 <li>
                                     <a class="dropdown-item" href="/admin/pending-posts">
                                         <i class="bi bi-clock-history me-2"></i>مراجعة المنشورات المعلقة
@@ -88,14 +89,14 @@
 
     <main>
         <div class="container">
-            <!-- رسالة النجاح -->
+            <!-- Success message -->
             <% if (typeof successMessage !=='undefined' && successMessage) { %>
                 <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i>
                     <%= successMessage %>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <% } %>                    <!-- Stats Section -->
+                <% } %> <!-- Stats Section -->
                     <div class="stats-container fadeIn">
                         <div class="stat-card unified-card">
                             <i class="bi bi-file-text h1"></i>
@@ -125,18 +126,19 @@
                                         <i class="bi bi-x-circle h1 text-danger"></i>
                                         <div class="stat-number">
                                             <%= posts.filter(p=> p.status === 'rejected').length %>
-                                        </div>                                        <div class="stat-label">المنشورات المرفوضة</div>
+                                        </div>
+                                        <div class="stat-label">المنشورات المرفوضة</div>
                                     </div>
-                                    <% } %>                        <!-- Admin Stats for Blog Requests -->
-                        <% if (user.role === 'admin' && blogRequestsStats) { %>
-                            <div class="stat-card unified-card admin-stat-card">
-                                <i class="bi bi-file-earmark-person h1"></i>
-                                <div class="stat-number">
-                                    <%= blogRequestsStats.pending %>
-                                </div>
-                                <div class="stat-label">طلبات مدونات جديدة</div>
-                            </div>
-                        <% } %>
+                                    <% } %> <!-- Admin Stats for Blog Requests -->
+                                        <% if (user.role==='admin' && blogRequestsStats) { %>
+                                            <div class="stat-card unified-card admin-stat-card">
+                                                <i class="bi bi-file-earmark-person h1"></i>
+                                                <div class="stat-number">
+                                                    <%= blogRequestsStats.pending %>
+                                                </div>
+                                                <div class="stat-label">طلبات مدونات جديدة</div>
+                                            </div>
+                                            <% } %>
                     </div><!-- Quick Actions -->
                     <div class="dashboard-actions fadeIn">
                         <a href="/posts/create" class="action-card unified-card text-decoration-none">
@@ -154,19 +156,20 @@
                             <h5 class="mt-3">إعدادات الحساب</h5>
                             <p>تخصيص إعدادات حسابك</p>
                         </a>
-                          <!-- Admin Actions -->
-                        <% if (user.role === 'admin') { %>
-                            <a href="/admin/blog-requests" class="action-card unified-card admin-card text-decoration-none">
+                        <!-- Admin Actions -->
+                        <% if (user.role==='admin' ) { %>
+                            <a href="/admin/blog-requests"
+                                class="action-card unified-card admin-card text-decoration-none">
                                 <i class="bi bi-file-earmark-person h2"></i>
                                 <h5 class="mt-3">طلبات المدونات</h5>
                                 <p>مراجعة طلبات إنشاء المدونات الجديدة</p>
-                                <% if (blogRequestsStats && blogRequestsStats.pending > 0) { %>
+                                <% if (blogRequestsStats && blogRequestsStats.pending> 0) { %>
                                     <span class="badge bg-warning text-dark">
                                         <%= blogRequestsStats.pending %> طلب جديد
                                     </span>
-                                <% } %>
+                                    <% } %>
                             </a>
-                        <% } %>
+                            <% } %>
                     </div>
 
                     <!-- Recent Notifications -->

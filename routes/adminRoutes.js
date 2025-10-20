@@ -6,34 +6,34 @@ const crypto = require('crypto');
 const emailService = require('../services/emailService');
 const supabase = require('../db/db');
 
-// جميع مسارات المشرف تحتاج إلى المصادقة وصلاحيات المشرف
+// All admin routes require authentication and admin privileges
 router.use(authenticateToken, isAdmin);
 
-// عرض قائمة المنشورات المعلقة
+// Display list of pending posts
 router.get('/pending-posts', adminController.getPendingPosts);
 
-// الموافقة على منشور
+// Approve post
 router.post('/posts/:postId/approve', adminController.approvePost);
 
-// رفض منشور
+// Reject post
 router.post('/posts/:postId/reject', adminController.rejectPost);
 
-// معاينة منشور معلق
+// Preview pending post
 router.get('/posts/:postId/preview', adminController.previewPost);
 
-// عرض طلبات المدونات
+// Display blog requests
 router.get('/blog-requests', async (req, res) => {
     try {
         const { status, specialty, category, page = 1 } = req.query;
         const limit = 12;
         const offset = (page - 1) * limit;
 
-        // بناء الاستعلام
+        // Build query
         let query = supabase
             .from('blog_requests')
             .select('*', { count: 'exact' });
 
-        // تطبيق الفلاتر
+        // Apply filters
         if (status) {
             query = query.eq('status', status);
         }
@@ -44,10 +44,10 @@ router.get('/blog-requests', async (req, res) => {
             query = query.eq('sample_category', category);
         }
 
-        // ترتيب النتائج
+        // Order results
         query = query.order('created_at', { ascending: false });
 
-        // تطبيق التصفح
+        // Apply pagination
         query = query.range(offset, offset + limit - 1);
 
         const { data: requests, error, count } = await query;
@@ -57,7 +57,7 @@ router.get('/blog-requests', async (req, res) => {
             throw error;
         }
 
-        // إحصائيات
+        // Statistics
         const { data: statsData } = await supabase
             .from('blog_requests')
             .select('status');
@@ -69,7 +69,7 @@ router.get('/blog-requests', async (req, res) => {
             rejected: statsData.filter(r => r.status === 'rejected').length
         };
 
-        // التخصصات المتاحة
+        // Available specialties
         const { data: specialtiesData } = await supabase
             .from('blog_requests')
             .select('specialty')
@@ -77,7 +77,7 @@ router.get('/blog-requests', async (req, res) => {
 
         const specialties = [...new Set(specialtiesData.map(r => r.specialty))];
 
-        // معلومات التصفح
+        // Pagination info
         const pagination = {
             currentPage: parseInt(page),
             totalPages: Math.ceil(count / limit),
@@ -99,12 +99,12 @@ router.get('/blog-requests', async (req, res) => {
     }
 });
 
-// قبول طلب مدونة
+// Accept blog request
 router.post('/blog-requests/:id/approve', async (req, res) => {
     try {
         const requestId = req.params.id;
 
-        // جلب تفاصيل الطلب
+        // Fetch request details
         const { data: request, error: fetchError } = await supabase
             .from('blog_requests')
             .select('*')
@@ -125,7 +125,7 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
             });
         }
 
-        // تحديث حالة الطلب
+        // Update request status
         const { error: updateError } = await supabase
             .from('blog_requests')
             .update({
@@ -140,10 +140,10 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
             throw updateError;
         }
 
-        // توليد كود الدعوة
+        // Generate invite code
         const inviteCode = crypto.randomBytes(3).toString('hex').toUpperCase();
         const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 7); // صالح لمدة 7 أيام
+        expiresAt.setDate(expiresAt.getDate() + 7); // Valid for 7 days
 
         const { error: codeError } = await supabase
             .from('invite_codes')
@@ -161,7 +161,7 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
             throw codeError;
         }
 
-        // إرسال كود التفعيل عبر البريد الإلكتروني
+        // Send activation code via email
         try {
             await emailService.sendInviteCode(
                 request.email,
@@ -171,7 +171,7 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
             );
         } catch (emailError) {
             console.error('خطأ في إرسال البريد الإلكتروني:', emailError);
-            // لا نوقف العملية بسبب فشل إرسال البريد
+            // Don't stop the process due to email sending failure
         }
 
         res.json({ success: true, message: 'تم قبول الطلب وإرسال كود التفعيل' });
@@ -185,7 +185,7 @@ router.post('/blog-requests/:id/approve', async (req, res) => {
     }
 });
 
-// رفض طلب مدونة
+// Reject blog request
 router.post('/blog-requests/:id/reject', async (req, res) => {
     try {
         const requestId = req.params.id;
@@ -198,7 +198,7 @@ router.post('/blog-requests/:id/reject', async (req, res) => {
             });
         }
 
-        // جلب تفاصيل الطلب
+        // Fetch request details
         const { data: request, error: fetchError } = await supabase
             .from('blog_requests')
             .select('*')
@@ -219,7 +219,7 @@ router.post('/blog-requests/:id/reject', async (req, res) => {
             });
         }
 
-        // تحديث حالة الطلب
+        // Update request status
         const { error: updateError } = await supabase
             .from('blog_requests')
             .update({
@@ -235,7 +235,7 @@ router.post('/blog-requests/:id/reject', async (req, res) => {
             throw updateError;
         }
 
-        // إرسال إشعار الرفض عبر البريد الإلكتروني
+        // Send rejection notification via email
         try {
             await emailService.sendRejectionNotification(
                 request.email,

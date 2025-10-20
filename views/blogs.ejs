@@ -118,7 +118,7 @@
 
             // Toggle categories visibility
             categoriesContainer.addEventListener('click', function(event) {
-                // منع الضغط على الأزرار الداخلية من تشغيل هذا الحدث
+                // Prevent clicking inner buttons from triggering this event
                 if (event.target.classList.contains('btn')) {
                     return;
                 }
@@ -130,7 +130,7 @@
                     // Add active class when categories are shown
                     categoriesContainer.classList.add('active');
                 } else {
-                    // استعادة النص الأصلي أو المحدد سابقًا
+                    // Update toggle text based on active category
                     const activeButton = document.querySelector('.categories-filter .btn.active');
                     if (activeButton && activeButton.dataset.category !== 'all') {
                         toggleText.textContent = 'التصنيفات: ' + activeButton.textContent;
@@ -142,7 +142,7 @@
                 }
             });
 
-            // منع انتشار الحدث عند الضغط على أزرار التصفية
+            // Prevent event propagation when clicking filter buttons
             document.querySelectorAll('.categories-filter .btn').forEach(button => {
                 button.addEventListener('click', function(event) {
                     event.stopPropagation();

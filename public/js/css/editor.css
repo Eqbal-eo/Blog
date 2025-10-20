@@ -199,7 +199,7 @@ body {
     border-radius: var(--border-radius);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     position: sticky;
-    top: 95px; /* يضمن أن يبقى العنصر مرئياً بعد شريط التنقل */
+    top: 95px; /* Ensures element stays visible after navigation bar */
     /* Animation removed */
 }
 
@@ -241,7 +241,7 @@ body {
 }
 
 .col-md-4 {
-    margin-top: -0.5rem; /* تعديل الموقع العمودي */
+    margin-top: -0.5rem; /* Adjust vertical position */
 }
 
 @media (max-width: 768px) {
@@ -255,7 +255,7 @@ body {
     }
 }
 
-/* تنسيق حقول إعدادات النشر */
+/* Format publish settings fields */
 .action-card .form-select,
 .action-card .form-control {
     text-align: right;
@@ -334,7 +334,6 @@ body {
     min-width: 120px;
     padding: 0.6rem 1.5rem;
 }
-
 @media (max-width: 768px) {
     .action-card .btn {
         width: 100%;

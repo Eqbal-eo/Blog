@@ -86,13 +86,13 @@
                         لا توجد تدوينات لتعديلها.
                     </div>
                 <% } else { %>
-                    <!-- عرض سبب الرفض إذا كانت التدوينة مرفوضة -->
+                    <!-- Display rejection reason if post is rejected -->
                     <div id="rejectionReasonAlert" class="alert alert-danger mb-4" style="display: none;">
                         <h5><i class="bi bi-exclamation-triangle-fill me-2"></i>سبب رفض التدوينة</h5>
                         <p id="rejectionReasonText"></p>
                     </div>                    <form id="editForm" method="POST" class="mt-4">
                         <input type="hidden" name="_method" value="PUT">
-                        <!-- إضافة حقل لتحديد ما إذا كانت التدوينة سيتم إعادة تقديمها -->
+                        <!-- Add field to determine if post will be resubmitted -->
                         <input type="hidden" name="resubmit" id="resubmitInput" value="false">
                         
                         <div class="row g-4">
@@ -227,7 +227,7 @@
             const statusSelect = document.getElementById('status');
             const form = document.getElementById('editForm');
             
-            // العناصر المتعلقة بالتدوينات المرفوضة
+            // Elements related to rejected posts
             const rejectionAlert = document.getElementById('rejectionReasonAlert');
             const rejectionText = document.getElementById('rejectionReasonText');
             const resubmitArea = document.getElementById('resubmitArea');
@@ -252,30 +252,30 @@
 
                 form.action = `/posts/edit/${post.id}`;
                 
-                // إذا كانت التدوينة مرفوضة، عرض سبب الرفض وخيار إعادة التقديم
+                // If post is rejected, show rejection reason and resubmit option
                 if (postStatus === 'rejected') {
                     rejectionText.textContent = post.rejection_reason || 'لم يتم تحديد سبب';
                     rejectionAlert.style.display = 'block';
                     resubmitArea.style.display = 'block';
-                    // إخفاء خيار النشر المباشر للتدوينات المرفوضة
+                    // Hide direct publish option for rejected posts
                     statusSelect.querySelector('option[value="published"]').disabled = true;
                 } else {
                     rejectionAlert.style.display = 'none';
                     resubmitArea.style.display = 'none';
-                    // إعادة تفعيل خيار النشر المباشر
+                    // Re-enable direct publish option
                     if (statusSelect.querySelector('option[value="published"]')) {
                         statusSelect.querySelector('option[value="published"]').disabled = false;
                     }
                 }
             });
 
-            // التعامل مع إعادة تقديم التدوينة المرفوضة
+            // Handle resubmitting rejected post
             if (resubmitCheck) {
                 resubmitCheck.addEventListener('change', function() {
                     resubmitInput.value = this.checked ? 'true' : 'false';
                     
                     if (this.checked) {
-                        // إذا تم اختيار إعادة التقديم، تغيير الزر ليعبر عن ذلك
+                        // If resubmit is selected, change button to reflect that
                         document.querySelector('button[type="submit"]').textContent = 'إعادة تقديم للمراجعة';
                     } else {
                         document.querySelector('button[type="submit"]').textContent = 'حفظ التعديلات';

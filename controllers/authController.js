@@ -7,7 +7,7 @@ const rateLimit = require('express-rate-limit');
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 5, // Maximum 5 attempts
-    message: { error: 'تم تجاوز الحد المسموح به من محاولات تسجيل الدخول، يرجى المحاولة بعد 15 دقيقة' },
+    message: { error: 'Too many login attempts, please try again after 15 minutes' },
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -21,12 +21,12 @@ router.post('/login', loginLimiter, (req, res) => {
     db.query(query, [username], (err, results) => {
         if (err) {
             console.error('Error querying database:', err);
-            return res.status(500).send('حدث خطأ في الاتصال بقاعدة البيانات');
+            return res.status(500).send('Database connection error occurred');
         }
 
         // If user doesn't exist
         if (results.length === 0) {
-            return res.status(401).json({ error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
+            return res.status(401).json({ error: 'Invalid username or password' });
         }
 
         // If user exists, verify password
@@ -34,12 +34,12 @@ router.post('/login', loginLimiter, (req, res) => {
         bcrypt.compare(password, user.password, (err, match) => {
             if (err) {
                 console.error('Error comparing passwords:', err);
-                return res.status(500).send('حدث خطأ في عملية التحقق من كلمة المرور');
+                return res.status(500).send('Error occurred during password verification');
             }
 
             if (match) {
                 // Password is correct, create JWT token
-                const token = jwt.sign({ userId: user.id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+                const token = jwt.sign({ userId: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 
                 // Save user information in session
                 req.session.user = {
@@ -51,7 +51,7 @@ router.post('/login', loginLimiter, (req, res) => {
                 res.render('welcome', { username: user.username });
             } else {
                 // Password is incorrect
-                return res.status(401).json({ error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
+                return res.status(401).json({ error: 'Invalid username or password' });
             }
         });
     });

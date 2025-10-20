@@ -1,6 +1,6 @@
-// ملف JavaScript للتعامل مع الإشعارات في الواجهة
+// JavaScript file for handling notifications in the frontend
 document.addEventListener('DOMContentLoaded', function() {
-    // استدعاء API للحصول على عدد الإشعارات غير المقروءة
+    // Call API to get unread notifications count
     async function getUnreadNotificationsCount() {
         try {
             const response = await fetch('/notifications/unread/count');
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // تحديث عداد الإشعارات
+    // Update notification counter
     function updateNotificationCounter(count) {
         const counter = document.getElementById('notificationCounter');
         if (!counter) return;
@@ -28,6 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // استعلام عن عدد الإشعارات عند تحميل الصفحة
+    // Query notification count on page load
     getUnreadNotificationsCount().then(updateNotificationCounter);
 });

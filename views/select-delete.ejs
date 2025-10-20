@@ -86,7 +86,7 @@
                         لا توجد تدوينات لحذفها.
                     </div>                <% } else { %>
                     <div class="mt-4">
-                        <!-- أزرار التحكم -->
+                        <!-- Control buttons -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex gap-2">
                                 <button type="button" class="btn btn-outline-primary btn-sm" id="selectAllBtn">
@@ -175,7 +175,7 @@
             مدونات آفاق | منصة للتدوين الثقافي والفكري © <%= new Date().getFullYear() %>
         </div>
     </footer>    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>    <script>
-        // عناصر DOM
+        // DOM elements
         const bulkDeleteModal = new bootstrap.Modal(document.getElementById('bulkDeleteModal'));
         const postCheckboxes = document.querySelectorAll('.post-checkbox');
         const selectAllBtn = document.getElementById('selectAllBtn');
@@ -184,7 +184,7 @@
         const selectedCountSpan = document.getElementById('selectedCount');
         const selectedCountModalSpan = document.getElementById('selectedCountModal');        const confirmBulkDeleteBtn = document.getElementById('confirmBulkDelete');
 
-        // تحديث عداد التدوينات المحددة
+        // Update selected posts counter
         function updateSelectedCount() {
             const selectedCheckboxes = document.querySelectorAll('.post-checkbox:checked');
             const count = selectedCheckboxes.length;
@@ -193,7 +193,7 @@
             selectedCountModalSpan.textContent = count;
             deleteSelectedBtn.disabled = count === 0;
             
-            // تحديث نص الزر
+            // Update button text
             if (count === 0) {
                 deleteSelectedBtn.innerHTML = '<i class="bi bi-trash3 me-1"></i>حذف المحدد (0)';
             } else {
@@ -201,12 +201,12 @@
             }
         }
 
-        // إضافة مستمعي الأحداث للـ checkboxes
+        // Add event listeners for checkboxes
         postCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateSelectedCount);
         });
 
-        // تحديد الكل
+        // Select all
         selectAllBtn.addEventListener('click', function() {
             postCheckboxes.forEach(checkbox => {
                 checkbox.checked = true;
@@ -214,7 +214,7 @@
             updateSelectedCount();
         });
 
-        // إلغاء التحديد
+        // Clear selection
         clearSelectionBtn.addEventListener('click', function() {
             postCheckboxes.forEach(checkbox => {
                 checkbox.checked = false;
@@ -222,7 +222,7 @@
             updateSelectedCount();
         });
 
-        // فتح نافذة تأكيد الحذف المتعدد
+        // Open multiple delete confirmation modal
         deleteSelectedBtn.addEventListener('click', function() {
             const selectedCheckboxes = document.querySelectorAll('.post-checkbox:checked');
             if (selectedCheckboxes.length > 0) {
@@ -230,17 +230,17 @@
             }
         });
 
-        // تأكيد الحذف المتعدد
+        // Confirm multiple delete
         confirmBulkDeleteBtn.addEventListener('click', function() {
             const selectedCheckboxes = document.querySelectorAll('.post-checkbox:checked');
             const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
             
             if (selectedIds.length > 0) {
-                // إظهار مؤشر التحميل
+                // Show loading indicator
                 confirmBulkDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>جاري الحذف...';
                 confirmBulkDeleteBtn.disabled = true;
                 
-                // إرسال طلب الحذف
+                // Send delete request
                 fetch('/posts/delete-multiple', {
                     method: 'POST',
                     headers: {
@@ -250,7 +250,7 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        // إعادة تحميل الصفحة بعد الحذف الناجح
+                        // Reload page after successful deletion
                         window.location.reload();
                     } else {
                         throw new Error('فشل في الحذف');
@@ -260,14 +260,14 @@
                     console.error('خطأ في الحذف:', error);
                     alert('حدث خطأ أثناء الحذف. يرجى المحاولة مرة أخرى.');
                     
-                    // إعادة تعيين الزر
+                    // Reset button
                     confirmBulkDeleteBtn.innerHTML = '<i class="bi bi-trash3 me-1"></i>تأكيد الحذف';
                     confirmBulkDeleteBtn.disabled = false;
                 });
             }
         });
 
-        // تهيئة العداد
+        // Initialize counter
         updateSelectedCount();
     </script>
 </body>

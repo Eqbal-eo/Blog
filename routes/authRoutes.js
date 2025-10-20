@@ -8,20 +8,20 @@ const emailService = require('../services/emailService');
 require('dotenv').config();
 const { authenticateToken } = require('../middleware/authMiddleware');
 
-// استخدام المفتاح السري من متغيرات البيئة
+// Use the secret key from environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// عرض صفحة التسجيل الجديدة (إكمال التسجيل بكود التفعيل)
+// Display the new registration page (complete registration with activation code)
 router.get('/register', (req, res) => {
     res.render('register', { error: null, success: null });
 });
 
-// عرض صفحة طلب المدونة
+// Display blog request page
 router.get('/blog-request', (req, res) => {
     res.render('blog-request', { error: null, success: null });
 });
 
-// معالجة طلب المدونة
+// Handle blog request
 router.post('/blog-request', async (req, res) => {
     const { 
         full_name, 
@@ -35,7 +35,7 @@ router.post('/blog-request', async (req, res) => {
     } = req.body;
 
     try {
-        // التحقق من أن المحتوى يحتوي على العدد المطلوب من الكلمات (300 كلمة على الأقل)
+        // Verify that the content contains the required word count (at least 300 words)
         const wordCount = sample_content.trim().split(/\s+/).length;
         if (wordCount < 300) {
             return res.render('blog-request', {
@@ -44,7 +44,7 @@ router.post('/blog-request', async (req, res) => {
             });
         }
 
-        // التحقق من عدم وجود طلب مقدم سابقاً بنفس البريد الإلكتروني ولم يتم البت فيه
+        // Check that there is no previous request submitted with the same email and pending
         const { data: existingRequest, error: checkError } = await supabase
             .from('blog_requests')
             .select('id, status')
@@ -61,7 +61,7 @@ router.post('/blog-request', async (req, res) => {
             });
         }
 
-        // إدراج طلب المدونة الجديد
+        // Insert new blog request
         const { data: newRequest, error: insertError } = await supabase
             .from('blog_requests')
             .insert([{
@@ -83,13 +83,13 @@ router.post('/blog-request', async (req, res) => {
             throw insertError;
         }
 
-        // إرسال إشعار للمشرفين
+        // Send notification to admins
         try {
             await emailService.notifyAdminsNewRequest(newRequest);
         } catch (emailError) {
             console.error('خطأ في إرسال إشعار المشرفين:', emailError);
-            // لا نوقف العملية بسبب فشل إرسال البريد الإلكتروني
-        }        // توجيه إلى صفحة تأكيد الإرسال
+            // Don't stop the process due to email sending failure
+        }        // Redirect to submission confirmation page
         res.render('request-submitted', { 
             email: email,
             requestId: newRequest.id 
@@ -104,14 +104,14 @@ router.post('/blog-request', async (req, res) => {
 
 
 
-// المسار القديم للتسجيل (سيتم إزالته تدريجياً)
+// Old registration route (will be gradually removed)
 
-// معالجة التسجيل الجديد (بكود التفعيل)
+// Handle new registration (with activation code)
 router.post('/register', async (req, res) => {
     const { username, email, invite_code } = req.body;
 
     try {
-        // البحث عن كود الدعوة
+        // Search for the invite code
         const { data: inviteCodeData, error: codeError } = await supabase
             .from('invite_codes')
             .select(`
@@ -130,7 +130,7 @@ router.post('/register', async (req, res) => {
                 error: 'كود التفعيل غير صحيح',
                 success: null
             });
-        }        // التحقق من أن الكود لم يُستخدم من قبل
+        }        // Verify that the code has not been used before
         if (inviteCodeData.is_used) {
             return res.render('register', {
                 error: 'هذا الكود تم استخدامه من قبل',
@@ -138,14 +138,14 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // التحقق من أن الكود لم ينتهِ صلاحيته
+        // Verify that the code has not expired
         const expirationDate = new Date(inviteCodeData.expires_at);
         const now = new Date();        if (now > expirationDate) {
             return res.render('register', {
                 error: 'انتهت صلاحية كود التفعيل، يرجى طلب كود جديد',
                 success: null
             });
-        }        // التحقق من تطابق البريد الإلكتروني
+        }        // Verify email match
         if (email !== inviteCodeData.email) {
             return res.render('register', {
                 error: 'البريد الإلكتروني لا يطابق كود التفعيل',
@@ -153,7 +153,7 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // التحقق من عدم وجود اسم المستخدم
+        // Check that username doesn't exist
         const { data: existingUser, error: userCheckError } = await supabase
             .from('users')
             .select('username')
@@ -169,11 +169,11 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // إنشاء كلمة مرور مؤقتة (سيقوم المستخدم بتغييرها عند أول تسجيل دخول)
+        // Create temporary password (user will change it on first login)
         const tempPassword = crypto.randomBytes(8).toString('hex');
         const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
-        // إنشاء المستخدم الجديد
+        // Create new user
         const { data: newUser, error: createError } = await supabase
             .from('users')
             .insert([{
@@ -190,7 +190,7 @@ router.post('/register', async (req, res) => {
             throw createError;
         }
 
-        // إنشاء إعدادات المستخدم
+        // Create user settings
         const { error: settingsError } = await supabase
             .from('settings')
             .insert([{
@@ -207,7 +207,7 @@ router.post('/register', async (req, res) => {
             throw settingsError;
         }
 
-        // تحديث كود الدعوة لإظهار أنه تم استخدامه
+        // Update invite code to show it has been used
         const { error: updateCodeError } = await supabase
             .from('invite_codes')
             .update({
@@ -221,7 +221,7 @@ router.post('/register', async (req, res) => {
             console.error('خطأ في تحديث كود الدعوة:', updateCodeError);
         }
 
-        // إرسال بيانات الدخول عبر البريد الإلكتروني
+        // Send login credentials via email
         try {
             await emailService.sendLoginCredentials(
                 email,
@@ -243,12 +243,12 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// عرض صفحة تسجيل الدخول
+// Display login page
 router.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
 
-// معالجة تسجيل الدخول
+// Handle login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -266,21 +266,21 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, users.password);
         if (!isMatch) {
             return res.render('login', { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
-        }        // إنشاء توكن JWT مع تضمين دور المستخدم
+        }        // Create JWT token with user role included
         const token = jwt.sign(
             { id: users.id, username: users.username, role: users.role },
             JWT_SECRET,
-            { expiresIn: '24h' } // صلاحية التوكن 24 ساعة
+            { expiresIn: '24h' } // Token validity 24 hours
         );
 
-        // تخزين التوكن في كوكيز آمنة
+        // Store token in secure cookies
         res.cookie('auth_token', token, {
-            httpOnly: true, // لا يمكن الوصول إليها من JavaScript
-            secure: process.env.NODE_ENV === 'production', // للاتصالات HTTPS فقط في الإنتاج
-            maxAge: 86400000 // 24 ساعة بالمللي ثانية
+            httpOnly: true, // Cannot be accessed from JavaScript
+            secure: process.env.NODE_ENV === 'production', // For HTTPS connections only in production
+            maxAge: 86400000 // 24 hours in milliseconds
         });
 
-        // توجيه المستخدم إلى لوحة التحكم
+        // Redirect user to dashboard
         res.redirect('/dashboard');
             
     } catch (err) {
@@ -289,13 +289,13 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// عرض لوحة التحكم
+// Display dashboard
 router.get('/dashboard', authenticateToken, async (req, res) => {    console.log('🔍 Accessing Dashboard Route');
     try {
         // Extract user data from authenticateToken middleware
         const userId = req.user.id;
         console.log('👤 User ID:', userId);
-          // جلب بيانات المستخدم بما فيها الدور والاسم العربي
+          // Fetch user data including role and Arabic name
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('display_name_ar, role')
@@ -332,15 +332,15 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
         } else {
             console.log(`🔔 Successfully fetched ${notifications.length} notifications`);
         }
-          // التحقق من وجود رسالة نجاح في الكوكيز
+          // Check for success message in cookies
         const successMessage = req.cookies.success_message || null;
         
-        // إذا كانت موجودة، نحذفها بعد استخدامها
+        // If it exists, delete it after using it
         if (successMessage) {
             res.clearCookie('success_message');
         }
 
-        // جلب إحصائيات طلبات المدونات للمشرفين
+        // Fetch blog request statistics for admins
         let blogRequestsStats = null;
         if (userData.role === 'admin') {
             try {
@@ -366,7 +366,7 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
             user: {
                 ...req.user,
                 display_name_ar: userData.display_name_ar,
-                role: userData.role // إضافة دور المستخدم
+                role: userData.role // Add user role
             },
             posts,
             notifications: notifications || [],
@@ -379,20 +379,20 @@ router.get('/dashboard', authenticateToken, async (req, res) => {    console.log
     }
 });
 
-// تسجيل الخروج
+// Logout
 router.get('/logout', (req, res) => {
-    // حذف كوكيز التوكن
+    // Delete token cookie
     res.clearCookie('auth_token');
     res.redirect('/login');
 });
 
-// حذف الحساب
+// Delete account
 router.post('/delete-account', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.id;
         const { password } = req.body;
 
-        // التحقق من كلمة المرور
+        // Verify password
         const { data: userData, error: userError } = await supabase
             .from('users')
             .select('password')
@@ -408,7 +408,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             });
         }
 
-        // مقارنة كلمة المرور
+        // Compare password
         const isPasswordValid = await bcrypt.compare(password, userData.password);
         if (!isPasswordValid) {
             return res.render('settings', {
@@ -418,8 +418,8 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             });
         }        console.log('🗑️ بدء عملية حذف الحساب للمستخدم:', userId);
 
-        // حذف بيانات المستخدم - يتم حذف المنشورات والإعدادات بناءً على العلاقات الخارجية في قاعدة البيانات
-        // 1. حذف الإشعارات أولا
+        // Delete user data - posts and settings will be deleted based on foreign key relationships in the database
+        // 1. Delete notifications first
         console.log('🔔 حذف الإشعارات...');
         const { error: notificationsDeleteError } = await supabase
             .from('notifications')
@@ -431,7 +431,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             throw notificationsDeleteError;
         }
 
-        // 2. تحديث أكواد الدعوة المستخدمة من قبل هذا المستخدم
+        // 2. Update invite codes used by this user
         console.log('🎫 تحديث أكواد الدعوة...');
         const { error: inviteCodesUpdateError } = await supabase
             .from('invite_codes')
@@ -443,7 +443,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             throw inviteCodesUpdateError;
         }
 
-        // 3. تحديث طلبات المدونات التي راجعها هذا المستخدم (إذا كان مشرف)
+        // 3. Update blog requests reviewed by this user (if admin)
         console.log('📝 تحديث طلبات المدونات...');
         const { error: blogRequestsUpdateError } = await supabase
             .from('blog_requests')
@@ -455,7 +455,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             throw blogRequestsUpdateError;
         }
 
-        // 4. حذف الإعدادات
+        // 4. Delete settings
         console.log('⚙️ حذف الإعدادات...');
         const { error: settingsDeleteError } = await supabase
             .from('settings')
@@ -467,7 +467,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
             throw settingsDeleteError;
         }
 
-        // 5. حذف المنشورات
+        // 5. Delete posts
         console.log('📄 حذف المنشورات...');
         const { error: postsDeleteError } = await supabase
             .from('posts')
@@ -477,7 +477,7 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
         if (postsDeleteError) {
             console.error('خطأ في حذف منشورات المستخدم:', postsDeleteError);
             throw postsDeleteError;
-        }        // 6. حذف حساب المستخدم نفسه
+        }        // 6. Delete user account itself
         console.log('👤 حذف حساب المستخدم...');
         const { error: userDeleteError } = await supabase
             .from('users')
@@ -491,9 +491,9 @@ router.post('/delete-account', authenticateToken, async (req, res) => {
 
         console.log('✅ تم حذف الحساب بنجاح');
 
-        // تسجيل الخروج بعد حذف الحساب
+        // Logout after deleting account
         res.clearCookie('auth_token');
-        // توجيه المستخدم إلى صفحة تسجيل الدخول مع رسالة نجاح
+        // Redirect user to login page with success message
         res.render('login', { error: null, success: 'تم حذف حسابك بنجاح' });
     } catch (err) {
         console.error('خطأ في حذف الحساب:', err);

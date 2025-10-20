@@ -1,43 +1,69 @@
 blog-project/
-├── controllers/
-│   └── authController.js         # التحكم في المصادقة والمستخدمين
+├── .env                         # متغيرات البيئة (JWT_SECRET, SUPABASE_URL, etc.)
+├── .env.example                 # نموذج ملف متغيرات البيئة
+├── .gitignore                   # ملف تجاهل Git
+├── controllers/                 # Controllers - منطق التطبيق
+│   ├── adminController.js       # إدارة لوحة المشرف
+│   ├── authController.js        # التحكم في المصادقة والمستخدمين
+│   └── notificationController.js # إدارة الإشعارات
 ├── db/
-│   └── db.js                     # إعدادات وتكوين قاعدة البيانات
-├── js/                          # مجلد للسكربتات الخاصة بالموقع
-├── middlewares/                 # الوسائط البرمجية للتحقق والمصادقة
-├── node_modules/                # مجلد تبعيات المشروع
-├── public/
-│   └── js/ 
+│   └── db.js                    # إعدادات Supabase وقاعدة البيانات
+├── middleware/                  # Middleware - الوسائط البرمجية
+│   └── authMiddleware.js        # التحقق من JWT والصلاحيات
+├── node_modules/                # تبعيات المشروع
+├── public/                      # الملفات الثابتة
+│   └── js/
+│       ├── notifications.js     # سكربت الإشعارات في الواجهة
 │       └── css/
 │           ├── about.css        # تنسيقات صفحة حول الموقع
+│           ├── admin.css        # تنسيقات لوحة المدير
+│           ├── author.css       # تنسيقات صفحة الكاتب
 │           ├── blogs.css        # تنسيقات صفحة المدونات
 │           ├── dashboard.css    # تنسيقات لوحة التحكم
 │           ├── editor.css       # تنسيقات محرر المحتوى
 │           ├── footer.css       # تنسيقات تذييل الصفحة
 │           ├── home.css         # تنسيقات الصفحة الرئيسية
-│           ├── login.css        # تنسيقات صفحة تسجيل الدخول
-│           └── register.css     # تنسيقات صفحة التسجيل
-├── routes/
-│   ├── authRoutes.js           # مسارات المصادقة والتسجيل
-│   ├── mainRoutes.js           # المسارات الرئيسية للموقع
-│   ├── pagesRoutes.js          # مسارات الصفحات الثابتة
-│   └── postRoutes.js           # مسارات إدارة المقالات
-├── uploads/                     # مجلد الملفات المرفوعة
-├── views/
-│   ├── about.ejs              # صفحة حول الموقع
-│   ├── author.ejs             # صفحة الكاتب
-│   ├── blogs.ejs             # صفحة عرض جميع المدونات
-│   ├── contact.ejs           # صفحة الاتصال
-│   ├── create-post.ejs       # صفحة إنشاء مقال جديد
-│   ├── dashboard.ejs         # لوحة تحكم المستخدم
-│   ├── home.ejs             # الصفحة الرئيسية
-│   ├── login.ejs            # صفحة تسجيل الدخول
-│   ├── post.ejs             # صفحة عرض المقال
-│   ├── register.ejs         # صفحة إنشاء حساب
-│   ├── select-delete.ejs    # صفحة اختيار المقال للحذف
-│   ├── select-edit.ejs      # صفحة اختيار المقال للتعديل
-│   ├── settings.ejs         # صفحة الإعدادات
-│   └── welcome.ejs          # صفحة الترحيب
-├── index.js                 # نقطة بداية التطبيق
-├── package.json             # تكوين المشروع والتبعيات
-└── vercel.json             # إعدادات نشر التطبيق على Vercel
+│           └── notifications.css # تنسيقات صفحة الإشعارات
+├── routes/                      # Routes - مسارات التطبيق
+│   ├── adminRoutes.js           # مسارات المشرف (إدارة المحتوى والطلبات)
+│   ├── authRoutes.js            # مسارات المصادقة (login, register, dashboard)
+│   ├── mainRoutes.js            # المسارات الرئيسية (home, post)
+│   ├── notificationRoutes.js    # مسارات الإشعارات
+│   ├── pagesRoutes.js           # مسارات الصفحات (about, contact, blogs, author, settings)
+│   └── postRoutes.js            # مسارات إدارة المقالات (create, edit, delete)
+├── services/                    # Services - الخدمات المساعدة
+│   ├── emailService.js          # خدمة إرسال البريد الإلكتروني
+│   ├── emailService-improved.js # نسخة محسنة من خدمة البريد
+│   └── notificationService.js   # خدمة إدارة الإشعارات
+├── uploads/                     # مجلد الصور والملفات المرفوعة
+├── views/                       # EJS Templates - قوالب الواجهة
+│   ├── admin/                   # صفحات المشرف
+│   │   ├── blog-requests.ejs    # صفحة طلبات المدونين الجدد
+│   │   └── pending-posts.ejs    # صفحة المقالات المعلقة
+│   ├── partials/                # القطع القابلة لإعادة الاستخدام
+│   │   └── header.ejs           # رأس الصفحة المشترك
+│   ├── about.ejs                # صفحة حول الموقع
+│   ├── author.ejs               # صفحة الكاتب
+│   ├── blog-request.ejs         # صفحة طلب صلاحية النشر
+│   ├── blogs.ejs                # صفحة عرض جميع المدونات
+│   ├── contact.ejs              # صفحة الاتصال
+│   ├── create-post.ejs          # صفحة إنشاء مقال جديد
+│   ├── dashboard.ejs            # لوحة تحكم المستخدم/المشرف
+│   ├── error.ejs                # صفحة الأخطاء
+│   ├── home.ejs                 # الصفحة الرئيسية
+│   ├── login.ejs                # صفحة تسجيل الدخول
+│   ├── notifications.ejs        # صفحة الإشعارات
+│   ├── post.ejs                 # صفحة عرض المقال
+│   ├── register.ejs             # صفحة إنشاء حساب
+│   ├── request-submitted.ejs    # صفحة تأكيد إرسال الطلب
+│   ├── select-delete.ejs        # صفحة اختيار المقال للحذف
+│   ├── select-edit.ejs          # صفحة اختيار المقال للتعديل
+│   ├── settings.ejs             # صفحة الإعدادات
+│   └── welcome.ejs              # صفحة الترحيب
+├── index.js                     # نقطة بداية التطبيق
+├── package.json                 # تكوين المشروع والتبعيات
+├── package-lock.json            # ملف قفل التبعيات
+├── README.md                    # وثائق المشروع
+├── vercel.json                  # إعدادات نشر التطبيق على Vercel
+├── website-pages-structure.txt  # وثائق هيكل الصفحات
+└── website-structures.txt       # وثائق بنية المشروع

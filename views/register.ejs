@@ -10,7 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* login.css */
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -20,13 +21,13 @@
             background-color: #f9f7f0;
         }
 
-        /* تنسيق الكرت */
+        /* Card styling */
         .card {
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* زر الـ btn-dark */
+        /* btn-dark button */
         .btn-dark {
             background-color: #8c4a21ca;
             border-color: transparent;
@@ -37,7 +38,7 @@
             border-color: transparent;
         }
 
-        /* تنسيق العناوين */
+        /* Headings styling */
         h1 {
             font-family: 'Tajawal', sans-serif;
             font-size: 2.5rem;
@@ -62,7 +63,7 @@
             padding: 0 15px;
         }
 
-        /* تنسيق حقول الإدخال */
+        /* Input fields styling */
         .form-control {
             font-size: 0.9rem;
             text-align: right;
@@ -133,13 +134,19 @@
             box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
             border-top: 1px solid #cccccc96;
             margin-top: auto;
-        }        footer a {
+        }
+
+        footer a {
             color: #8c4a21ca;
             text-decoration: none;
             transition: color 0.3s ease;
-        }        footer a:hover {
+        }
+
+        footer a:hover {
             color: #470539c5;
-        }        /* تنسيق الروابط */
+        }
+
+        /* Style links */
         a {
             text-decoration: none !important;
             transition: color 0.3s ease;
@@ -170,59 +177,61 @@
                             <div class="alert alert-danger text-center">
                                 <%= error %>
                             </div>
-                        <% } %>
+                            <% } %>
 
-                        <% if (typeof success !== 'undefined' && success) { %>
-                            <div class="alert alert-success text-center">
-                                <%= success %>
-                            </div>
-                        <% } %>
+                                <% if (typeof success !=='undefined' && success) { %>
+                                    <div class="alert alert-success text-center">
+                                        <%= success %>
+                                    </div>
+                                    <% } %>
 
-                        <form action="/register" method="POST">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">
-                                    <i class="fas me-2"></i>اسم المستخدم
-                                </label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                    placeholder="أدخل اسم المستخدم" required>
-                                <small class="text-muted">سيظهر هذا الاسم في URL مدونتك</small>
-                            </div>
+                                        <form action="/register" method="POST">
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">
+                                                    <i class="fas me-2"></i>اسم المستخدم
+                                                </label>
+                                                <input type="text" class="form-control" id="username" name="username"
+                                                    placeholder="أدخل اسم المستخدم" required>
+                                                <small class="text-muted">سيظهر هذا الاسم في URL مدونتك</small>
+                                            </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">
-                                    <i class="fas me-2"></i>البريد الإلكتروني
-                                </label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="أدخل البريد الإلكتروني" required>
-                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">
+                                                    <i class="fas me-2"></i>البريد الإلكتروني
+                                                </label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    placeholder="أدخل البريد الإلكتروني" required>
+                                            </div>
 
-                            <div class="mb-3">
-                                <label for="invite_code" class="form-label">
-                                    <i class="fas me-2"></i>كود التفعيل
-                                </label>
-                                <input type="text" class="form-control" id="invite_code" name="invite_code"
-                                    placeholder="*****" required maxlength="6">
-                                <small class="text-muted">أدخل الكود المكون من 6 أحرف المرسل إليك عبر البريد الإلكتروني</small>
-                            </div>
+                                            <div class="mb-3">
+                                                <label for="invite_code" class="form-label">
+                                                    <i class="fas me-2"></i>كود التفعيل
+                                                </label>
+                                                <input type="text" class="form-control" id="invite_code"
+                                                    name="invite_code" placeholder="*****" required maxlength="6">
+                                                <small class="text-muted">أدخل الكود المكون من 6 أحرف المرسل إليك عبر
+                                                    البريد الإلكتروني</small>
+                                            </div>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-dark">
-                                    <i class="fas me-2"></i>إكمال التسجيل
-                                </button>
-                            </div>
-                        </form>                        <div class="mt-4 text-center">
-                            <small class="text-muted">
-                                ليس لديك حساب؟ 
-                                <a href="/blog-request" class="text-dark">اطلب إنشاء مدونة</a>
-                            </small>
-                        </div>
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-dark">
+                                                    <i class="fas me-2"></i>إكمال التسجيل
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <div class="mt-4 text-center">
+                                            <small class="text-muted">
+                                                ليس لديك حساب؟
+                                                <a href="/blog-request" class="text-dark">اطلب إنشاء مدونة</a>
+                                            </small>
+                                        </div>
 
-                        <div class="mt-1 text-center">
-                            <small class="text-muted">
-                                لديك حساب؟ 
-                                <a href="/login" class="text-dark">سجّل الدخول</a>
-                            </small>
-                        </div>
+                                        <div class="mt-1 text-center">
+                                            <small class="text-muted">
+                                                لديك حساب؟
+                                                <a href="/login" class="text-dark">سجّل الدخول</a>
+                                            </small>
+                                        </div>
 
                     </div>
                 </div>
@@ -237,7 +246,7 @@
     </footer>
 
     <script>
-        // تنسيق حقل كود التفعيل
+        // Format activation code field
         document.getElementById('invite_code').addEventListener('input', function() {
             this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
         });

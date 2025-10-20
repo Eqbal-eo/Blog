@@ -1,6 +1,6 @@
 const supabase = require('../db/db');
 
-// إنشاء إشعار جديد
+// Create new notification
 async function createNotification(userId, postId, message, type) {
   try {
     const { data, error } = await supabase
@@ -10,18 +10,18 @@ async function createNotification(userId, postId, message, type) {
       ]);
 
     if (error) {
-      console.error('❌ خطأ في إنشاء إشعار:', error);
+      console.error('خطأ في إنشاء إشعار:', error);
       throw error;
     }
 
     return { success: true, data };
   } catch (err) {
-    console.error('❌ حدث خطأ أثناء إنشاء إشعار:', err);
+    console.error('حدث خطأ أثناء إنشاء إشعار:', err);
     return { success: false, error: err };
   }
 }
 
-// الحصول على إشعارات المستخدم
+// Get user notifications
 async function getUserNotifications(userId, options = { limit: 10, offset: 0 }) {
   try {
     const { data, error, count } = await supabase
@@ -32,18 +32,18 @@ async function getUserNotifications(userId, options = { limit: 10, offset: 0 }) 
       .range(options.offset, options.offset + options.limit - 1);
 
     if (error) {
-      console.error('❌ خطأ في جلب الإشعارات:', error);
+      console.error('خطأ في جلب الإشعارات:', error);
       throw error;
     }
 
     return { success: true, data, count };
   } catch (err) {
-    console.error('❌ حدث خطأ أثناء جلب الإشعارات:', err);
+    console.error('حدث خطأ أثناء جلب الإشعارات:', err);
     return { success: false, error: err };
   }
 }
 
-// تحديث حالة الإشعار إلى مقروء
+// Update notification status to read
 async function markNotificationAsRead(notificationId, userId) {
   try {
     const { data, error } = await supabase
@@ -53,18 +53,18 @@ async function markNotificationAsRead(notificationId, userId) {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('❌ خطأ في تحديث حالة الإشعار:', error);
+      console.error('خطأ في تحديث حالة الإشعار:', error);
       throw error;
     }
 
     return { success: true };
   } catch (err) {
-    console.error('❌ حدث خطأ أثناء تحديث حالة الإشعار:', err);
+    console.error('حدث خطأ أثناء تحديث حالة الإشعار:', err);
     return { success: false, error: err };
   }
 }
 
-// تحديث جميع إشعارات المستخدم إلى مقروءة
+// Update all user notifications to read
 async function markAllNotificationsAsRead(userId) {
   try {
     const { data, error } = await supabase
@@ -74,18 +74,18 @@ async function markAllNotificationsAsRead(userId) {
       .eq('is_read', false);
 
     if (error) {
-      console.error('❌ خطأ في تحديث حالة الإشعارات:', error);
+      console.error('خطأ في تحديث حالة الإشعارات:', error);
       throw error;
     }
 
     return { success: true };
   } catch (err) {
-    console.error('❌ حدث خطأ أثناء تحديث حالة الإشعارات:', err);
+    console.error('حدث خطأ أثناء تحديث حالة الإشعارات:', err);
     return { success: false, error: err };
   }
 }
 
-// عدد الإشعارات غير المقروءة
+// Count unread notifications
 async function getUnreadNotificationsCount(userId) {
   try {
     const { count, error } = await supabase
@@ -95,13 +95,13 @@ async function getUnreadNotificationsCount(userId) {
       .eq('is_read', false);
 
     if (error) {
-      console.error('❌ خطأ في عد الإشعارات غير المقروءة:', error);
+      console.error('خطأ في عد الإشعارات غير المقروءة:', error);
       throw error;
     }
 
     return { success: true, count };
   } catch (err) {
-    console.error('❌ حدث خطأ أثناء عد الإشعارات غير المقروءة:', err);
+    console.error('حدث خطأ أثناء عد الإشعارات غير المقروءة:', err);
     return { success: false, error: err };
   }
 }

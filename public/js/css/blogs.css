@@ -9,7 +9,7 @@ body {
 }
     
 
-/* عنوان الصفحة */
+/* Page title */
 .section-title {
     font-size: 2rem;
     color: #8c4a21ca;
@@ -18,7 +18,7 @@ body {
     margin-top: 0.5rem;
 }
 
-/* مربع البحث */
+/* Search box */
 .search-box {
     max-width: 100%;
     width: 100%;
@@ -44,7 +44,7 @@ body {
     box-shadow: 0 0 0 2px rgba(140, 74, 33, 0.1);
 }
 
-/* بطاقة المدون */
+/* Blogger card */
 .blogger-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
@@ -63,7 +63,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* المحافظة على لون النص عند الضغط على البطاقة */
+/* Maintain text color when clicking on card */
 a .blogger-card {
     color: inherit;
 }
@@ -72,7 +72,7 @@ a:hover .blogger-card {
     color: inherit;
 }
 
-/* اسم الكاتب */
+/* Author name */
 .blogger-name {
     font-size: 1.3rem;
     font-weight: 600;
@@ -80,7 +80,7 @@ a:hover .blogger-card {
     margin-bottom: 0.8rem;
 }
 
-/* تعريف الكاتب */
+/* Author bio */
 .blogger-bio {
     color: #666;
     font-size: 1rem;
@@ -88,7 +88,7 @@ a:hover .blogger-card {
     margin-bottom: 1rem;
 }
 
-/* عدد المقالات */
+/* Articles count */
 .articles-count {
     position: absolute;
     top: 15px;
@@ -100,7 +100,7 @@ a:hover .blogger-card {
     font-size: 0.9rem;
 }
 
-/* تصنيفات المدونات */
+/* Blog categories */
 .categories {
     display: flex;
     flex-wrap: wrap;
@@ -117,7 +117,7 @@ a:hover .blogger-card {
     font-weight: 500;
 }
 
-/* أزرار تصفية التصنيفات */
+/* Category filter buttons */
 .categories-filter {
     margin: 2rem 0 1.5rem;
 }
@@ -129,7 +129,7 @@ a:hover .blogger-card {
     gap: 5px;
 }
 
-.categories-filter .btn {  /* زر التصنيفات */
+.categories-filter .btn {  /* Category button */
     border-radius: 20px !important;
     padding: 6px 16px;
     font-size: 0.95rem;
@@ -137,18 +137,18 @@ a:hover .blogger-card {
     transition: all 0.3s ease;
 }
 
-.categories-filter .btn.active { /* زر نشط */
+.categories-filter .btn.active { /* Active button */
     background-color: #8c4a21ca;
     color: #fdfdfd;
     border: none;
 }
 
-/* زر إظهار/إخفاء التصنيفات */
+/* Show/hide categories button */
 .categories-toggle {
     display: none;
 }
 
-/* حاوية التصنيفات */
+/* Categories container */
 .categories-container {
     width: 100%;
     max-width: 600px;
@@ -156,12 +156,12 @@ a:hover .blogger-card {
     cursor: pointer;
 }
 
-/* عنوان التصنيفات */
+/* Categories title */
 .categories-header {
     display: none;
 }
 
-/* أزرار تصفية التصنيفات للشاشات المتوسطة والكبيرة */
+/* Category filter buttons for medium and large screens */
 @media (min-width: 768px) {
     .categories-filter .btn-group {
         display: flex;
@@ -179,14 +179,14 @@ a:hover .blogger-card {
         margin-top: 0.3rem;
     }
 
-    /* تحسين مربع البحث */
+    /* Improve search box */
     .search-box {
         padding: 0 0.5rem;
         margin-bottom: 1.5rem;
         width: 100%;
     }
 
-    /* تحسين مربع البحث في وضع الموبايل */
+    /* Improve search box in mobile view */
     .search-box input { 
         padding: 10px 15px;
         font-size: 0.95rem;
@@ -195,7 +195,7 @@ a:hover .blogger-card {
         max-width: none;
     }
 
-    /* زر التصنيفات في وضع الموبايل */
+    /* Categories button in mobile view */
     .categories-toggle {
         display: block;
         background-color: #8c4a21ca;
@@ -204,14 +204,14 @@ a:hover .blogger-card {
         text-align: center;
     }
 
-    /* تحسين بطاقات المدونين */
+    /* Improve blogger cards */
     .blogger-card {
         margin: 0.5rem 0;
         padding: 1.2rem;
         border-radius: 12px;
     }
 
-    /* تحسين التصنيفات */
+    /* Improve categories */
     .categories-filter {
         display: none;
         transition: all 0.3s ease;
@@ -227,7 +227,7 @@ a:hover .blogger-card {
         border-radius: 0 0 15px 15px;
     }
 
-    /* حاوية التصنيفات في وضع الموبايل */
+    /* Categories container in mobile view */
     .categories-container {
         max-width: 95%;
         margin: 0 auto 0.8rem;
@@ -240,7 +240,7 @@ a:hover .blogger-card {
         background-color: #f9f7f0;
     }
 
-    /* عنوان التصنيفات */
+    /* Categories title */
     .categories-header {
         display: flex;
         width: 100%;
@@ -257,7 +257,7 @@ a:hover .blogger-card {
     }
     
     
-    /* تحسينات أزرار التصنيفات في الموبايل */
+    /* Category button improvements in mobile */
     .categories-filter .btn-group {
         display: flex;
         flex-wrap: wrap;
@@ -291,22 +291,22 @@ a:hover .blogger-card {
         box-shadow: 0 3px 6px rgba(140, 74, 33, 0.25);
     }
     
-    /* تقليل المساحة بين عنوان الصفحة ومربع البحث */
+    /* Reduce space between page title and search box */
     .section-title {
         margin-bottom: 0.7rem;
     }
     
-    /* تقليل الهامش السفلي لمربع البحث */
+    /* Reduce bottom margin of search box */
     .search-box.mx-auto.mb-4 {
         margin-bottom: 1rem !important;
     }
     
-    /* تقليل الهامش السفلي للقسم الرئيسي */
+    /* Reduce bottom margin of main section */
     .text-center.mb-5 {
         margin-bottom: 1.5rem !important;
     }
     
-    /* إضافة تأثير انزلاق للقائمة */
+    /* Add slide down effect for menu */
     @keyframes slideDown {
         0% {
             opacity: 0;
@@ -319,7 +319,7 @@ a:hover .blogger-card {
     }
 }
 
-/* تحسينات إضافية للهواتف الصغيرة */
+/* Additional improvements for small phones */
 @media (max-width: 480px) {
     .blogs-section {
         padding: 0.5rem 0.5rem;
@@ -331,7 +331,7 @@ a:hover .blogger-card {
     }
 
     .row.g-4 {
-        row-gap: 0.5rem !important; /* تقليل المسافة أكثر في الهواتف */
+        row-gap: 0.5rem !important; /* Further reduce space on phones */
     }
 }
 
@@ -362,7 +362,7 @@ a:hover .blogger-card {
 
     .row.g-4 {
         margin: 0;
-        row-gap: 0.8rem !important; /* تقليل المسافة بين البطاقات */
+        row-gap: 0.8rem !important; /* Reduce space between cards */
     }
 
     .col-md-6, .col-lg-4 {
@@ -396,7 +396,7 @@ a:hover .blogger-card {
         height: 100%;
     }
 
-    /* تعديل خاص بأزرار التصنيفات في وضع الآيباد الأفقي */
+    /* Special adjustment for category buttons in iPad landscape mode */
     .categories-container {
         width: 100%;
         max-width: 100%;

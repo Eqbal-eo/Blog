@@ -160,16 +160,18 @@
             .container {
                 margin-top: 30px;
                 margin-bottom: 40px;
-                max-width: 100%; /* استخدام 95% من عرض الشاشة */
+                max-width: 100%;
             }
 
             .row.justify-content-center .col-12 {
-                max-width: 90%; /* توسيع البطاقة لتشغل 90% من العرض */
+                max-width: 90%;
+                /* Expand the card to occupy 90% of the width */
             }
 
             .card {
                 padding: 0;
-                max-width: none; /* إزالة أي قيود على العرض الأقصى */
+                max-width: none;
+                /* Remove any constraints on maximum width */
             }
 
             .card-body {
@@ -194,50 +196,50 @@
                 margin-bottom: 18px;
             }
 
-            /* توسيع عناصر النموذج للاستفادة من العرض الإضافي */
-            .form-control, .form-select {
+            /* Expand form elements to utilize the additional width */
+            .form-control,
+            .form-select {
                 font-size: 1.05rem;
             }
         }
 
         /* Specific iPad device targeting */
-        @media only screen 
-        and (min-device-width: 768px) 
-        and (max-device-width: 1024px) {
+        @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
             .container {
                 max-width: 92% !important;
                 padding: 0 20px;
             }
-            
+
             .row.justify-content-center .col-12 {
                 max-width: 88% !important;
             }
-            
+
             .card {
                 border-radius: 20px;
                 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             }
-            
+
             .card-body {
                 padding: 25px !important;
             }
-            
-            .form-control, .form-select {
+
+            .form-control,
+            .form-select {
                 padding: 14px 18px;
                 font-size: 1.05rem;
                 border-radius: 10px;
             }
-            
+
             .form-label {
                 font-size: 1rem;
                 margin-bottom: 8px;
             }
-            
+
             h6 {
                 font-size: 1.15rem;
                 margin-bottom: 15px;
             }
-            
+
             .btn-dark {
                 padding: 15px;
                 font-size: 1.1rem;
@@ -248,18 +250,21 @@
         /* iPad Landscape Mode - Enhanced for wider card */
         @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
             .container {
-                max-width: 85%; /* استخدام 85% من عرض الشاشة في الوضع الأفقي */
+                max-width: 85%;
+                /* Use 85% of screen width in landscape mode */
             }
 
             .row.justify-content-center .col-12 {
-                max-width: 80%; /* توسيع البطاقة أكثر في الوضع الأفقي */
+                max-width: 80%;
+                /* Expand the card more in landscape mode */
             }
 
             .card-body {
                 padding: 25px 30px;
             }
 
-            .form-control, .form-select {
+            .form-control,
+            .form-select {
                 font-size: 1.1rem;
                 padding: 12px 18px;
             }
@@ -357,7 +362,7 @@
             color: #470539c5;
         }
 
-        /* تنسيق الروابط داخل النموذج */
+        /* Formatting links inside the form */
         a {
             text-decoration: none !important;
             transition: color 0.3s ease;
@@ -398,7 +403,7 @@
                                     <% } %>
 
                                         <form method="POST" action="/blog-request">
-                                            <!-- المعلومات الشخصية -->
+                                            <!-- Personal Information -->
                                             <div class="mb-4">
                                                 <h6 class="text-dark border-bottom pb-2 mb-3">المعلومات الشخصية</h6>
 
@@ -444,7 +449,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- نموذج المقال -->
+                                            <!-- Sample Article -->
                                             <div class="mb-4">
                                                 <h6 class="text-dark border-bottom pb-2 mb-3">نموذج مقال تجريبي</h6>
                                                 <p class="text-muted small">اكتب مقالاً قصيراً كنموذج ليراجعه المُشرفون
@@ -490,7 +495,7 @@
                                                 </div>
                                             </div>
 
-                                            <!-- الدافع للانضمام -->
+                                            <!-- Motivation to Join -->
                                             <div class="mb-4">
                                                 <h6 class="text-dark border-bottom pb-2 mb-3">الدافع للانضمام</h6>
 
@@ -504,7 +509,8 @@
                                             </div>
 
                                             <div class="d-grid mb-1">
-                                                <button type="submit" class="btn btn-dark btn-lg" style="font-size: 1rem;">إرسال الطلب</button>
+                                                <button type="submit" class="btn btn-dark btn-lg"
+                                                    style="font-size: 1rem;">إرسال الطلب</button>
                                             </div>
                                             <div class="text-center mb-1 mt-3">
                                                 <small class="text-muted">

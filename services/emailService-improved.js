@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// خيارات متعددة للبريد الإلكتروني
+// Multiple email service options
 const emailConfigs = {
     zoho: {
         host: 'smtp.zoho.com',
@@ -9,7 +9,7 @@ const emailConfigs = {
         secure: false,
         auth: {
             user: process.env.ZOHO_EMAIL,
-            pass: process.env.ZOHO_APP_PASSWORD // استخدم App Password وليس كلمة المرور العادية
+            pass: process.env.ZOHO_APP_PASSWORD // Use App Password, not regular password
         },
         tls: {
             rejectUnauthorized: false
@@ -35,11 +35,11 @@ const emailConfigs = {
     }
 };
 
-// اختيار خدمة البريد المفضلة
+// Select preferred email service
 const selectedService = process.env.EMAIL_SERVICE || 'zoho'; // zoho, gmail, sendgrid
 const transporter = nodemailer.createTransport(emailConfigs[selectedService]);
 
-// تحقق من الاتصال مع معالجة أفضل للأخطاء
+// Verify connection with better error handling
 transporter.verify((error, success) => {
     if (error) {
         console.log(`خطأ في إعداد ${selectedService}:`, error.message);
@@ -58,7 +58,7 @@ transporter.verify((error, success) => {
     }
 });
 
-// باقي الكود كما هو...
+// Rest of the code remains the same...
 async function sendEmail(to, subject, htmlContent, textContent = '') {
     try {
         const fromAddress = process.env.ZOHO_EMAIL || process.env.GMAIL_EMAIL || 'noreply@afaq.blog';
@@ -80,7 +80,7 @@ async function sendEmail(to, subject, htmlContent, textContent = '') {
     } catch (error) {
         console.error('خطأ في إرسال البريد الإلكتروني:', error);
         
-        // اقتراحات حل مخصصة حسب نوع الخطأ
+        // Custom solution suggestions based on error type
         if (error.code === 'EAUTH') {
             console.log('💡 حل مقترح: تحقق من بيانات المصادقة (App Password)');
         } else if (error.code === 'ECONNECTION') {

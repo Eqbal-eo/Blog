@@ -16,19 +16,19 @@ h4 {
   left: 0;
   width: 100%;
   z-index: 1000;
-  /* التأكد من أن النافبار يظهر فوق العناصر الأخرى */
+  /* Ensure navbar appears above other elements */
   background-color: #ffffff;
-  /* التأكد من أن النافبار له خلفية */
+  /* Ensure navbar has a background */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  /* إضافة ظل للنافبار */
+  /* Add shadow to navbar */
   border-bottom: 1px solid #cccccc96;
-  /* الحفاظ على الحدود السفلية */
+  /* Maintain bottom border */
 }
 
-/* إضافة مسافة أعلى المحتوى ليتناسب مع النافبار الثابت */
+/* Add top spacing to content to accommodate fixed navbar */
 body {
   padding-top: 80px;
-  /* يمكنك تعديل هذا الرقم حسب ارتفاع النافبار */
+  /* You can adjust this number based on navbar height */
 }
 
 .d-flex a {
@@ -153,7 +153,7 @@ body {
   border-color: transparent;
 }
 
-/* قسم التدوينات الأخيرة */
+/* Latest posts section */
 .section {
   max-width: 1200px;
   margin: 2rem auto;
@@ -167,12 +167,12 @@ body {
 
 .read-more-link {
   text-decoration: none;
-  /* إزالة الخط السفلي */
+  /* Remove underline */
   color: #8c4a21ca;
-  /* إضافة مسافة صغيرة على اليسار */
+  /* Add small space on the left */
 }
 
-/* القسم والعنوان */
+/* Section and title */
 .section-title {
   text-align: center;
   font-size: 1.6rem;
@@ -250,9 +250,9 @@ body {
 
 .section .card-title {
   color: #000000ca;
-  /* لون مشابه للصورة */
+  /* Color similar to image */
   font-size: 1.3rem;
-  /* تكبير الخط */
+  /* Increase font size */
   font-weight: bold;
   padding: 0.1rem 0rem;
   margin-top: 10px;
@@ -378,7 +378,7 @@ body {
     line-height: 1.6;
   }
 
-  /* تحسين الأزرار */
+  /* Improve buttons */
   .btn {
     width: 100%;
     margin: 0rem 1;
@@ -387,23 +387,23 @@ body {
     border-radius: 8px;
   }
 
-  /* تحسين الأقسام */
+  /* Improve sections */
   .section-title {
     font-size: 1.5rem;
-    margin: 1.5rem 0 1rem; /* تقليل الهوامش */
+    margin: 1.5rem 0 1rem; /* Reduce margins */
   }
 
   .steps {
-    gap: 0.8rem; /* تقليل المسافة بين الخطوات */
+    gap: 0.8rem; /* Reduce space between steps */
     padding: 0 0.5rem;
   }
 
   .step {
-    padding: 1rem; /* تقليل البادنج من 1.2rem إلى 1rem */
-    margin: 0.3rem 0; /* تقليل الهامش من 0.5rem إلى 0.3rem */
+    padding: 1rem; /* Reduce padding from 1.2rem to 1rem */
+    margin: 0.3rem 0; /* Reduce margin from 0.5rem to 0.3rem */
   }
 
-  /* تحسينات للأجهزة المحمولة */
+  /* Mobile device improvements */
   .d-flex {
     flex-direction: column;
     width: 100%;
@@ -424,7 +424,8 @@ body {
 }
 
 /* iPad Portrait Mode */
-@media screen and (max-width: 820px) and (orientation: portrait) {    /* Navbar Responsive Behavior for iPad Portrait */
+@media screen and (max-width: 820px) and (orientation: portrait) {
+    /* Navbar Responsive Behavior for iPad Portrait */
     .navbar-toggler {
         display: block !important;
         border: none;
@@ -590,7 +591,7 @@ body {
     }
 }
 
-/* تحسين قسم التدوينات الأخيرة */
+/* Improve latest posts section */
 .section .row .col-md-4 {
     opacity: 0;
     animation: fadeInUp 0.8s ease-out forwards;
@@ -608,7 +609,7 @@ body {
     animation-delay: 0.6s;
 }
 
-/* إضافة مؤثرات حركية */
+/* Add animation effects */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -631,7 +632,7 @@ body {
     }
 }
 
-/* تحسين تأثيرات التمرير */
+/* Improve scroll effects */
 .navbar {
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
@@ -642,7 +643,7 @@ body {
     -webkit-backdrop-filter: blur(10px);
 }
 
-/* تحسين تأثيرات الأزرار */
+/* Improve button effects */
 .btn-primary, .btn-outline-dark, .btn-outline-dark-blog, .btn-outline-dark-log {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -652,7 +653,7 @@ body {
     box-shadow: 0 6px 12px rgba(140, 74, 33, 0.15);
 }
 
-/* تنسيق blockquote في عرض التدوينات */
+/* Format blockquote in post display */
 .post-content blockquote {
     border-right: 4px solid #470539c5;
     margin: 1.5rem 0;
