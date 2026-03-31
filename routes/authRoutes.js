@@ -5,11 +5,32 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const emailService = require('../services/emailService');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const { authenticateToken } = require('../middleware/authMiddleware');
 
 // Use the secret key from environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
+
+// Create login rate limiter
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // Limit each IP to 5 requests per windowMs
+    message: 'لقد تجاوزت الحد المسموح به لمحاولات الدخول، يرجى المحاولة بعد 15 دقيقة.',
+    handler: (req, res, next, options) => {
+        res.status(options.statusCode).render('login', { error: options.message });
+    }
+});
+
+// Create registration rate limiter
+const registerLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 3, // Limit each IP to 3 requests per windowMs
+    message: 'لقد تجاوزت الحد المسموح به لمحاولات التسجيل، يرجى المحاولة بعد ساعة.',
+    handler: (req, res, next, options) => {
+        res.status(options.statusCode).render('register', { error: options.message, success: null });
+    }
+});
 
 // Display the new registration page (complete registration with activation code)
 router.get('/register', (req, res) => {
@@ -107,8 +128,13 @@ router.post('/blog-request', async (req, res) => {
 // Old registration route (will be gradually removed)
 
 // Handle new registration (with activation code)
-router.post('/register', async (req, res) => {
+router.post('/register', registerLimiter, async (req, res) => {
     const { username, email, invite_code } = req.body;
+
+    // Basic input validation
+    if (!username || !email || !invite_code || username.trim() === '' || email.trim() === '' || invite_code.trim() === '') {
+        return res.render('register', { error: 'جميع الحقول المطلوبة يجب تعبئتها', success: null });
+    }
 
     try {
         // Search for the invite code
@@ -249,8 +275,13 @@ router.get('/login', (req, res) => {
 });
 
 // Handle login
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
     const { username, password } = req.body;
+
+    // Basic input validation
+    if (!username || !password || username.trim() === '' || password.trim() === '') {
+        return res.render('login', { error: 'يرجى إدخال اسم المستخدم وكلمة المرور' });
+    }
 
     try {
         const { data: users, error } = await supabase
