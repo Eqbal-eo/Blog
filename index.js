@@ -31,6 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
  
+// Middleware for Custom Visitor Tracking
+const visitorTracker = require('./middleware/visitorTracker');
+app.use(visitorTracker);
+
 // Application routes
 app.use('/', authRoutes);   
 app.use('/', mainRoutes);  

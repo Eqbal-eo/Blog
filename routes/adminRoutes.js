@@ -12,6 +12,28 @@ router.use(authenticateToken, isAdmin);
 // Display list of pending posts
 router.get('/pending-posts', adminController.getPendingPosts);
 
+// Display visitors tracking log
+router.get('/visitors', async (req, res) => {
+    try {
+        const { data: visitors, error } = await supabase
+            .from('site_visitors')
+            .select('*')
+            .order('visited_at', { ascending: false })
+            .limit(100);
+
+        if (error) throw error;
+
+        res.render('admin/visitors', {
+            visitors: visitors || [],
+            user: req.user,
+            title: 'سجل زيارات الموقع'
+        });
+    } catch (err) {
+        console.error('Error fetching visitors:', err);
+        res.status(500).render('error', { error: 'حدث خطأ في جلب السجل' });
+    }
+});
+
 // Approve post
 router.post('/posts/:postId/approve', adminController.approvePost);
 
