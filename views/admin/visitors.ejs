@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/js/css/dashboard.css">
+    <link rel="stylesheet" href="/js/css/admin.css">
+    <style>
+        .visitors-table-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        .table-visitors {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-visitors th, .table-visitors td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+        .table-visitors th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .table-visitors tr:hover {
+            background-color: #f1f3f5;
+        }
+        .badge-url {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    
+    <main class="admin-dashboard container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>سجل زيارات الموقع</h1>
+        </div>
+        
+        <div class="visitors-table-container">
+            <% if (visitors && visitors.length > 0) { %>
+                <table class="table-visitors">
+                    <thead>
+                        <tr>
+                            <th>التاريخ والوقت</th>
+                            <th>عنوان IP</th>
+                            <th>الصفحة المطلوبة</th>
+                            <th>المتصفح (User Agent)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% visitors.forEach(visitor => { %>
+                            <tr>
+                                <td dir="ltr" style="text-align: right;">
+                                    <%= new Date(visitor.visited_at).toLocaleString('ar-EG') %>
+                                </td>
+                                <td dir="ltr" style="text-align: right;"><%= visitor.ip_address %></td>
+                                <td><span class="badge-url"><%= visitor.requested_url %></span></td>
+                                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="<%= visitor.user_agent %>">
+                                    <%= visitor.user_agent %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <div class="alert alert-info text-center py-4">
+                    <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+                    لا توجد بيانات زيارات لغاية الآن (أو الجدول غير موجود في Supabase).
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
