@@ -15,16 +15,61 @@ router.get('/pending-posts', adminController.getPendingPosts);
 // Display visitors tracking log
 router.get('/visitors', async (req, res) => {
     try {
-        const { data: visitors, error } = await supabase
+        const { country, browser, os, date, page = 1 } = req.query;
+        const limit = 50;
+        const offset = (page - 1) * limit;
+
+        let query = supabase
             .from('site_visitors')
-            .select('*')
-            .order('visited_at', { ascending: false })
-            .limit(100);
+            .select('*', { count: 'exact' });
+            
+        // Apply Filters
+        if (country) query = query.ilike('country', `%${country}%`);
+        if (browser) query = query.ilike('browser', `%${browser}%`);
+        if (os) query = query.ilike('os', `%${os}%`);
+        
+        if (date) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            if (date === 'today') {
+                query = query.gte('visited_at', today.toISOString());
+            } else if (date === 'week') {
+                const lastWeek = new Date(today);
+                lastWeek.setDate(today.getDate() - 7);
+                query = query.gte('visited_at', lastWeek.toISOString());
+            } else if (date === 'month') {
+                const lastMonth = new Date(today);
+                lastMonth.setMonth(today.getMonth() - 1);
+                query = query.gte('visited_at', lastMonth.toISOString());
+            }
+        }
+
+        query = query.order('visited_at', { ascending: false }).range(offset, offset + limit - 1);
+
+        const { data: visitors, error, count } = await query;
 
         if (error) throw error;
 
+        // Fetch basic stats (Total visitors and today's visitors)
+        const { count: totalCount } = await supabase.from('site_visitors').select('*', { count: 'exact', head: true });
+        
+        const todayZero = new Date(); todayZero.setHours(0,0,0,0);
+        const { count: todayCount } = await supabase.from('site_visitors')
+            .select('*', { count: 'exact', head: true })
+            .gte('visited_at', todayZero.toISOString());
+
         res.render('admin/visitors', {
             visitors: visitors || [],
+            stats: {
+                total: totalCount || 0,
+                today: todayCount || 0
+            },
+            filters: { country, browser, os, date },
+            pagination: {
+                currentPage: parseInt(page),
+                totalPages: Math.ceil(count / limit),
+                totalItems: count
+            },
             user: req.user,
             title: 'سجل زيارات الموقع'
         });

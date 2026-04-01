@@ -23,11 +23,14 @@
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
+    "geoip-lite": "^1.4.10",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "memorystore": "^1.6.7",
     "multer": "^1.4.5-lts.2",
     "mysql2": "^3.14.0",
     "nodemailer": "^7.0.3",
-    "pg": "^8.11.0"
+    "pg": "^8.11.0",
+    "ua-parser-js": "^2.0.9"
   }
 }
