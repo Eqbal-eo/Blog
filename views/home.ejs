@@ -79,21 +79,21 @@
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
                                     <div class="card-body">
-                                        <!-- عنوان التدوينة -->
+                                        <!-- Post title -->
                                         <h5 class="card-title">
                                             <%= post.title %>
                                         </h5>
 
-                                        <!-- اسم الكاتب -->
+                                        <!-- Author name -->
                                         <small class="text-muted d-block" dir="rtl">بواسطة <%= post.users.displayName %>
                                                 - <%= formatDate(post.created_at) %></small>
 
-                                        <!-- مقتطف النص -->
+                                        <!-- Text excerpt -->
                                         <p class="card-text text-secondary">
                                             <%= post.content.substring(0, 100).replace(/(<([^>]+)>)/gi, "") %>...
                                         </p>
 
-                                        <!-- اقرأ المزيد -->
+                                        <!-- Read more -->
                                         <a href="/article/<%= post.id %>" class="read-more-link">اقرأ المزيد..</a>
                                     </div>
                                 </div>

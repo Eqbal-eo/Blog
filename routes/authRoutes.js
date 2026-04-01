@@ -308,6 +308,7 @@ router.post('/login', loginLimiter, async (req, res) => {
         res.cookie('auth_token', token, {
             httpOnly: true, // Cannot be accessed from JavaScript
             secure: process.env.NODE_ENV === 'production', // For HTTPS connections only in production
+            sameSite: 'strict', // Protect against CSRF attacks
             maxAge: 86400000 // 24 hours in milliseconds
         });
 

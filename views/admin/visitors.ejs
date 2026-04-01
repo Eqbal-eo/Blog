@@ -7,84 +7,282 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/js/css/dashboard.css">
-    <link rel="stylesheet" href="/js/css/admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f4f7f6;
+        }
+        .stats-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            border: 1px solid #f0f0f0;
+            transition: transform 0.2s ease-in-out;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+        .stats-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-left: 15px;
+        }
+        .bg-primary-light { background-color: #e0f2fe; color: #0284c7; }
+        .bg-success-light { background-color: #dcfce7; color: #16a34a; }
+        
+        .filter-section {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .btn-filter {
+            background-color: #4f46e5;
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px 24px;
+            font-weight: 500;
+        }
+        .btn-filter:hover { background-color: #4338ca; color: #fff; }
+        
         .visitors-table-container {
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin-top: 20px;
-            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
         }
-        .table-visitors {
+        .table-custom {
+            margin-bottom: 0;
             width: 100%;
-            border-collapse: collapse;
         }
-        .table-visitors th, .table-visitors td {
-            padding: 12px 15px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
-        }
-        .table-visitors th {
-            background-color: #f8f9fa;
+        .table-custom th {
+            background-color: #f8fafc;
+            color: #64748b;
             font-weight: 600;
-            color: #333;
+            padding: 16px;
+            border-bottom: 2px solid #e2e8f0;
+            white-space: nowrap;
         }
-        .table-visitors tr:hover {
-            background-color: #f1f3f5;
+        .table-custom td {
+            padding: 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        .table-custom tbody tr:hover {
+            background-color: #f8fafc;
         }
         .badge-url {
-            background-color: #e9ecef;
-            color: #495057;
-            padding: 4px 8px;
-            border-radius: 4px;
+            background-color: #f1f5f9;
+            color: #475569;
+            padding: 6px 10px;
+            border-radius: 6px;
             font-size: 0.85rem;
+            max-width: 250px;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: 1px solid #e2e8f0;
+            direction: ltr;
+            text-align: left;
         }
+        .flag-icon-custom {
+            font-size: 1.5rem;
+            border-radius: 3px;
+            margin-left: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .pagination-container {
+            padding: 15px;
+            border-top: 1px solid #f1f5f9;
+            background-color: #fff;
+        }
+        
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .info-badge i { margin-left: 6px; color: #64748b; }
     </style>
 </head>
 <body>
     <%- include('../partials/header') %>
     
-    <main class="admin-dashboard container mt-4">
+    <main class="container mt-4 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>سجل زيارات الموقع</h1>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">سجل وزيارات الموقع</h1>
+            <a href="/admin/visitors" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-clockwise"></i> التحديث الآن
+            </a>
         </div>
         
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-icon bg-primary-light">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">إجمالي الزيارات</h6>
+                        <h3 class="mb-0 fw-bold"><%= stats ? stats.total : 0 %></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="stats-card">
+                    <div class="stats-icon bg-success-light">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">زيارات اليوم</h6>
+                        <h3 class="mb-0 fw-bold"><%= stats ? stats.today : 0 %></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="GET" action="/admin/visitors" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">الدولة (الرمز أو الاسم)</label>
+                    <input type="text" name="country" class="form-control" placeholder="مثال: SA, OM, US..." value="<%= filters ? filters.country : '' %>">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">المتصفح</label>
+                    <input type="text" name="browser" class="form-control" placeholder="Chrome, Safari..." value="<%= filters ? filters.browser : '' %>">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">نظام التشغيل</label>
+                    <input type="text" name="os" class="form-control" placeholder="Windows, iOS, Android..." value="<%= filters ? filters.os : '' %>">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">الفترة</label>
+                    <select name="date" class="form-select">
+                        <option value="">كل الوقت</option>
+                        <option value="today" <%= filters && filters.date === 'today' ? 'selected' : '' %>>اليوم</option>
+                        <option value="week" <%= filters && filters.date === 'week' ? 'selected' : '' %>>آخر 7 أيام</option>
+                        <option value="month" <%= filters && filters.date === 'month' ? 'selected' : '' %>>آخر 30 يوم</option>
+                    </select>
+                </div>
+                <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                    <a href="/admin/visitors" class="btn btn-light">إعادة ضبط</a>
+                    <button type="submit" class="btn btn-filter"><i class="bi bi-funnel"></i> تصفية النتائج</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Table -->
         <div class="visitors-table-container">
-            <% if (visitors && visitors.length > 0) { %>
-                <table class="table-visitors">
+            <div class="table-responsive">
+                <table class="table table-custom">
                     <thead>
                         <tr>
                             <th>التاريخ والوقت</th>
-                            <th>عنوان IP</th>
+                            <th>الزائر (IP والدولة)</th>
+                            <th>نظام التشغيل والمتصفح</th>
                             <th>الصفحة المطلوبة</th>
-                            <th>المتصفح (User Agent)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% visitors.forEach(visitor => { %>
+                        <% if (visitors && visitors.length > 0) { %>
+                            <% visitors.forEach(visitor => { %>
+                                <tr>
+                                    <td class="text-end">
+                                        <div class="fw-medium text-dark"><%= new Date(visitor.visited_at).toLocaleDateString('ar-EG') %></div>
+                                        <div class="small text-muted"><%= new Date(visitor.visited_at).toLocaleTimeString('ar-EG') %></div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <% if (visitor.country_code && visitor.country_code !== 'Unknown') { %>
+                                                <span class="fi fi-<%= visitor.country_code.toLowerCase() %> flag-icon-custom"></span>
+                                            <% } else { %>
+                                                <i class="bi bi-globe-americas text-muted ms-3 fs-3"></i>
+                                            <% } %>
+                                            <div>
+                                                <div class="fw-bold" dir="ltr" style="text-align: right;"><%= visitor.ip_address %></div>
+                                                <div class="small text-muted"><%= visitor.city && visitor.city !== 'Unknown' ? visitor.city + '، ' : '' %><%= visitor.country || 'غير معروف' %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column align-items-start gap-1">
+                                            <span class="info-badge">
+                                                <i class="bi bi-display"></i> 
+                                                <%= visitor.os && visitor.os !== 'Unknown' ? visitor.os : 'نظام غير معروف' %>
+                                            </span>
+                                            <span class="info-badge">
+                                                <i class="bi bi-browser-chrome"></i> 
+                                                <%= visitor.browser && visitor.browser !== 'Unknown' ? visitor.browser : 'متصفح غير معروف' %>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td dir="ltr" class="text-end">
+                                        <span class="badge-url" title="<%= visitor.requested_url %>"><%= visitor.requested_url %></span>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
                             <tr>
-                                <td dir="ltr" style="text-align: right;">
-                                    <%= new Date(visitor.visited_at).toLocaleString('ar-EG') %>
-                                </td>
-                                <td dir="ltr" style="text-align: right;"><%= visitor.ip_address %></td>
-                                <td><span class="badge-url"><%= visitor.requested_url %></span></td>
-                                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="<%= visitor.user_agent %>">
-                                    <%= visitor.user_agent %>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="bi bi-emoji-frown fs-1 text-muted mb-3 d-block"></i>
+                                    <h5 class="text-muted">لا توجد زيارات مطابقة للبحث</h5>
                                 </td>
                             </tr>
-                        <% }); %>
+                        <% } %>
                     </tbody>
                 </table>
-            <% } else { %>
-                <div class="alert alert-info text-center py-4">
-                    <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
-                    لا توجد بيانات زيارات لغاية الآن (أو الجدول غير موجود في Supabase).
-                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <% if (typeof pagination !== 'undefined' && pagination && pagination.totalPages > 1) { %>
+            <div class="pagination-container d-flex justify-content-between align-items-center">
+                <span class="text-muted small border bg-light py-1 px-3 rounded-pill">إجمالي النتائج: <%= pagination.totalItems %></span>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item <%= pagination.currentPage === 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= pagination.currentPage - 1 %>&country=<%= filters.country || '' %>&browser=<%= filters.browser || '' %>&os=<%= filters.os || '' %>&date=<%= filters.date || '' %>">السابق</a>
+                        </li>
+                        
+                        <% for(let i = Math.max(1, pagination.currentPage - 2); i <= Math.min(pagination.totalPages, pagination.currentPage + 2); i++) { %>
+                            <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&country=<%= filters.country || '' %>&browser=<%= filters.browser || '' %>&os=<%= filters.os || '' %>&date=<%= filters.date || '' %>"><%= i %></a>
+                            </li>
+                        <% } %>
+                        
+                        <li class="page-item <%= pagination.currentPage === pagination.totalPages ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= pagination.currentPage + 1 %>&country=<%= filters.country || '' %>&browser=<%= filters.browser || '' %>&os=<%= filters.os || '' %>&date=<%= filters.date || '' %>">التالي</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             <% } %>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

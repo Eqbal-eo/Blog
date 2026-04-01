@@ -35,14 +35,14 @@
     <main>
         <section class="blogs-section py-3">
             <div class="container">
-                <!-- العنوان والبحث والتصفية -->
+                <!-- Title, search, and filtering -->
                 <div class="text-center mb-5">
                     <h1 class="section-title mb-4">مدونات آفاق</h1>
                     <div class="search-box mx-auto mb-4">
                         <input type="text" class="form-control" placeholder="ابحث عن مدون أو موضوع محدد" aria-label="Search">
                     </div>
                     
-                    <!-- تصنيفات جديدة موحدة -->
+                    <!-- New unified categories -->
                     <div class="categories-container" id="categoriesToggle">
                         <div class="categories-header">
                             <span class="toggle-text">التصنيفات</span>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
 
-                <!-- البطاقات -->
+                <!-- Cards -->
                 <div class="row g-4">
                     <% if (bloggers && bloggers.length > 0) { %>
                         <% bloggers.forEach(function(blogger) { %>
