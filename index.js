@@ -14,8 +14,17 @@ const pagesRoutes = require('./routes/pagesRoutes');
 const adminRoutes = require('./routes/adminRoutes'); // Add admin routes
 const notificationRoutes = require('./routes/notificationRoutes'); // Add notification routes
 
-const app = express(); 
-const PORT = 3000; 
+const { sanitize, safeJson } = require('./utils/sanitize');
+
+const app = express();
+const PORT = 3000;
+
+// Behind Vercel's proxy: use the real client IP for rate limiting
+app.set('trust proxy', 1);
+
+// HTML sanitizer helpers available in every EJS view
+app.locals.sanitize = sanitize;
+app.locals.safeJson = safeJson;
 
 // Determine if the application is running in production or development environment
 const isProduction = process.env.NODE_ENV === 'production';

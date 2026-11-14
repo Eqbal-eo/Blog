@@ -290,7 +290,7 @@
                                 <% if (settings.contact_info) { %>
                                     <div class="info-item">
                                         <div class="info-label">معلومات التواصل:</div>
-                                        <div class="info-content"><%- settings.contact_info %></div>
+                                        <div class="info-content"><%- sanitize(settings.contact_info) %></div>
                                     </div>
                                 <% } %>
                             <% } else { %>
@@ -322,7 +322,7 @@
                                 <% if (settings.about_text) { %>
                                     <div class="info-item">
                                         <div class="info-label">نبذة عن المدونة:</div>
-                                        <div class="info-content"><%- settings.about_text %></div>
+                                        <div class="info-content"><%- sanitize(settings.about_text) %></div>
                                     </div>
                                 <% } %>
                             <% } else { %>
