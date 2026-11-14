@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db/db');
 const { authenticateToken } = require('../middleware/authMiddleware');
+const { sanitize } = require('../utils/sanitize');
 
 // Apply middleware to all post routes
 router.use(authenticateToken);
@@ -39,14 +40,16 @@ router.post('/create', async (req, res) => {    const { title, content, status, 
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    // Check if status exists, otherwise set default status to "pending"
-    const postStatus = status || 'pending';
+    // Authors may only save a draft or submit for review; publishing requires admin approval
+    const isAdmin = req.user.role === 'admin';
+    const allowedStatuses = isAdmin ? ['draft', 'pending', 'published'] : ['draft', 'pending'];
+    const postStatus = allowedStatuses.includes(status) ? status : 'pending';
 
     try {        const { error } = await supabase
             .from('posts')
             .insert([{
                 title,
-                content,
+                content: sanitize(content),
                 category,
                 user_id: userId,
                 status: postStatus,
@@ -125,27 +128,44 @@ router.post('/edit/:id', async (req, res) => {
         return res.send('يرجى إدخال جميع الحقول');
     }
 
-    // Handle resubmission of rejected posts
-    let postStatus = status || 'published';
-    
-    // If post was rejected and is being resubmitted
-    if (resubmit === 'true') {
-        postStatus = 'pending';
-    }
-
     try {
-        // Check post status before editing
+        // Load the post and make sure it belongs to the current user
         const { data: oldPostData, error: fetchError } = await supabase
             .from('posts')
             .select('status, rejection_reason')
             .eq('id', postId)
-            .single();
-            
+            .eq('user_id', req.user.id)
+            .maybeSingle();
+
         if (fetchError) throw fetchError;
-        
+
+        if (!oldPostData) {
+            return res.status(403).render('error', {
+                message: 'لا يمكنك تعديل تدوينة لا تملكها',
+                error: { status: 403 }
+            });
+        }
+
+        // Decide the new status on the server. A post that was never approved
+        // cannot be published by its author: it goes to review instead.
+        const isAdmin = req.user.role === 'admin';
+        const wasPublished = oldPostData.status === 'published';
+        let postStatus;
+        if (resubmit === 'true') {
+            postStatus = 'pending';
+        } else if (status === 'draft') {
+            postStatus = 'draft';
+        } else if (status === 'published') {
+            postStatus = (isAdmin || wasPublished) ? 'published' : 'pending';
+        } else if (status === 'pending') {
+            postStatus = 'pending';
+        } else {
+            postStatus = oldPostData.status;
+        }
+
         const updateData = {
             title,
-            content,
+            content: sanitize(content),
             category,
             status: postStatus,
             created_at,
@@ -160,7 +180,8 @@ router.post('/edit/:id', async (req, res) => {
         const { error } = await supabase
             .from('posts')
             .update(updateData)
-            .eq('id', postId);
+            .eq('id', postId)
+            .eq('user_id', req.user.id);
 
         if (error) throw error;
         

@@ -2,20 +2,12 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db/db');
 const multer = require('multer');
-const path = require('path');
 const { authenticateToken } = require('../middleware/authMiddleware');
+const { sanitize } = require('../utils/sanitize');
 
-// Multer configuration for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
-    }
-});
-
-const upload = multer({ storage: storage });
+// The settings form is multipart, but it has no file field: parse text fields only
+// and reject any uploaded file (nothing is ever written to disk).
+const upload = multer({ limits: { fieldSize: 100 * 1024 } });
 
 // Get settings page
 router.get('/settings', authenticateToken, async (req, res) => {
@@ -70,7 +62,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
 });
 
 // Update settings
-router.post('/settings', authenticateToken, upload.single('profile_image'), async (req, res) => {
+router.post('/settings', authenticateToken, upload.none(), async (req, res) => {
     try {
         const userId = req.user.id;
         const {
@@ -84,8 +76,6 @@ router.post('/settings', authenticateToken, upload.single('profile_image'), asyn
         } = req.body;
 
         console.log('Updating settings for user:', userId);
-
-        let profile_image = req.file ? `/uploads/${req.file.filename}` : undefined;
 
         // Update user bio and Arabic display name
         const { error: userError } = await supabase
@@ -116,11 +106,10 @@ router.post('/settings', authenticateToken, upload.single('profile_image'), asyn
         const settingsData = {
             blog_title,
             blog_description,
-            about_text,
-            contact_info,
+            about_text: sanitize(about_text),
+            contact_info: sanitize(contact_info),
             email,
-            user_id: userId,
-            ...(profile_image && { profile_image })
+            user_id: userId
         };
 
         if (existingSettings) {

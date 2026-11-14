@@ -566,7 +566,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <div class="card-text post-content post-content-container">
-                                    <%- post.content %>
+                                    <%- sanitize(post.content) %>
                                 </div>
                                 
                                 <!-- Share and print buttons -->
