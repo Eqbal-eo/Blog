@@ -1,16 +1,19 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-// Zoho Mail SMTP setup
+// Brevo SMTP setup
 const transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.eu', // Using European server
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    host: process.env.BREVO_HOST || 'smtp-relay.brevo.com',
+    port: parseInt(process.env.BREVO_PORT) || 587,
+    secure: false, // 587 uses STARTTLS
     auth: {
-        user: process.env.ZOHO_EMAIL, // no-reply@afaq.blog
-        pass: process.env.ZOHO_PASSWORD // Regular password works!
+        user: process.env.BREVO_USER || process.env.ZOHO_EMAIL,
+        pass: process.env.BREVO_SMTP_KEY || process.env.BREVO_PASSWORD || process.env.ZOHO_APP_PASSWORD || process.env.ZOHO_PASSWORD
     }
 });
+
+// Sender email
+const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || process.env.BREVO_USER || process.env.ZOHO_EMAIL || 'no-reply@afaq.blog';
 
 // Verify connection
 transporter.verify((error, success) => {
@@ -27,7 +30,7 @@ async function sendEmail(to, subject, htmlContent, textContent = '') {
         const mailOptions = {
             from: {
                 name: 'مدونات آفاق',
-                address: process.env.ZOHO_EMAIL
+                address: SENDER_EMAIL
             },
             to: to,
             subject: subject,
