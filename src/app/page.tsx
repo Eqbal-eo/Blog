@@ -1,7 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { PostCard, PostGridSkeleton } from "@/components/post-card";
-import { getLatestPosts } from "@/lib/data";
+import { Eye } from "lucide-react";
+import { PostGrid, PostGridSkeleton } from "@/components/post-card";
+import { SubscribeForm } from "@/components/subscribe-form";
+import { getLatestPosts, getMostReadPosts } from "@/lib/data";
+import { categoryLabel, formatNumber } from "@/lib/format";
 
 const STEPS = [
   {
@@ -49,7 +52,19 @@ export default function HomePage() {
         <Suspense fallback={<PostGridSkeleton count={6} />}>
           <LatestPosts />
         </Suspense>
+        <div className="mt-8 text-center">
+          <Link
+            href="/articles"
+            className="inline-block rounded-lg border border-ink/80 px-6 py-3 font-medium transition hover:bg-ink hover:text-paper"
+          >
+            كل التدوينات
+          </Link>
+        </div>
       </section>
+
+      <Suspense fallback={null}>
+        <MostRead />
+      </Suspense>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="mb-8 text-center text-2xl font-bold">كيف تعمل المنصة؟</h2>
@@ -67,6 +82,13 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="mx-auto max-w-xl px-4 py-8">
+        <SubscribeForm
+          title="النشرة البريدية"
+          description="تصلك كل تدوينة جديدة في مدونات آفاق على بريدك."
+        />
       </section>
 
       <section className="mx-auto max-w-3xl px-4 py-16 text-center">
@@ -91,12 +113,38 @@ async function LatestPosts() {
   if (posts.length === 0) {
     return <p className="text-center text-muted">لا توجد تدوينات منشورة بعد.</p>;
   }
+  return <PostGrid posts={posts} />;
+}
+
+async function MostRead() {
+  const posts = await getMostReadPosts(5);
+  if (posts.length === 0) return null;
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
-    </div>
+    <section className="mx-auto max-w-3xl px-4 py-12">
+      <h2 className="mb-6 text-center text-2xl font-bold">الأكثر قراءة</h2>
+      <ol className="divide-y divide-line rounded-2xl border border-line bg-surface">
+        {posts.map((post, index) => (
+          <li key={post.id} className="flex items-center gap-4 px-5 py-4">
+            <span className="w-6 text-center text-2xl font-bold text-brand/60" aria-hidden>
+              {formatNumber(index + 1)}
+            </span>
+            <div className="min-w-0 flex-1">
+              <Link href={`/article/${post.id}`} className="block truncate font-medium hover:text-brand">
+                {post.title}
+              </Link>
+              <p className="text-sm text-muted">
+                {post.authorName}
+                {post.category && ` · ${categoryLabel(post.category)}`}
+              </p>
+            </div>
+            <span className="inline-flex shrink-0 items-center gap-1 text-sm text-muted">
+              <Eye className="size-4" aria-hidden />
+              {formatNumber(post.viewCount)}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }

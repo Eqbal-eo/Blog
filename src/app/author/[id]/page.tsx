@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PostCard, PostGridSkeleton } from "@/components/post-card";
+import { Avatar } from "@/components/avatar";
+import { SubscribeForm } from "@/components/subscribe-form";
 import { getAuthor } from "@/lib/data";
 import { postsCount } from "@/lib/format";
 
@@ -40,7 +42,9 @@ async function AuthorProfile({ params }: Pick<Props, "params">) {
 
   return (
     <>
-      <header className="rounded-2xl border border-line bg-surface p-8">
+      <header className="flex flex-wrap items-start gap-6 rounded-2xl border border-line bg-surface p-8">
+        <Avatar src={author.avatar} name={author.name} size={96} />
+        <div className="min-w-0 flex-1">
         <p className="text-sm font-medium text-brand">
           {postsCount(author.posts.length)}
         </p>
@@ -53,7 +57,16 @@ async function AuthorProfile({ params }: Pick<Props, "params">) {
         <p className="mt-4 max-w-3xl leading-relaxed text-ink/75">
           {author.blogDescription || author.bio || "لم يتم إضافة نبذة بعد"}
         </p>
+        </div>
       </header>
+
+      <div className="mt-6">
+        <SubscribeForm
+          authorId={author.id}
+          title={`تابع ${author.name}`}
+          description="تصلك تدويناته الجديدة على بريدك فور نشرها."
+        />
+      </div>
 
       <div
         className={

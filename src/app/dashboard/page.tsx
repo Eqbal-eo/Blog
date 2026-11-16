@@ -33,6 +33,7 @@ async function Overview() {
     { label: "المنشورة", value: count("published") },
     { label: "قيد المراجعة", value: count("pending") },
     { label: "المسودات", value: count("draft") },
+    { label: "مجموع المشاهدات", value: posts.reduce((sum, p) => sum + p.viewCount, 0) },
     ...(count("rejected") > 0 ? [{ label: "المرفوضة", value: count("rejected") }] : []),
   ];
 

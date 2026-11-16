@@ -1,14 +1,16 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Bell, LogOut } from "lucide-react";
+import { Bell, LogOut, Search } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { getUnreadCount } from "@/lib/notifications";
 import { logout } from "@/app/(auth)/actions";
 import { button } from "@/components/ui/styles";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV = [
   { href: "/", label: "الرئيسية" },
-  { href: "/blogs", label: "المدونات" },
+  { href: "/articles", label: "التدوينات" },
+  { href: "/blogs", label: "الكتّاب" },
   { href: "/about", label: "عن المنصة" },
 ] as const;
 
@@ -33,6 +35,10 @@ export function SiteHeader() {
         </nav>
 
         <div className="ms-auto flex items-center gap-2">
+          <Link href="/search" className={button.ghost} aria-label="البحث" title="البحث">
+            <Search className="size-5" aria-hidden />
+          </Link>
+          <ThemeToggle />
           {/* Reads the session cookie, so it streams in after the static shell */}
           <Suspense fallback={<GuestLinks />}>
             <AccountLinks />

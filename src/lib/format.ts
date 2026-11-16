@@ -91,3 +91,28 @@ export function wordCount(text: string): number {
   const plain = text.replace(/<[^>]*>/g, " ").trim();
   return plain ? plain.split(/\s+/).length : 0;
 }
+
+/** Estimated reading time in minutes (about 200 Arabic words a minute). */
+export function readingMinutes(html: string): number {
+  return Math.max(1, Math.round(wordCount(html.replace(/data:[^"' ]+/g, " ")) / 200));
+}
+
+/** e.g. "٥ دقائق قراءة" */
+export function readingTimeLabel(minutes: number): string {
+  if (minutes === 1) return "دقيقة قراءة";
+  if (minutes === 2) return "دقيقتا قراءة";
+  if (minutes <= 10) return `${formatNumber(minutes)} دقائق قراءة`;
+  return `${formatNumber(minutes)} دقيقة قراءة`;
+}
+
+/** e.g. "١٢٣ مشاهدة" */
+export function viewsLabel(count: number): string {
+  if (count === 1) return "مشاهدة واحدة";
+  if (count === 2) return "مشاهدتان";
+  if (count <= 10) return `${formatNumber(count)} مشاهدات`;
+  return `${formatNumber(count)} مشاهدة`;
+}
+
+export function isPostCategory(value: string): boolean {
+  return POST_CATEGORIES.some(([code]) => code === value);
+}

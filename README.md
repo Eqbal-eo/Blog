@@ -13,6 +13,18 @@ are published on the writer's public blog.
 - **Zod** validation, **bcrypt** credential hashing, signed JWT session cookie (`jose`)
 - **React Email** templates sent through Brevo SMTP
 - **Vercel Analytics** for page views
+- **sharp** for image uploads (resized to WebP) and the Arabic share images
+
+## Features
+
+- Public: home with most-read posts, all posts with pagination, categories,
+  Arabic full-text search, writer pages, comments (moderated), reading time,
+  reading progress, adjustable font size, dark mode
+- Writers: Tiptap editor with image upload (button, paste or drop), drafts,
+  review workflow, profile picture, view counts, notifications
+- Admins: post review, blog request review, comment moderation
+- Reach: sitemap.xml, robots.txt, RSS (`/rss.xml`), generated share images,
+  email newsletter (whole site or per writer, double opt-in)
 
 ## Getting started
 
@@ -33,6 +45,7 @@ tables. Run each file once in **Supabase → SQL Editor**:
 |---|---|
 | `20261116000000_lock_down_public_tables.sql` | Enables row level security on every table with no policies, so the public anon key can read nothing |
 | `20261117000000_rate_limits.sql` | Adds the `rate_limits` table and `hit_rate_limit()` function used to throttle login, registration and blog requests |
+| `20261118000000_reader_features.sql` | Image storage bucket, view counts, Arabic full-text search, comments and newsletter subscribers |
 
 ## Deploying to Vercel
 
@@ -50,7 +63,8 @@ src/
     admin/          post review and blog request review (admins only)
     article/ author/ blogs/ about/ contact/   public pages
   components/       header, footer, dashboard shell, editor, form controls
-  lib/              data access, auth/session, email, sanitizing, formatting
+  lib/              data access, auth/session, email, newsletter, media, search
+  assets/fonts/     Tajawal (OFL) used to draw share images
   proxy.ts          redirects signed-out visitors away from /dashboard and /admin
 supabase/migrations/  SQL to run once in Supabase
 ```

@@ -3,6 +3,7 @@ import { Tajawal } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { themeScript } from "@/lib/theme-script";
 import "./globals.css";
 
 const tajawal = Tajawal({
@@ -20,11 +21,16 @@ export const metadata: Metadata = {
   description:
     "منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد",
   openGraph: { siteName: "مدونات آفاق", locale: "ar_AR", type: "website" },
+  alternates: { types: { "application/rss+xml": [{ url: "/rss.xml", title: "مدونات آفاق" }] } },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ar" dir="rtl" className={`${tajawal.variable} h-full antialiased`}>
+    // The theme script adds a class before hydration, hence suppressHydrationWarning
+    <html lang="ar" dir="rtl" className={`${tajawal.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="flex min-h-full flex-col font-sans">
         <a
           href="#main"

@@ -8,6 +8,7 @@ import {
   FilePlus2,
   Files,
   Inbox,
+  MessageSquare,
   LayoutDashboard,
   Settings,
   type LucideIcon,
@@ -26,6 +27,7 @@ const WRITER: Item[] = [
 const ADMIN: Item[] = [
   { href: "/admin/posts", label: "مراجعة التدوينات", icon: ClipboardCheck },
   { href: "/admin/requests", label: "طلبات المدونات", icon: Inbox },
+  { href: "/admin/comments", label: "التعليقات", icon: MessageSquare },
 ];
 
 export function DashboardNav({
@@ -33,17 +35,20 @@ export function DashboardNav({
   unread = 0,
   pendingPosts = 0,
   pendingRequests = 0,
+  pendingComments = 0,
 }: {
   isAdmin: boolean;
   unread?: number;
   pendingPosts?: number;
   pendingRequests?: number;
+  pendingComments?: number;
 }) {
   const pathname = usePathname();
   const counts: Record<string, number> = {
     "/dashboard/notifications": unread,
     "/admin/posts": pendingPosts,
     "/admin/requests": pendingRequests,
+    "/admin/comments": pendingComments,
   };
 
   const render = (item: Item) => {

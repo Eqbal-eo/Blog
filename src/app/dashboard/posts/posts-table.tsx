@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { deletePosts } from "./actions";
-import { categoryLabel, formatDate, POST_STATUS_LABELS } from "@/lib/format";
+import { categoryLabel, formatDate, formatNumber, POST_STATUS_LABELS } from "@/lib/format";
 import { badge, button, card, statusBadge } from "@/components/ui/styles";
 
 type Row = {
@@ -15,6 +15,7 @@ type Row = {
   category: string | null;
   createdAt: string;
   rejectionReason: string | null;
+  viewCount: number;
 };
 
 const FILTERS = [
@@ -122,6 +123,7 @@ export function PostsTable({ posts }: { posts: Row[] }) {
               </th>
               <th scope="col" className="p-3 text-start font-medium">العنوان</th>
               <th scope="col" className="hidden p-3 text-start font-medium sm:table-cell">التاريخ</th>
+              <th scope="col" className="hidden p-3 text-start font-medium md:table-cell">المشاهدات</th>
               <th scope="col" className="p-3 text-start font-medium">الحالة</th>
               <th scope="col" className="p-3"><span className="sr-only">إجراءات</span></th>
             </tr>
@@ -156,6 +158,9 @@ export function PostsTable({ posts }: { posts: Row[] }) {
                 </td>
                 <td className="hidden p-3 whitespace-nowrap text-muted sm:table-cell">
                   {formatDate(post.createdAt)}
+                </td>
+                <td className="hidden p-3 text-muted md:table-cell">
+                  {post.status === "published" ? formatNumber(post.viewCount) : "—"}
                 </td>
                 <td className="p-3">
                   <span className={`${badge} whitespace-nowrap ${statusBadge[post.status]}`}>

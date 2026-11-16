@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getBloggers } from "@/lib/data";
 import { categoryLabel, postsCount } from "@/lib/format";
+import { Avatar } from "@/components/avatar";
 
 export const metadata: Metadata = {
   title: "المدونات",
@@ -38,10 +39,13 @@ async function Bloggers() {
             href={`/author/${blogger.id}`}
             className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 transition hover:-translate-y-0.5 hover:shadow-md"
           >
-            <h2 className="text-lg font-bold">{blogger.name}</h2>
-            <p className="mt-1 text-sm text-brand">
-              {postsCount(blogger.articlesCount)}
-            </p>
+            <div className="flex items-center gap-3">
+              <Avatar src={blogger.avatar} name={blogger.name} size={52} />
+              <div>
+                <h2 className="text-lg font-bold">{blogger.name}</h2>
+                <p className="text-sm text-brand">{postsCount(blogger.articlesCount)}</p>
+              </div>
+            </div>
             <p className="mt-3 flex-1 leading-relaxed text-ink/75">
               {blogger.bio ?? "لم يتم إضافة نبذة بعد"}
             </p>
