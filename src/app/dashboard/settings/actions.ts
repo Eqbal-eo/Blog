@@ -9,6 +9,7 @@ import { requireUser } from "@/lib/auth";
 import { deleteSession } from "@/lib/session";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
+import { deleteImage, uploadImage } from "@/lib/media";
 
 const optionalText = (max: number) =>
   z.string().trim().max(max, `النص أطول من ${max} حرف`).optional().default("");
@@ -38,6 +39,45 @@ export async function updateProfile(_prev: FormState, formData: FormData): Promi
   updateTag("posts");
   updateTag(`author-${user.id}`);
   return { status: "success", message: "تم حفظ الملف الشخصي", values };
+}
+
+/** Uploads a new profile picture, or removes it when `remove` is set. */
+export async function updateProfileImage(_prev: FormState, formData: FormData): Promise<FormState> {
+  const user = await requireUser();
+  const id = Number(user.id);
+
+  const { data: settings } = await supabase
+    .from("settings")
+    .select("id, profile_image")
+    .eq("user_id", id)
+    .maybeSingle();
+
+  let imageUrl: string | null = null;
+  if (formData.get("remove") !== "1") {
+    if (!(await rateLimit(`avatar:${user.id}`, 10, 60 * 60))) {
+      return errorState("محاولات كثيرة، حاول بعد ساعة");
+    }
+    const upload = await uploadImage(formData.get("image"), `avatars/${user.id}`, { maxWidth: 400, square: true });
+    if (!upload.ok) return errorState(upload.message);
+    imageUrl = upload.url;
+  }
+
+  const { error } = settings
+    ? await supabase.from("settings").update({ profile_image: imageUrl }).eq("id", settings.id)
+    : await supabase.from("settings").insert([{ user_id: id, profile_image: imageUrl }]);
+
+  if (error) {
+    await deleteImage(imageUrl);
+    return errorState("حدث خطأ أثناء حفظ الصورة");
+  }
+
+  // The old file is no longer referenced anywhere
+  await deleteImage(settings?.profile_image);
+
+  updateTag("users");
+  updateTag("posts");
+  updateTag(`author-${user.id}`);
+  return { status: "success", message: imageUrl ? "تم تحديث الصورة" : "تمت إزالة الصورة" };
 }
 
 const blogSchema = z.object({
@@ -135,6 +175,7 @@ export async function deleteAccount(_prev: FormState, formData: FormData): Promi
   }
 
   const id = Number(user.id);
+  const { data: profile } = await supabase.from("settings").select("profile_image").eq("user_id", id).maybeSingle();
   // Order matters: rows that reference the user or their posts go first
   const steps = [
     () => supabase.from("notifications").delete().eq("user_id", id),
@@ -152,6 +193,8 @@ export async function deleteAccount(_prev: FormState, formData: FormData): Promi
     }
   }
 
+  await deleteImage(profile?.profile_image);
+  await supabase.from("subscribers").delete().eq("author_id", id);
   updateTag("posts");
   updateTag("users");
   updateTag(`author-${user.id}`);

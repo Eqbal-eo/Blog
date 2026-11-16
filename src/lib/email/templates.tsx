@@ -183,3 +183,43 @@ export function LoginCredentialsEmail(props: {
     </Layout>
   );
 }
+
+export function ConfirmSubscriptionEmail(props: { scope: string; confirmUrl: string }) {
+  return (
+    <Layout preview="أكّد اشتراكك في مدونات آفاق">
+      <Heading style={styles.heading}>أكّد اشتراكك</Heading>
+      <P>طلبت الاشتراك لتصلك {props.scope} على هذا البريد.</P>
+      <P>اضغط الزر لتأكيد الاشتراك. إن لم تطلب ذلك، تجاهل هذه الرسالة ولن نرسل لك شيئاً.</P>
+      <Button href={props.confirmUrl} style={styles.button}>
+        تأكيد الاشتراك
+      </Button>
+    </Layout>
+  );
+}
+
+export function NewPostEmail(props: {
+  title: string;
+  authorName: string;
+  excerpt: string;
+  postUrl: string;
+  unsubscribeUrl: string;
+}) {
+  return (
+    <Layout preview={`${props.authorName}: ${props.title}`}>
+      <Text style={{ ...styles.text, color: "#6a6969", margin: "0 0 4px" }}>
+        تدوينة جديدة من {props.authorName}
+      </Text>
+      <Heading style={styles.heading}>{props.title}</Heading>
+      <P>{props.excerpt}</P>
+      <Button href={props.postUrl} style={styles.button}>
+        اقرأ التدوينة
+      </Button>
+      <Text style={{ ...styles.footer, marginTop: "24px" }}>
+        وصلتك هذه الرسالة لأنك مشترك في مدونات آفاق.{" "}
+        <a href={props.unsubscribeUrl} style={{ color: "#6a6969" }}>
+          إلغاء الاشتراك
+        </a>
+      </Text>
+    </Layout>
+  );
+}

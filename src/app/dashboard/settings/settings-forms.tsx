@@ -1,7 +1,14 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { changePassword, deleteAccount, updateBlogSettings, updateProfile } from "./actions";
+import { useActionState, useRef, useState } from "react";
+import { Camera } from "lucide-react";
+import {
+  changePassword,
+  deleteAccount,
+  updateBlogSettings,
+  updateProfile,
+  updateProfileImage,
+} from "./actions";
 import { initialFormState } from "@/lib/forms";
 import { FormMessage, SubmitButton, TextAreaField, TextField } from "@/components/ui/form";
 import { button, card } from "@/components/ui/styles";
@@ -16,10 +23,73 @@ function Section({ title, description, children }: { title: string; description?
   );
 }
 
-export function ProfileForm({ initial }: { initial: { display_name_ar: string; bio: string } }) {
+function ProfileImageForm({ image, name }: { image: string | null; name: string }) {
+  const [state, action, pending] = useActionState(updateProfileImage, initialFormState);
+  const form = useRef<HTMLFormElement>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const shown = preview ?? image;
+
+  return (
+    <form ref={form} action={action} className="mb-6 flex flex-wrap items-center gap-5">
+      <div className="relative">
+        {shown ? (
+          // eslint-disable-next-line @next/next/no-img-element -- local preview (blob: URL)
+          <img src={shown} alt="" className="size-20 rounded-full object-cover ring-1 ring-line" />
+        ) : (
+          <span className="flex size-20 items-center justify-center rounded-full bg-brand-soft text-3xl font-bold text-brand">
+            {name.charAt(0) || "؟"}
+          </span>
+        )}
+      </div>
+      <div className="space-y-2">
+        <div className="flex flex-wrap gap-2">
+          <label className={`${button.outline} cursor-pointer py-2 ${pending ? "pointer-events-none opacity-60" : ""}`}>
+            <Camera className="size-4" aria-hidden />
+            {pending ? "جارٍ الرفع…" : shown ? "تغيير الصورة" : "إضافة صورة"}
+            <input
+              type="file"
+              name="image"
+              accept="image/jpeg,image/png,image/webp"
+              className="sr-only"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (!file) return;
+                setPreview(URL.createObjectURL(file));
+                form.current?.requestSubmit();
+              }}
+            />
+          </label>
+          {image && (
+            <button
+              type="submit"
+              name="remove"
+              value="1"
+              disabled={pending}
+              className={button.ghost}
+              onClick={() => setPreview(null)}
+            >
+              إزالة
+            </button>
+          )}
+        </div>
+        <p className="text-sm text-muted">صورة مربعة بحجم 5 ميغابايت كحد أقصى</p>
+        {state.status !== "idle" && <FormMessage state={state} />}
+      </div>
+    </form>
+  );
+}
+
+export function ProfileForm({
+  initial,
+  image,
+}: {
+  initial: { display_name_ar: string; bio: string };
+  image: string | null;
+}) {
   const [state, action] = useActionState(updateProfile, initialFormState);
   return (
     <Section title="الملف الشخصي" description="يظهر في بطاقة مدونتك وعلى تدويناتك">
+      <ProfileImageForm image={image} name={initial.display_name_ar} />
       <form action={action} className="space-y-5" noValidate>
         <FormMessage state={state} />
         <TextField

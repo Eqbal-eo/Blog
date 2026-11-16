@@ -1,15 +1,62 @@
 @import "tailwindcss";
 
+/* Dark mode follows a .dark class on <html> (set by the theme toggle) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --paper: #f9f7f0;
+  --surface: #ffffff;
+  --ink: #222222;
+  --muted: #6a6969;
+  --line: #e2ddd0;
+  --brand: #8c4a21;
+  --brand-soft: #f1e6dc;
+  --quote-ink: #4a3a2e;
+  --reader-scale: 1;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #16130f;
+  --surface: #1f1b17;
+  --ink: #ece6dc;
+  --muted: #a39b8f;
+  --line: #3a332b;
+  --brand: #d08a5c;
+  --brand-soft: #3a2a1f;
+  --quote-ink: #e3d3c3;
+  color-scheme: dark;
+
+  /* Status colors used across the app, re-tuned for a dark background */
+  --color-emerald-50: #10261c;
+  --color-emerald-200: #1f4a36;
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+  --color-red-50: #2c1515;
+  --color-red-200: #5c2424;
+  --color-red-600: #f87171;
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+  --color-red-900: #fee2e2;
+  --color-amber-50: #2b2110;
+  --color-amber-200: #5a4518;
+  --color-amber-800: #fcd34d;
+  --color-amber-900: #fde68a;
+  --color-stone-100: #2a2622;
+  --color-stone-700: #d6d0c8;
+}
+
 @theme inline {
   --font-sans: var(--font-tajawal), "Segoe UI", Tahoma, sans-serif;
 
-  --color-paper: #f9f7f0;
-  --color-surface: #ffffff;
-  --color-ink: #222222;
-  --color-muted: #6a6969;
-  --color-line: #e2ddd0;
-  --color-brand: #8c4a21;
-  --color-brand-soft: #f1e6dc;
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
 }
 
 body {
@@ -17,9 +64,14 @@ body {
   color: var(--color-ink);
 }
 
-/* Article body: HTML produced by the Quill editor */
+/* Brand buttons keep white text in both themes */
+.dark .bg-brand {
+  background-color: #a8592a;
+}
+
+/* Article body: HTML from the Tiptap editor (and older Quill posts) */
 .article-body {
-  font-size: 1.125rem;
+  font-size: calc(1.125rem * var(--reader-scale));
   line-height: 2;
   overflow-wrap: anywhere;
 }
@@ -59,7 +111,7 @@ body {
   background: var(--color-brand-soft);
   padding: 0.75em 1.25em;
   border-radius: 0.5rem;
-  color: #4a3a2e;
+  color: var(--quote-ink);
 }
 
 .article-body img {
@@ -90,3 +142,16 @@ body {
 .article-body .ql-size-small { font-size: 0.8em; }
 .article-body .ql-size-large { font-size: 1.4em; }
 .article-body .ql-size-huge { font-size: 1.9em; }
+
+/* Placeholder shown by Tiptap in an empty editor */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--color-muted);
+  float: inline-start;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid var(--color-brand);
+}

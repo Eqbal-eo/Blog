@@ -63,6 +63,7 @@ async function Posts({ searchParams }: Pick<PageProps<"/dashboard/posts">, "sear
             category: p.category,
             createdAt: p.createdAt,
             rejectionReason: p.rejectionReason,
+            viewCount: p.viewCount,
           }))}
         />
       )}

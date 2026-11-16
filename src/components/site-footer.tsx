@@ -15,6 +15,9 @@ export function SiteFooter() {
           <Link href="/blog-request" className="hover:text-brand">
             انضم ككاتب
           </Link>
+          <a href="/rss.xml" className="hover:text-brand">
+            RSS
+          </a>
         </nav>
       </div>
     </footer>

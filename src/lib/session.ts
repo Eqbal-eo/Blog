@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { jwtVerify, SignJWT } from "jose";
 
 export type Session = {
@@ -21,6 +22,10 @@ function secretKey(): Uint8Array {
 export async function getSession(): Promise<Session | null> {
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (!token) return null;
+
+  // Verifying the token compares its expiry with the current time, which
+  // Cache Components only allows once the render is marked request-time
+  await connection();
 
   try {
     const { payload } = await jwtVerify(token, secretKey(), {

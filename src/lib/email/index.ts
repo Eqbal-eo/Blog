@@ -3,13 +3,16 @@ import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import {
+  ConfirmSubscriptionEmail,
   InviteCodeEmail,
+  NewPostEmail,
   LoginCredentialsEmail,
   NewRequestEmail,
   RequestRejectedEmail,
 } from "./templates";
 import { categoryLabel } from "../format";
 import { excerpt } from "../sanitize";
+import { siteUrl } from "../site";
 
 // Brevo SMTP relay (smtp-relay.brevo.com:587, STARTTLS)
 const transporter = nodemailer.createTransport({
@@ -27,11 +30,6 @@ const SENDER = {
   address: process.env.BREVO_SENDER_EMAIL || process.env.BREVO_USER || "",
 };
 
-/** Absolute site URL for links inside emails. */
-export function siteUrl(path = ""): string {
-  const base = (process.env.WEBSITE_URL || "http://localhost:3000").replace(/\/$/, "");
-  return `${base}${path}`;
-}
 
 async function send(to: string, subject: string, element: ReactElement) {
   if (!process.env.BREVO_USER || !process.env.BREVO_SMTP_KEY) {
@@ -105,5 +103,33 @@ export function sendLoginCredentials(
     to,
     "بيانات الدخول - مدونات آفاق",
     LoginCredentialsEmail({ ...data, loginUrl: siteUrl("/login") }),
+  );
+}
+
+export function sendSubscriptionConfirmation(to: string, data: { scope: string; token: string }) {
+  return send(
+    to,
+    "أكّد اشتراكك - مدونات آفاق",
+    ConfirmSubscriptionEmail({
+      scope: data.scope,
+      confirmUrl: siteUrl(`/newsletter/confirm?token=${encodeURIComponent(data.token)}`),
+    }),
+  );
+}
+
+export function sendNewPostEmail(
+  to: string,
+  data: { postId: string; title: string; authorName: string; excerpt: string; token: string },
+) {
+  return send(
+    to,
+    `${data.title} - ${data.authorName}`,
+    NewPostEmail({
+      title: data.title,
+      authorName: data.authorName,
+      excerpt: data.excerpt,
+      postUrl: siteUrl(`/article/${data.postId}`),
+      unsubscribeUrl: siteUrl(`/newsletter/unsubscribe?token=${encodeURIComponent(data.token)}`),
+    }),
   );
 }

@@ -7,7 +7,15 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
 ];
 
+// Uploaded images (profile pictures, post images) live in Supabase Storage
+const supabaseHost = process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).hostname : undefined;
+
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: supabaseHost
+      ? [{ protocol: "https", hostname: supabaseHost, pathname: "/storage/v1/object/public/media/**" }]
+      : [],
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
@@ -18,10 +26,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // Fonts read from disk by the share-image routes (src/lib/og-image.tsx)
+  outputFileTracingIncludes: {
+    "/opengraph-image": ["./src/assets/fonts/**/*"],
+    "/article/[id]/opengraph-image": ["./src/assets/fonts/**/*"],
+  },
   experimental: {
     serverActions: {
-      // Posts may contain pasted (base64) images
-      bodySizeLimit: "4mb",
+      // Image uploads are capped at 5 MB in lib/media.ts
+      bodySizeLimit: "6mb",
     },
   },
   async headers() {

@@ -11,6 +11,7 @@ import { createNotification } from "@/lib/notifications";
 import { generateInviteCode } from "@/lib/invite-code";
 import { sendInviteCode, sendRequestRejected } from "@/lib/email";
 import { errorState, type FormState } from "@/lib/forms";
+import { notifySubscribers } from "@/lib/newsletter";
 
 const reasonSchema = z.string().trim().min(5, "اكتب سبباً واضحاً (5 أحرف على الأقل)").max(2000);
 
@@ -41,6 +42,7 @@ export async function approvePost(postId: string): Promise<FormState> {
   updateTag("posts");
   updateTag(`post-${post.id}`);
   updateTag(`author-${post.user_id}`);
+  after(() => notifySubscribers(String(post.id)));
   redirect("/admin/posts?done=approved");
 }
 
@@ -212,4 +214,29 @@ export async function resendInviteCode(requestId: string): Promise<FormState> {
     }),
   );
   return { status: "success", message: `أُرسل كود جديد إلى ${request.email}` };
+}
+
+// --------------------------------------------------------------- comments
+
+export async function moderateComment(
+  commentId: string,
+  decision: "approved" | "rejected" | "deleted",
+): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  if (!/^\d{1,12}$/.test(commentId) || !["approved", "rejected", "deleted"].includes(decision)) {
+    return { ok: false };
+  }
+  const id = Number(commentId);
+
+  const { data: comment } = await supabase.from("comments").select("post_id").eq("id", id).maybeSingle();
+  if (!comment) return { ok: false };
+
+  const { error } =
+    decision === "deleted"
+      ? await supabase.from("comments").delete().eq("id", id)
+      : await supabase.from("comments").update({ status: decision }).eq("id", id);
+  if (error) return { ok: false };
+
+  updateTag(`comments-${comment.post_id}`);
+  return { ok: true };
 }

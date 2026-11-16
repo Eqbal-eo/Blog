@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 import { getCurrentUser } from "@/lib/auth";
 import { getUnreadCount } from "@/lib/notifications";
 import { supabase } from "@/lib/supabase";
+import { countPendingComments } from "@/lib/comments";
 import { DashboardNav } from "./dashboard-nav";
 
 /** Two-column layout shared by /dashboard and /admin. */
@@ -33,10 +34,11 @@ async function NavWithCounts() {
   if (!user) return <DashboardNav isAdmin={false} />;
 
   const isAdmin = user.role === "admin";
-  const [unread, pendingPosts, pendingRequests] = await Promise.all([
+  const [unread, pendingPosts, pendingRequests, pendingComments] = await Promise.all([
     getUnreadCount(user.id),
     isAdmin ? countRows("posts") : 0,
     isAdmin ? countRows("blog_requests") : 0,
+    isAdmin ? countPendingComments() : 0,
   ]);
 
   return (
@@ -45,6 +47,7 @@ async function NavWithCounts() {
       unread={unread}
       pendingPosts={pendingPosts}
       pendingRequests={pendingRequests}
+      pendingComments={pendingComments}
     />
   );
 }

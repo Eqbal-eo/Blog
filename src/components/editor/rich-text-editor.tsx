@@ -15,7 +15,9 @@ import {
   Heading2,
   Heading3,
   ImageIcon,
+  ImagePlus,
   Italic,
+  Loader2,
   Link2,
   List,
   ListOrdered,
@@ -26,7 +28,8 @@ import {
   Undo2,
   type LucideIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { uploadPostImage } from "@/app/dashboard/media-actions";
 
 /**
  * Rich text editor for posts. Stores HTML in a hidden input named `name`,
@@ -44,6 +47,33 @@ export function RichTextEditor({
   describedBy?: string;
 }) {
   const [html, setHtml] = useState(initialHtml);
+  const [uploading, setUploading] = useState(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const editorRef = useRef<Editor | null>(null);
+
+  /** Uploads image files and inserts them at `pos` (or the cursor). */
+  const insertImages = async (files: File[], pos?: number) => {
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    if (images.length === 0) return false;
+    setUploadError(null);
+    setUploading((n) => n + images.length);
+    for (const file of images) {
+      const data = new FormData();
+      data.append("file", file);
+      const result = await uploadPostImage(data);
+      setUploading((n) => n - 1);
+      const editor = editorRef.current;
+      if (!result.ok) {
+        setUploadError(result.message);
+        continue;
+      }
+      if (!editor) continue;
+      const chain = editor.chain().focus();
+      (pos !== undefined ? chain.insertContentAt(pos, { type: "image", attrs: { src: result.url } }) : chain.setImage({ src: result.url })).run();
+    }
+    return true;
+  };
 
   const editor = useEditor({
     // Rendered on the client only; avoids a hydration mismatch
@@ -75,6 +105,25 @@ export function RichTextEditor({
         ...(invalid && { "aria-invalid": "true" }),
         ...(describedBy && { "aria-describedby": describedBy }),
       },
+      // Pasted or dropped images are uploaded instead of embedded as base64
+      handlePaste: (_view, event) => {
+        const files = Array.from(event.clipboardData?.files ?? []);
+        if (!files.some((f) => f.type.startsWith("image/"))) return false;
+        event.preventDefault();
+        void insertImages(files);
+        return true;
+      },
+      handleDrop: (view, event) => {
+        const files = Array.from(event.dataTransfer?.files ?? []);
+        if (!files.some((f) => f.type.startsWith("image/"))) return false;
+        event.preventDefault();
+        const pos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos;
+        void insertImages(files, pos);
+        return true;
+      },
+    },
+    onCreate: ({ editor }) => {
+      editorRef.current = editor;
     },
     onUpdate: ({ editor }) => setHtml(editor.isEmpty ? "" : editor.getHTML()),
   });
@@ -86,7 +135,27 @@ export function RichTextEditor({
       }`}
     >
       <input type="hidden" name={name} value={html} />
-      {editor ? <Toolbar editor={editor} /> : <div className="h-11 border-b border-line bg-paper" />}
+      <input
+        ref={fileInput}
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+        multiple
+        hidden
+        onChange={(event) => {
+          void insertImages(Array.from(event.target.files ?? []));
+          event.target.value = "";
+        }}
+      />
+      {editor ? (
+        <Toolbar editor={editor} onUploadImage={() => fileInput.current?.click()} uploading={uploading > 0} />
+      ) : (
+        <div className="h-11 border-b border-line bg-paper" />
+      )}
+      {uploadError && (
+        <p role="alert" className="border-b border-line bg-red-50 px-4 py-2 text-sm text-red-800">
+          {uploadError}
+        </p>
+      )}
       <EditorContent editor={editor} />
     </div>
   );
@@ -153,7 +222,15 @@ const GROUPS: ToolbarItem[][] = [
 
 const ALL_ITEMS = GROUPS.flat();
 
-function Toolbar({ editor }: { editor: Editor }) {
+function Toolbar({
+  editor,
+  onUploadImage,
+  uploading,
+}: {
+  editor: Editor;
+  onUploadImage: () => void;
+  uploading: boolean;
+}) {
   // Re-render the toolbar only when the active/enabled states change
   const state = useEditorState({
     editor,
@@ -195,6 +272,17 @@ function Toolbar({ editor }: { editor: Editor }) {
           })}
         </div>
       ))}
+      <button
+        type="button"
+        onClick={onUploadImage}
+        disabled={uploading}
+        title="رفع صورة (أو الصقها أو اسحبها إلى النص)"
+        aria-label="رفع صورة"
+        className="ms-auto inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm text-ink/75 transition hover:bg-brand-soft hover:text-brand disabled:opacity-60"
+      >
+        {uploading ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <ImagePlus className="size-4" aria-hidden />}
+        {uploading ? "جارٍ الرفع…" : "رفع صورة"}
+      </button>
     </div>
   );
 }

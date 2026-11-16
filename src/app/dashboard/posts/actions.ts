@@ -1,5 +1,6 @@
 "use server";
 
+import { after } from "next/server";
 import { redirect } from "next/navigation";
 import { updateTag } from "next/cache";
 import { z } from "zod";
@@ -9,6 +10,7 @@ import { sanitize } from "@/lib/sanitize";
 import { getUserPost, parsePostId } from "@/lib/posts";
 import { POST_CATEGORIES, wordCount } from "@/lib/format";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
+import { notifySubscribers } from "@/lib/newsletter";
 
 const categoryCodes = POST_CATEGORIES.map(([code]) => code) as [string, ...string[]];
 
@@ -71,6 +73,7 @@ export async function savePost(
       return errorState("حدث خطأ أثناء حفظ التدوينة، يرجى المحاولة مرة أخرى", values);
     }
     invalidatePost(String(data.id), user.id);
+    if (status === "published") after(() => notifySubscribers(String(data.id)));
   } else {
     const existing = await getUserPost(user.id, postId);
     if (!existing) return errorState("لا يمكنك تعديل تدوينة لا تملكها", values);
@@ -101,6 +104,10 @@ export async function savePost(
       return errorState("حدث خطأ أثناء حفظ التدوينة، يرجى المحاولة مرة أخرى", values);
     }
     invalidatePost(postId, user.id);
+    // Only the first publication is announced, not later edits
+    if (status === "published" && existing.status !== "published" && !existing.publishedAt) {
+      after(() => notifySubscribers(postId));
+    }
   }
 
   const message =

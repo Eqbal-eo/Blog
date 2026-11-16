@@ -13,6 +13,8 @@ export type OwnPost = {
   rejectionReason: string | null;
   createdAt: string;
   updatedAt: string | null;
+  publishedAt: string | null;
+  viewCount: number;
   userId: string;
 };
 
@@ -25,11 +27,13 @@ type Row = {
   rejection_reason: string | null;
   created_at: string;
   updated_at: string | null;
+  published_at: string | null;
+  view_count?: number | null;
   user_id: number;
 };
 
 const COLUMNS =
-  "id, title, content, category, status, rejection_reason, created_at, updated_at, user_id";
+  "id, title, content, category, status, rejection_reason, created_at, updated_at, published_at, user_id";
 
 const STATUSES = ["published", "pending", "draft", "rejected"] as const;
 
@@ -46,6 +50,8 @@ function toPost(row: Row): OwnPost {
     rejectionReason: row.rejection_reason,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    publishedAt: row.published_at,
+    viewCount: row.view_count ?? 0,
     userId: String(row.user_id),
   };
 }
@@ -56,13 +62,15 @@ export function parsePostId(id: string): number | null {
 }
 
 export async function getUserPosts(userId: string): Promise<OwnPost[]> {
-  const { data, error } = await supabase
-    .from("posts")
-    .select(COLUMNS)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+  const [{ data, error }, views] = await Promise.all([
+    supabase.from("posts").select(COLUMNS).eq("user_id", userId).order("created_at", { ascending: false }),
+    // view_count comes from the reader features migration; ignore it if missing
+    supabase.from("posts").select("id, view_count").eq("user_id", userId),
+  ]);
   if (error) throw new Error(`Failed to load posts: ${error.message}`);
-  return (data as Row[]).map(toPost);
+
+  const counts = new Map((views.data ?? []).map((v) => [v.id as number, (v.view_count as number) ?? 0]));
+  return (data as Row[]).map((row) => ({ ...toPost(row), viewCount: counts.get(row.id) ?? 0 }));
 }
 
 /** One of the user's own posts, or null. */

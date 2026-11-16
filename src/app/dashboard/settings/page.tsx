@@ -22,13 +22,16 @@ async function Settings() {
   const user = await requireUser();
   const { data: settings } = await supabase
     .from("settings")
-    .select("blog_title, blog_description, about_text, contact_info, email")
+    .select("blog_title, blog_description, about_text, contact_info, email, profile_image")
     .eq("user_id", Number(user.id))
     .maybeSingle();
 
   return (
     <div className="space-y-6">
-      <ProfileForm initial={{ display_name_ar: user.displayNameAr ?? "", bio: user.bio ?? "" }} />
+      <ProfileForm
+        initial={{ display_name_ar: user.displayNameAr ?? "", bio: user.bio ?? "" }}
+        image={settings?.profile_image ?? null}
+      />
       <BlogForm
         initial={{
           blog_title: settings?.blog_title ?? "",
