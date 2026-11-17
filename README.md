@@ -1,166 +1,77 @@
-# Afaq Blogs
+# مدونات آفاق (Afaq Blogs)
 
-A modern Arabic blogging platform designed to empower writers and intellectuals to publish their thoughts and articles across various cultural, intellectual, and political fields. The platform focuses on providing a seamless experience for both writers and readers while maintaining high-quality content through moderation.
+An Arabic blogging platform for cultural, intellectual and political writing.
+Writers apply to join, admins review applications and posts, and approved posts
+are published on the writer's public blog.
+
+## Stack
+
+- **Next.js 16** (App Router, Server Components, Server Actions, Cache Components)
+- **TypeScript**, **Tailwind CSS v4**, **React 19**
+- **Supabase** (PostgreSQL), accessed only from the server with the service-role key
+- **Tiptap 3** rich text editor (RTL)
+- **Zod** validation, **bcrypt** credential hashing, signed JWT session cookie (`jose`)
+- **React Email** templates sent through Brevo SMTP
+- **Vercel Analytics** for page views
+- **sharp** for image uploads (resized to WebP) and the Arabic share images
 
 ## Features
 
-### For Writers and Bloggers
-- **Personal blog creation** with customizable settings and profile management
-- **Advanced text editor** supporting rich formatting, RTL direction, and media embedding
-- **Article categorization** (Politics, History, Economics, Technology, Literature, Medicine)
-- **Publication status management** (Draft, Under Review, Published, Rejected)
-- **Personal dashboard** for tracking:
-  - Article statistics and views
-  - Reader engagement metrics
-  - Publication history
-  - Comments and feedback
+- Public: home with most-read posts, all posts with pagination, categories,
+  Arabic full-text search, writer pages, comments (moderated), reading time,
+  reading progress, adjustable font size, dark mode
+- Writers: Tiptap editor with image upload (button, paste or drop), drafts,
+  review workflow, profile picture, view counts, notifications
+- Admins: post review, blog request review, comment moderation
+- Reach: sitemap.xml, robots.txt, RSS (`/rss.xml`), generated share images,
+  email newsletter (whole site or per writer, double opt-in)
 
-### For Readers
-- **Blog browsing** with modern, responsive interface
-- **Advanced search and filtering** by:
-  - Author
-  - Topic
-  - Category
-  - Date
-  - Popularity
-- **Enhanced reading experience** with:
-  - Content-focused design
-  - Dark/Light mode
-  - Adjustable font size
-  - Bookmark functionality
-  - Share options
+## Getting started
 
-### For Administration
-- **Blog request system** with:
-  - Comprehensive applicant review
-  - Background verification
-  - Automated approval workflow
-- **Content management**:
-  - Article review and moderation
-  - Quality assurance checks
-  - Plagiarism detection
-  - Content guidelines enforcement
-- **Notification system** for:
-  - Writer communications
-  - Content status updates
-  - System announcements
-- **Comprehensive analytics**:
-  - User engagement metrics
-  - Content performance stats
-  - Platform health monitoring
-  - Growth trends
+1. `npm install`
+2. Copy `.env.example` to `.env` and fill it in.
+3. Run the SQL files in `supabase/migrations/` once, in order, in the Supabase
+   SQL Editor (see below).
+4. `npm run dev`, then open http://localhost:3000
 
-## Technologies Used
+Other scripts: `npm run build`, `npm start`, `npm run lint`, `npm run typecheck`.
 
-- **Backend**: Node.js + Express.js
-- **Frontend**: EJS + Bootstrap (RTL)
-- **Database**: Supabase (PostgreSQL)
-- **Editor**: Quill.js
-- **Design**: Custom CSS with Arabic support
-- **Deployment**: Vercel
+## Database migrations
 
-## Getting Started
+`supabase/migrations/` holds the SQL that the app relies on beyond the original
+tables. Run each file once in **Supabase → SQL Editor**:
 
-### Requirements
-- Node.js (v14 or newer)
-- Supabase account and project
-- Text editor (VS Code recommended)
-- Git
+| File | What it does |
+|---|---|
+| `20261116000000_lock_down_public_tables.sql` | Enables row level security on every table with no policies, so the public anon key can read nothing |
+| `20261117000000_rate_limits.sql` | Adds the `rate_limits` table and `hit_rate_limit()` function used to throttle login, registration and blog requests |
+| `20261118000000_reader_features.sql` | Image storage bucket, view counts, Arabic full-text search, comments and newsletter subscribers |
 
-### Local Development Setup
+## Deploying to Vercel
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Eqbal-eo/Blog.git
-   cd Blog
-   ```
+1. Import the repository in Vercel (framework: Next.js, no extra settings).
+2. Add every variable from `.env.example` under **Settings → Environment Variables**.
+3. Enable **Analytics** in the project to see page views.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure environment variables**
-   - Create a `.env` file in the root directory
-   - Add the following variables:
-     ```env
-     SUPABASE_URL=your_supabase_project_url
-     SUPABASE_ANON_KEY=your_supabase_anon_key
-     JWT_SECRET=your_random_secret_key
-     ZOHO_EMAIL=your_email_address
-     ZOHO_PASSWORD=your_email_app_password
-     ```
-   - Refer to `.env.example` for the exact format
-
-4. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Access the application**
-   - Open `http://localhost:3000` in your browser
-   - The application will automatically reload if you change any source files
-
-## Project Structure
+## Project layout
 
 ```
-├── controllers/          # Business logic and request handling
-│   ├── adminController.js    # Admin panel operations
-│   ├── authController.js     # Authentication logic
-│   └── notificationController.js  # Notification handling
-├── routes/              # Application routing
-│   ├── adminRoutes.js       # Admin routes
-│   ├── authRoutes.js        # Authentication routes
-│   └── mainRoutes.js        # Main application routes
-├── views/               # EJS templates
-│   ├── admin/              # Admin panel views
-│   ├── partials/           # Reusable view components
-│   └── *.ejs               # Main view templates
-├── public/              # Static assets
-│   ├── js/                 # Client-side JavaScript
-│   └── css/                # Stylesheets
-├── db/                  # Database configuration and models
-├── middleware/          # Custom middleware functions
-└── services/           # Business services and utilities
+src/
+  app/
+    (auth)/         login, register, blog request (+ their Server Actions)
+    dashboard/      writer area: overview, posts, editor, notifications, settings
+    admin/          post review and blog request review (admins only)
+    article/ author/ blogs/ about/ contact/   public pages
+  components/       header, footer, dashboard shell, editor, form controls
+  lib/              data access, auth/session, email, newsletter, media, search
+  assets/fonts/     Tajawal (OFL) used to draw share images
+  proxy.ts          redirects signed-out visitors away from /dashboard and /admin
+supabase/migrations/  SQL to run once in Supabase
 ```
 
-## Security Measures
+## Security notes
 
-- **Authentication**:
-  - Password encryption using bcrypt
-  - JWT-based session management
-  - Secure password reset flow
-  
-- **Authorization**:
-  - Role-based access control
-  - Resource-level permissions
-  
-- **Data Protection**:
-  - CSRF protection
-  - Input validation and sanitization
-  - SQL injection prevention
-  - XSS protection
-  
-- **API Security**:
-  - Rate limiting
-  - Request validation
-  - Secure headers
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any inquiries or support:
-- Email: eng.mhdeqbal@gmail.com
-- GitHub: [@Eqbal-eo](https://github.com/Eqbal-eo)
-- Project Link: [https://github.com/Eqbal-eo/Blog](https://github.com/Eqbal-eo)
+- All database access happens on the server; the browser never sees a Supabase key.
+- Every Server Action re-checks the signed-in user and, for admin actions, the
+  role from the database.
+- Post HTML is sanitized with an allowlist when saved and again when rendered.
