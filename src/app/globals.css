@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+/* Dark mode follows a .dark class on <html> (set by the theme toggle) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --paper: #f9f7f0;
+  --surface: #ffffff;
+  --ink: #222222;
+  --muted: #6a6969;
+  --line: #e2ddd0;
+  --brand: #8c4a21;
+  --brand-soft: #f1e6dc;
+  --quote-ink: #4a3a2e;
+  --reader-scale: 1;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #16130f;
+  --surface: #1f1b17;
+  --ink: #ece6dc;
+  --muted: #a39b8f;
+  --line: #3a332b;
+  --brand: #d08a5c;
+  --brand-soft: #3a2a1f;
+  --quote-ink: #e3d3c3;
+  color-scheme: dark;
+
+  /* Status colors used across the app, re-tuned for a dark background */
+  --color-emerald-50: #10261c;
+  --color-emerald-200: #1f4a36;
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+  --color-red-50: #2c1515;
+  --color-red-200: #5c2424;
+  --color-red-600: #f87171;
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+  --color-red-900: #fee2e2;
+  --color-amber-50: #2b2110;
+  --color-amber-200: #5a4518;
+  --color-amber-800: #fcd34d;
+  --color-amber-900: #fde68a;
+  --color-stone-100: #2a2622;
+  --color-stone-700: #d6d0c8;
+}
+
+@theme inline {
+  --font-sans: var(--font-tajawal), "Segoe UI", Tahoma, sans-serif;
+
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* Brand buttons keep white text in both themes */
+.dark .bg-brand {
+  background-color: #a8592a;
+}
+
+/* Article body: HTML from the Tiptap editor (and older Quill posts) */
+.article-body {
+  font-size: calc(1.125rem * var(--reader-scale));
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.article-body > * + * {
+  margin-top: 1.1em;
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3 {
+  font-weight: 700;
+  line-height: 1.5;
+  margin-top: 1.8em;
+}
+
+.article-body h1 { font-size: 1.75rem; }
+.article-body h2 { font-size: 1.45rem; }
+.article-body h3 { font-size: 1.2rem; }
+
+.article-body a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-inline-start: 1.5em;
+}
+
+.article-body ul { list-style: disc; }
+.article-body ol { list-style: decimal; }
+
+.article-body blockquote {
+  border-inline-start: 4px solid var(--color-brand);
+  background: var(--color-brand-soft);
+  padding: 0.75em 1.25em;
+  border-radius: 0.5rem;
+  color: var(--quote-ink);
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin-inline: auto;
+}
+
+.article-body pre {
+  direction: ltr;
+  text-align: left;
+  background: #1f1b18;
+  color: #f3ede4;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+.article-body .ql-align-center { text-align: center; }
+.article-body .ql-align-right { text-align: right; }
+.article-body .ql-align-left { text-align: left; }
+.article-body .ql-align-justify { text-align: justify; }
+.article-body .ql-direction-rtl { direction: rtl; }
+.article-body .ql-size-small { font-size: 0.8em; }
+.article-body .ql-size-large { font-size: 1.4em; }
+.article-body .ql-size-huge { font-size: 1.9em; }
+
+/* Placeholder shown by Tiptap in an empty editor */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--color-muted);
+  float: inline-start;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+  outline: 3px solid var(--color-brand);
+}
