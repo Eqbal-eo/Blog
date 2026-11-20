@@ -12,6 +12,7 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
 import { notifyAdminNewRequest, sendLoginCredentials } from "@/lib/email";
 import { REQUEST_CATEGORIES, wordCount } from "@/lib/format";
+import { DEMO_USERNAME } from "@/lib/demo";
 
 // ---------------------------------------------------------------- login
 
@@ -43,9 +44,11 @@ export async function login(_prev: FormState, formData: FormData): Promise<FormS
   const { username, password } = parsed.data;
 
   const ip = await clientIp();
+  // The public demo account is shared, so only the per-IP limit applies to it
+  const isDemo = username.toLowerCase() === DEMO_USERNAME;
   const allowed =
     (await rateLimit(`login:ip:${ip}`, 10, 15 * 60)) &&
-    (await rateLimit(`login:user:${username.toLowerCase()}`, 10, 15 * 60));
+    (isDemo || (await rateLimit(`login:user:${username.toLowerCase()}`, 10, 15 * 60)));
   if (!allowed) {
     return errorState("لقد تجاوزت الحد المسموح به لمحاولات الدخول، يرجى المحاولة بعد 15 دقيقة.", values);
   }

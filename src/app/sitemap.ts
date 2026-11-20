@@ -13,6 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: siteUrl("/blogs"), changeFrequency: "weekly", priority: 0.6 },
     { url: siteUrl("/about"), changeFrequency: "yearly", priority: 0.3 },
     { url: siteUrl("/contact"), changeFrequency: "yearly", priority: 0.3 },
+    { url: siteUrl("/privacy"), changeFrequency: "yearly", priority: 0.2 },
     { url: siteUrl("/blog-request"), changeFrequency: "yearly", priority: 0.4 },
     ...POST_CATEGORIES.map(([slug]) => ({
       url: siteUrl(`/category/${slug}`),

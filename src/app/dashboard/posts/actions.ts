@@ -11,6 +11,7 @@ import { getUserPost, parsePostId } from "@/lib/posts";
 import { POST_CATEGORIES, wordCount } from "@/lib/format";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
 import { notifySubscribers } from "@/lib/newsletter";
+import { isDemoUser } from "@/lib/demo";
 
 const categoryCodes = POST_CATEGORIES.map(([code]) => code) as [string, ...string[]];
 
@@ -22,7 +23,21 @@ const postSchema = z.object({
     .refine((html) => wordCount(html) >= 1, "اكتب محتوى التدوينة")
     .refine((html) => html.length <= 2_000_000, "التدوينة كبيرة جداً (قلّل الصور المضمّنة)"),
   intent: z.enum(["draft", "submit"]),
+  summary: z.string().trim().max(300, "الوصف أطول من 300 حرف").optional().default(""),
 });
+
+type WriteResult = { error: { code?: string; message: string } | null; data?: unknown };
+
+/** Inserts or updates, dropping `summary` if its column doesn't exist yet. */
+async function writePost(run: (row: Record<string, unknown>) => PromiseLike<WriteResult>, row: Record<string, unknown>) {
+  const result = await run(row);
+  if (result.error?.code === "42703" && "summary" in row) {
+    const rest = { ...row };
+    delete rest.summary;
+    return run(rest);
+  }
+  return result;
+}
 
 /** Invalidate every cached page that can show this post. */
 function invalidatePost(postId: string, userId: string) {
@@ -43,30 +58,30 @@ export async function savePost(
   if (!parsed.success) {
     return errorState("يرجى مراجعة الحقول المظللة", values, fieldErrors(parsed.error));
   }
-  const { title, category, content, intent } = parsed.data;
+  const { title, category, content, summary } = parsed.data;
   const html = sanitize(content);
   const isAdmin = user.role === "admin";
+  // The public demo account can only keep drafts
+  const intent = isDemoUser(user) ? "draft" : parsed.data.intent;
 
   if (postId === null) {
     // New post: authors save a draft or submit for review; admins publish directly
     const status = intent === "draft" ? "draft" : isAdmin ? "published" : "pending";
     const now = new Date().toISOString();
 
-    const { data, error } = await supabase
-      .from("posts")
-      .insert([
-        {
-          title,
-          category,
-          content: html,
-          status,
-          user_id: Number(user.id),
-          created_at: now,
-          ...(status === "published" && { published_at: now }),
-        },
-      ])
-      .select("id")
-      .single();
+    const { data, error } = (await writePost(
+      (row) => supabase.from("posts").insert([row]).select("id").single(),
+      {
+        title,
+        category,
+        content: html,
+        summary: summary || null,
+        status,
+        user_id: Number(user.id),
+        created_at: now,
+        ...(status === "published" && { published_at: now }),
+      },
+    )) as { data: { id: number } | null; error: { message: string } | null };
 
     if (error || !data) {
       console.error("Failed to create post:", error?.message);
@@ -85,19 +100,19 @@ export async function savePost(
     else status = "pending";
 
     const now = new Date().toISOString();
-    const { error } = await supabase
-      .from("posts")
-      .update({
+    const { error } = await writePost(
+      (row) => supabase.from("posts").update(row).eq("id", Number(postId)).eq("user_id", Number(user.id)),
+      {
         title,
         category,
         content: html,
+        summary: summary || null,
         status,
         updated_at: now,
         rejection_reason: null,
         ...(status === "published" && existing.status !== "published" && { published_at: now }),
-      })
-      .eq("id", Number(postId))
-      .eq("user_id", Number(user.id));
+      },
+    );
 
     if (error) {
       console.error("Failed to update post:", error.message);

@@ -223,3 +223,18 @@ export function NewPostEmail(props: {
     </Layout>
   );
 }
+
+export function PasswordResetEmail(props: { fullName: string; username: string; resetUrl: string }) {
+  return (
+    <Layout preview="رابط إعادة تعيين كلمة المرور">
+      <Heading style={styles.heading}>مرحباً {props.fullName}</Heading>
+      <P>
+        طلب أحدهم إعادة تعيين كلمة المرور لحسابك (<span dir="ltr">{props.username}</span>) في مدونات آفاق.
+      </P>
+      <Button href={props.resetUrl} style={styles.button}>
+        تعيين كلمة مرور جديدة
+      </Button>
+      <P>الرابط صالح لمدة ساعة واحدة ولمرة واحدة. إن لم تطلب ذلك، تجاهل هذه الرسالة وستبقى كلمة مرورك كما هي.</P>
+    </Layout>
+  );
+}

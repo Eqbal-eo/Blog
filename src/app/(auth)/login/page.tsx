@@ -16,6 +16,11 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
       footer={
         <>
           <p>
+            <Link href="/forgot-password" className="font-medium text-brand hover:underline">
+              نسيت كلمة المرور؟
+            </Link>
+          </p>
+          <p>
             ليس لديك حساب؟{" "}
             <Link href="/blog-request" className="font-medium text-brand hover:underline">
               اطلب إنشاء مدونة
@@ -33,6 +38,7 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
       <Suspense fallback={<LoginForm />}>
         <LoginFormWithRedirect searchParams={searchParams} />
       </Suspense>
+      <DemoHint />
     </AuthCard>
   );
 }
@@ -43,6 +49,36 @@ async function LoginFormWithRedirect({
   const user = await getCurrentUser();
   if (user) redirect("/dashboard");
 
-  const { next } = await searchParams;
-  return <LoginForm next={typeof next === "string" ? next : undefined} />;
+  const { next, reset } = await searchParams;
+  return (
+    <>
+      {reset === "1" && (
+        <p role="status" className="mb-5 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          تم تعيين كلمة المرور الجديدة، سجّل الدخول بها.
+        </p>
+      )}
+      <LoginForm next={typeof next === "string" ? next : undefined} />
+    </>
+  );
+}
+
+/** Public demo credentials, shown when DEMO_PASSWORD is configured. */
+function DemoHint() {
+  const password = process.env.DEMO_PASSWORD;
+  if (!password) return null;
+  return (
+    <div className="mt-6 rounded-xl border border-dashed border-line bg-paper p-4 text-sm">
+      <p className="font-medium">تريد التجربة فقط؟</p>
+      <p className="mt-1 text-muted">
+        ادخل بالحساب التجريبي: اسم المستخدم{" "}
+        <code dir="ltr" className="rounded bg-brand-soft px-1.5 py-0.5 text-brand">
+          demo
+        </code>{" "}
+        وكلمة المرور{" "}
+        <code dir="ltr" className="rounded bg-brand-soft px-1.5 py-0.5 text-brand">
+          {password}
+        </code>
+      </p>
+    </div>
+  );
 }

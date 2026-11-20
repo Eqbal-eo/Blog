@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, types and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+  e2e:
+    name: Build and end-to-end tests
+    runs-on: ubuntu-latest
+    needs: check
+    # The build and the tests read the real database. Add these repository
+    # secrets (Settings > Secrets and variables > Actions) to enable the job:
+    # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, JWT_SECRET
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      WEBSITE_URL: http://localhost:3100
+      HAS_SECRETS: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' && secrets.JWT_SECRET != '' }}
+    steps:
+      - name: Skip without secrets
+        if: env.HAS_SECRETS != 'true'
+        run: echo "::notice::Add the SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY and JWT_SECRET secrets to run end-to-end tests."
+      - uses: actions/checkout@v4
+        if: env.HAS_SECRETS == 'true'
+      - uses: actions/setup-node@v4
+        if: env.HAS_SECRETS == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.HAS_SECRETS == 'true'
+        run: npm ci
+      - if: env.HAS_SECRETS == 'true'
+        run: npx playwright install --with-deps chromium
+      - if: env.HAS_SECRETS == 'true'
+        run: npm run build
+      - if: env.HAS_SECRETS == 'true'
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure() && env.HAS_SECRETS == 'true'
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

@@ -10,6 +10,7 @@ import { deleteSession } from "@/lib/session";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
 import { deleteImage, uploadImage } from "@/lib/media";
+import { DEMO_BLOCKED_MESSAGE, isDemoUser } from "@/lib/demo";
 
 const optionalText = (max: number) =>
   z.string().trim().max(max, `النص أطول من ${max} حرف`).optional().default("");
@@ -21,6 +22,7 @@ const profileSchema = z.object({
 
 export async function updateProfile(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await requireUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE);
   const values = formValues(formData);
   const parsed = profileSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
@@ -44,6 +46,7 @@ export async function updateProfile(_prev: FormState, formData: FormData): Promi
 /** Uploads a new profile picture, or removes it when `remove` is set. */
 export async function updateProfileImage(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await requireUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE);
   const id = Number(user.id);
 
   const { data: settings } = await supabase
@@ -93,6 +96,7 @@ const blogSchema = z.object({
 
 export async function updateBlogSettings(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await requireUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE);
   const values = formValues(formData);
   const parsed = blogSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
@@ -136,6 +140,7 @@ const passwordSchema = z
 
 export async function changePassword(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await requireUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE);
   const parsed = passwordSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
     return errorState("يرجى مراجعة الحقول المظللة", undefined, fieldErrors(parsed.error));
@@ -163,6 +168,7 @@ export async function changePassword(_prev: FormState, formData: FormData): Prom
 
 export async function deleteAccount(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await requireUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE);
   const password = String(formData.get("password") ?? "");
 
   if (!(await rateLimit(`delete-account:${user.id}`, 5, 15 * 60))) {
