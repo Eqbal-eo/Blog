@@ -2,7 +2,10 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
-import { getUserPost, toEditorHtml } from "@/lib/posts";
+import { getPostSummary, getUserPost } from "@/lib/posts";
+import { toEditorHtml } from "@/lib/editor-html";
+import { aiAvailable } from "@/lib/ai";
+import { isDemoUser } from "@/lib/demo";
 import { sanitize } from "@/lib/sanitize";
 import { POST_STATUS_LABELS } from "@/lib/format";
 import { PageHeader, PageSkeleton } from "@/components/dashboard-shell";
@@ -23,7 +26,7 @@ export default function EditPostPage({ params }: Props) {
 
 async function EditPost({ params }: Pick<Props, "params">) {
   const [user, { id }] = await Promise.all([requireUser(), params]);
-  const post = await getUserPost(user.id, id);
+  const [post, summary] = await Promise.all([getUserPost(user.id, id), getPostSummary(id)]);
   if (!post) notFound();
 
   return (
@@ -38,6 +41,8 @@ async function EditPost({ params }: Pick<Props, "params">) {
       />
       <PostForm
         isAdmin={user.role === "admin"}
+        assistant={aiAvailable()}
+        demo={isDemoUser(user)}
         post={{
           id: post.id,
           title: post.title,
@@ -45,6 +50,7 @@ async function EditPost({ params }: Pick<Props, "params">) {
           html: toEditorHtml(sanitize(post.content)),
           status: post.status,
           rejectionReason: post.rejectionReason,
+          summary,
         }}
       />
     </>

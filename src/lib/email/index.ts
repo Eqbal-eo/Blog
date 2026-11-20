@@ -6,6 +6,7 @@ import {
   ConfirmSubscriptionEmail,
   InviteCodeEmail,
   NewPostEmail,
+  PasswordResetEmail,
   LoginCredentialsEmail,
   NewRequestEmail,
   RequestRejectedEmail,
@@ -130,6 +131,18 @@ export function sendNewPostEmail(
       excerpt: data.excerpt,
       postUrl: siteUrl(`/article/${data.postId}`),
       unsubscribeUrl: siteUrl(`/newsletter/unsubscribe?token=${encodeURIComponent(data.token)}`),
+    }),
+  );
+}
+
+export function sendPasswordReset(to: string, data: { fullName: string; username: string; token: string }) {
+  return send(
+    to,
+    "إعادة تعيين كلمة المرور - مدونات آفاق",
+    PasswordResetEmail({
+      fullName: data.fullName,
+      username: data.username,
+      resetUrl: siteUrl(`/reset-password?token=${encodeURIComponent(data.token)}`),
     }),
   );
 }

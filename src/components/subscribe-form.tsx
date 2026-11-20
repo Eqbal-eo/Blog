@@ -31,6 +31,12 @@ export function SubscribeForm({
         {title}
       </h2>
       {description && <p className="mt-1 text-sm text-muted">{description}</p>}
+      <p className="mt-1 text-xs text-muted">
+        يمكنك إلغاء الاشتراك في أي وقت.{" "}
+        <a href="/privacy" className="underline hover:text-brand">
+          سياسة الخصوصية
+        </a>
+      </p>
 
       {state.status === "success" ? (
         <div className="mt-4">

@@ -40,11 +40,14 @@ export function RichTextEditor({
   initialHtml,
   invalid,
   describedBy,
+  onReady,
 }: {
   name: string;
   initialHtml: string;
   invalid?: boolean;
   describedBy?: string;
+  /** Receives the editor once it exists (e.g. for the writing assistant). */
+  onReady?: (editor: Editor) => void;
 }) {
   const [html, setHtml] = useState(initialHtml);
   const [uploading, setUploading] = useState(0);
@@ -124,13 +127,14 @@ export function RichTextEditor({
     },
     onCreate: ({ editor }) => {
       editorRef.current = editor;
+      onReady?.(editor);
     },
     onUpdate: ({ editor }) => setHtml(editor.isEmpty ? "" : editor.getHTML()),
   });
 
   return (
     <div
-      className={`overflow-hidden rounded-xl border bg-surface focus-within:ring-2 focus-within:ring-brand/20 ${
+      className={`rounded-xl border bg-surface focus-within:ring-2 focus-within:ring-brand/20 ${
         invalid ? "border-red-600" : "border-line focus-within:border-brand"
       }`}
     >
@@ -246,7 +250,7 @@ function Toolbar({
     <div
       role="toolbar"
       aria-label="أدوات التنسيق"
-      className="sticky top-16 z-10 flex flex-wrap items-center gap-1 border-b border-line bg-paper/95 px-2 py-1.5 backdrop-blur"
+      className="sticky top-16 z-10 flex rounded-t-xl flex-wrap items-center gap-1 border-b border-line bg-paper/95 px-2 py-1.5 backdrop-blur"
     >
       {GROUPS.map((group, groupIndex) => (
         <div key={groupIndex} className="flex items-center gap-0.5 border-line not-last:border-e not-last:pe-1">

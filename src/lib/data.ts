@@ -23,6 +23,8 @@ export type Post = PostSummary & {
   authorBio: string | null;
   authorAvatar: string | null;
   updatedAt: string | null;
+  /** Author-written summary, or null (then use `excerpt`). */
+  summary: string | null;
 };
 
 export type Blogger = {
@@ -174,11 +176,11 @@ export async function getPost(id: string): Promise<Post | null> {
   if (result.error || !result.data) return null;
 
   const row = result.data as unknown as PostRow;
-  const { data: settings } = await supabase
-    .from("settings")
-    .select("profile_image")
-    .eq("user_id", row.user_id)
-    .maybeSingle();
+  const [{ data: settings }, summary] = await Promise.all([
+    supabase.from("settings").select("profile_image").eq("user_id", row.user_id).maybeSingle(),
+    // summary needs the post summary migration; ignore it if missing
+    supabase.from("posts").select("summary").eq("id", id).maybeSingle(),
+  ]);
 
   return {
     ...toSummary(row),
@@ -186,6 +188,7 @@ export async function getPost(id: string): Promise<Post | null> {
     authorBio: author(row.users)?.bio || null,
     authorAvatar: settings?.profile_image || null,
     updatedAt: row.updated_at ?? null,
+    summary: summary.error ? null : ((summary.data?.summary as string | null) || null),
   };
 }
 

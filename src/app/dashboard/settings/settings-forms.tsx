@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { Camera } from "lucide-react";
+import { Camera, UserRound } from "lucide-react";
 import {
   changePassword,
   deleteAccount,
@@ -27,7 +27,8 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
   const [state, action, pending] = useActionState(updateProfileImage, initialFormState);
   const form = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const shown = preview ?? image;
+  // Ignore old relative "/uploads/…" paths from the Express app (files are gone)
+  const shown = preview ?? (image?.startsWith("https://") ? image : null);
 
   return (
     <form ref={form} action={action} className="mb-6 flex flex-wrap items-center gap-5">
@@ -36,8 +37,12 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
           // eslint-disable-next-line @next/next/no-img-element -- local preview (blob: URL)
           <img src={shown} alt="" className="size-20 rounded-full object-cover ring-1 ring-line" />
         ) : (
-          <span className="flex size-20 items-center justify-center rounded-full bg-brand-soft text-3xl font-bold text-brand">
-            {name.charAt(0) || "؟"}
+          <span
+            role="img"
+            aria-label={`لا توجد صورة لـ ${name}`}
+            className="flex size-20 items-center justify-center rounded-full bg-brand-soft text-brand"
+          >
+            <UserRound className="size-10" aria-hidden />
           </span>
         )}
       </div>
@@ -59,7 +64,7 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
               }}
             />
           </label>
-          {image && (
+          {shown && !preview && (
             <button
               type="submit"
               name="remove"

@@ -12,6 +12,9 @@ export function SiteFooter() {
           <Link href="/contact" className="hover:text-brand">
             تواصل معنا
           </Link>
+          <Link href="/privacy" className="hover:text-brand">
+            الخصوصية
+          </Link>
           <Link href="/blog-request" className="hover:text-brand">
             انضم ككاتب
           </Link>

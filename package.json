@@ -7,11 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.11.0",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.3.1",
+    "@sentry/nextjs": "^11.15.0",
     "@supabase/supabase-js": "^2.119.0",
     "@tiptap/extension-image": "^3.34.0",
     "@tiptap/extension-text-align": "^3.34.0",
@@ -33,8 +37,9 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/turbopack": "4.3.3",
-    "@types/node": "^20",
+    "@types/node": "^22.20.5",
     "@types/nodemailer": "^8.0.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -42,7 +47,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
     "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.1"
   },
   "engines": {
     "node": ">=20.9"
