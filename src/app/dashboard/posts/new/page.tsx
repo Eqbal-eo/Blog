@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth";
+import { aiAvailable } from "@/lib/ai";
+import { isDemoUser } from "@/lib/demo";
 import { PageHeader, PageSkeleton } from "@/components/dashboard-shell";
 import { PostForm } from "../post-form";
 
@@ -19,5 +21,5 @@ export default function NewPostPage() {
 
 async function NewPost() {
   const user = await requireUser();
-  return <PostForm isAdmin={user.role === "admin"} />;
+  return <PostForm isAdmin={user.role === "admin"} assistant={aiAvailable()} demo={isDemoUser(user)} />;
 }

@@ -4,6 +4,7 @@ import { updateTag } from "next/cache";
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
+import { DEMO_BLOCKED_MESSAGE, isDemoUser } from "@/lib/demo";
 import { rateLimit } from "@/lib/rate-limit";
 import { isBot, visitorKey } from "@/lib/visitor";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
@@ -55,8 +56,9 @@ export async function submitComment(postId: string, _prev: FormState, formData: 
     .maybeSingle();
   if (!post) return errorState("التدوينة غير موجودة");
 
-  // Admins' comments skip moderation
+  // Admins' comments skip moderation; the demo account can't comment
   const user = await getCurrentUser();
+  if (isDemoUser(user)) return errorState(DEMO_BLOCKED_MESSAGE, values);
   const approved = user?.role === "admin";
 
   const { error } = await supabase.from("comments").insert([

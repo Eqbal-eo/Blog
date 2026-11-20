@@ -1,14 +1,15 @@
 import Image from "next/image";
+import { UserRound } from "lucide-react";
 
-/** Round profile picture, or the first letter of the name when there is none. */
+/** Round profile picture, or a neutral person icon when there is none. */
 export function Avatar({
   src,
-  name,
   size = 48,
   className = "",
 }: {
   src: string | null | undefined;
-  name: string;
+  /** Kept for callers; the fallback is an icon (Arabic initials like «إ» read poorly). */
+  name?: string;
   size?: number;
   className?: string;
 }) {
@@ -29,10 +30,10 @@ export function Avatar({
   return (
     <span
       aria-hidden
-      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-brand-soft font-bold text-brand ${className}`}
-      style={{ width: size, height: size, fontSize: size * 0.42 }}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand ${className}`}
+      style={{ width: size, height: size }}
     >
-      {name.trim().charAt(0) || "؟"}
+      <UserRound style={{ width: size * 0.55, height: size * 0.55 }} />
     </span>
   );
 }

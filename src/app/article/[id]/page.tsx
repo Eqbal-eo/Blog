@@ -20,20 +20,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost(id);
   if (!post) return { title: "التدوينة غير موجودة" };
 
+  const description = post.summary ?? post.excerpt;
   return {
     title: post.title,
-    description: post.excerpt,
+    description,
     authors: [{ name: post.authorName, url: `/author/${post.authorId}` }],
     alternates: { canonical: `/article/${post.id}` },
     openGraph: {
       type: "article",
       title: post.title,
-      description: post.excerpt,
+      description,
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt ?? undefined,
       authors: [post.authorName],
     },
-    twitter: { card: "summary_large_image", title: post.title, description: post.excerpt },
+    twitter: { card: "summary_large_image", title: post.title, description },
   };
 }
 

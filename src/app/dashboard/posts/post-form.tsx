@@ -1,17 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
+import type { Editor } from "@tiptap/react";
 import Link from "next/link";
 import { savePost } from "./actions";
 import { initialFormState } from "@/lib/forms";
 import { POST_CATEGORIES } from "@/lib/format";
-import { FormMessage, SelectField, SubmitButton, TextField } from "@/components/ui/form";
+import { FormMessage, SelectField, SubmitButton, TextAreaField, TextField } from "@/components/ui/form";
 import { button } from "@/components/ui/styles";
 import { RichTextEditor } from "@/components/editor/rich-text-editor";
+import { WritingAssistant } from "@/components/editor/writing-assistant";
 
 export function PostForm({
   post,
   isAdmin,
+  assistant,
+  demo = false,
 }: {
   post?: {
     id: string;
@@ -20,9 +24,15 @@ export function PostForm({
     html: string;
     status: string;
     rejectionReason: string | null;
+    summary: string | null;
   };
   isAdmin: boolean;
+  /** Whether the AI writing assistant is configured on the server. */
+  assistant: boolean;
+  /** Public demo account: drafts only. */
+  demo?: boolean;
 }) {
+  const editorRef = useRef<Editor | null>(null);
   const [state, action] = useActionState(savePost.bind(null, post?.id ?? null), initialFormState);
   const contentError = state.fieldErrors?.content;
 
@@ -70,6 +80,9 @@ export function PostForm({
           initialHtml={state.values?.content ?? post?.html ?? ""}
           invalid={Boolean(contentError)}
           describedBy={contentError ? "content-error" : undefined}
+          onReady={(editor) => {
+            editorRef.current = editor;
+          }}
         />
         {contentError && (
           <p id="content-error" className="mt-1.5 text-sm text-red-700">
@@ -78,16 +91,42 @@ export function PostForm({
         )}
       </div>
 
-      {!isAdmin && post?.status !== "published" && (
+      {assistant && (
+        <WritingAssistant
+          getEditor={() => editorRef.current}
+          titleInputId="title"
+          summaryInputId="summary"
+        />
+      )}
+
+      <TextAreaField
+        name="summary"
+        label="وصف قصير (اختياري)"
+        hint="جملة تلخّص التدوينة، تظهر في نتائج البحث وعند مشاركة الرابط. إن تركتها فارغة نستخدم بداية النص."
+        rows={2}
+        maxLength={300}
+        state={state}
+        defaultValue={post?.summary ?? ""}
+      />
+
+      {demo && (
+        <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          أنت في الحساب التجريبي: تُحفظ التدوينات كمسودات فقط، وتُحذف يومياً.
+        </p>
+      )}
+
+      {!demo && !isAdmin && post?.status !== "published" && (
         <p className="text-sm text-muted">
           تظهر التدوينات للقرّاء بعد موافقة المشرف عليها.
         </p>
       )}
 
       <div className="flex flex-wrap gap-3 border-t border-line pt-6">
-        <SubmitButton name="intent" value="submit" pendingText="جارٍ الحفظ…">
-          {submitLabel}
-        </SubmitButton>
+        {!demo && (
+          <SubmitButton name="intent" value="submit" pendingText="جارٍ الحفظ…">
+            {submitLabel}
+          </SubmitButton>
+        )}
         <SubmitButton name="intent" value="draft" variant="outline" pendingText="جارٍ الحفظ…">
           {post?.status === "published" ? "إلغاء النشر وحفظ كمسودة" : "حفظ كمسودة"}
         </SubmitButton>
