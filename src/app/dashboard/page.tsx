@@ -72,7 +72,7 @@ async function Overview() {
       )}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <section className={`${card} p-6`}>
+        <section className={`${card} min-w-0 p-6`}>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-bold">آخر التدوينات</h2>
             <Link href="/dashboard/posts" className="text-sm font-medium text-brand hover:underline">

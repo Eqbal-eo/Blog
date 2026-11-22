@@ -9,7 +9,7 @@ import { DashboardNav } from "./dashboard-nav";
 export function DashboardShell({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 lg:grid-cols-[14rem_1fr] lg:gap-10">
-      <aside className="lg:sticky lg:top-24 lg:self-start">
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
         <Suspense fallback={<NavSkeleton />}>
           <NavWithCounts />
         </Suspense>

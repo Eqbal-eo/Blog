@@ -6,6 +6,8 @@ import { Check, Loader2, SpellCheck, Sparkles, X } from "lucide-react";
 import { proofreadDraft, suggestTitleAndSummary } from "@/app/dashboard/ai-actions";
 import type { Correction, MetaSuggestions } from "@/lib/ai";
 import { button } from "@/components/ui/styles";
+import { formatNumber } from "@/lib/format";
+import { TRIAL_PER_WRITER } from "@/lib/ai-trial";
 
 type Item = Correction & { state: "open" | "applied" | "ignored" | "missing" };
 
@@ -111,6 +113,7 @@ export function WritingAssistant({
         <span className="me-auto flex items-center gap-2 text-sm font-medium">
           <Sparkles className="size-4 text-brand" aria-hidden />
           مساعد الكتابة
+          <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-xs text-brand">نسخة تجريبية</span>
         </span>
         <button type="button" onClick={runProofread} disabled={busy !== null} className={`${button.outline} py-1.5`}>
           {busy === "proofread" ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <SpellCheck className="size-4" aria-hidden />}
@@ -121,6 +124,10 @@ export function WritingAssistant({
           اقتراح عنوان ووصف
         </button>
       </div>
+      <p className="mt-3 rounded-lg bg-brand-soft px-3 py-2 text-xs leading-relaxed text-brand">
+        الخدمة في مرحلة التجربة وطلباتها محدودة حالياً: حتى {formatNumber(TRIAL_PER_WRITER)} طلبات لكل كاتب كل ٢٤ ساعة،
+        وقد تتوقف مؤقتاً إذا انتهى الحد اليومي للمنصة.
+      </p>
       <p className="mt-2 text-xs text-muted">
         اقتراحات فقط: لا يتغير شيء في نصك حتى تضغط «تطبيق». يُرسل النص إلى خدمة ذكاء اصطناعي عند الضغط على أحد الزرين.
       </p>
