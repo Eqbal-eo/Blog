@@ -1,144 +1,239 @@
+<div align="center">
+
 # مدونات آفاق · Afaq Blogs
 
-An Arabic blogging platform for cultural, intellectual and political writing.
-Writers apply to join, editors review every post before it goes live, and
-readers get a fast, right-to-left reading experience.
+**لكل فكرة أفق** · *Every idea has its horizon*
 
-![Home page](docs/screenshots/home.png)
+An Arabic-first publishing platform for intellectual, cultural and political writing.
 
-**Try the writer dashboard:** sign in at `/login` with the demo account; its
-sign-in details are shown on the login page. The demo account writes drafts only and is
-reset every day.
+[![CI](https://github.com/Eqbal-eo/Blog/actions/workflows/ci.yml/badge.svg)](https://github.com/Eqbal-eo/Blog/actions/workflows/ci.yml)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)
+![React 19](https://img.shields.io/badge/React-19-20232A?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-0F172A?logo=tailwindcss)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-1C1C1C?logo=supabase)
 
-## Highlights
+### [Visit the live site →](https://blog-eight-chi-26.vercel.app)
 
-**For readers**
+![The interactive horizon on the home page](docs/screenshots/home-motion.gif)
+
+</div>
+
+<div dir="rtl">
+
+**مدونات آفاق** منصة عربية للتدوين الفكري والثقافي والسياسي، تجمع أصواتًا متعددة في مكان واحد. ينضم الكاتب بطلب يراجعه المشرف، وتُراجع تدويناته قبل النشر، ويحصل القارئ على تجربة قراءة عربية سريعة من اليمين إلى اليسار، بمظهر فاتح وداكن.
+
+</div>
+
+## Contents
+
+[Screenshots](#screenshots) · [Features](#features) · [Status of the live site](#status-of-the-live-site) · [Architecture](#architecture) · [Security](#security) · [Getting started](#getting-started) · [Testing](#testing) · [Deployment](#deployment) · [Project layout](#project-layout) · [Acknowledgements](#acknowledgements)
+
+## Screenshots
+
+| Home | Home, dark mode |
+|:---:|:---:|
+| ![Home page](docs/screenshots/home.png) | ![Home page in dark mode](docs/screenshots/home-dark.png) |
+| **Sign in** | **All posts** |
+| ![Sign-in page](docs/screenshots/login.png) | ![All posts](docs/screenshots/articles.png) |
+| **Article, dark mode** | **Editor** |
+| ![Article in dark mode](docs/screenshots/article-dark.png) | ![Rich-text editor](docs/screenshots/editor.png) |
+| **Writer dashboard** | **Post management** |
+| ![Writer dashboard](docs/screenshots/dashboard.png) | ![Post management](docs/screenshots/posts.png) |
+
+<p align="center">
+  <img src="docs/screenshots/mobile-home.png" width="280" alt="Home page on a phone">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/mobile-article.png" width="280" alt="Article on a phone">
+</p>
+
+![Call to join the writers](docs/screenshots/join-banner.png)
+
+## Features
+
+### For readers
+
 - Arabic full-text search that ignores diacritics and letter variants
   («صلابه» finds «صلابةٌ», «اسرائيل» finds «إسرائيل»)
-- All posts and category pages with pagination, most-read posts
-- Reading time, reading progress bar, adjustable font size, dark mode
-- Moderated comments and an email newsletter (whole site or per writer,
-  double opt-in, one-click unsubscribe)
+- Categories, writer pages, pagination and a most-read list
+- Reading time, progress bar and adjustable font size
+- Light theme by default, with dark and follow-the-device options
+- An interactive animated hero that can be paused and respects reduced motion
+- Moderated comments, RSS, and a double opt-in newsletter per site or per writer
 
-**For writers**
-- Tiptap rich-text editor built for Arabic (RTL), with image upload by
-  button, paste or drop; images are resized to WebP with EXIF removed
-- **Writing assistant (Claude):** Arabic proofreading that suggests
-  individual corrections, plus title and summary ideas. Suggestions only;
-  nothing changes until the writer applies it
-- Drafts, review workflow with feedback, notifications, view counts,
-  profile picture, account recovery by email
+### For writers
 
-**For editors**
+- A right-to-left Tiptap editor with image upload by button, paste or drop
+- Large images shrink in the browser, then are re-encoded without location metadata
+- Drafts, review with feedback, notifications, view counts and profile settings
+- An optional AI writing assistant: Arabic proofreading, plus title and
+  description ideas. It only suggests; the writer decides what to apply
+
+### For editors
+
 - Review queues for posts, writer applications and comments
-- Invite-code onboarding: approved applicants get a single-use code by email
+- Onboarding with single-use invite codes that expire after seven days
 
-**Reach**
-- `sitemap.xml`, `robots.txt`, RSS at `/rss.xml`
-- Generated share images that render Arabic correctly, right to left
+### For sharing and discovery
 
-| Article (dark mode) | Writer dashboard | Editor |
-|---|---|---|
-| ![Article in dark mode](docs/screenshots/article-dark.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Editor](docs/screenshots/editor.png) |
+- Sitemap, robots file, page metadata and an RSS feed
+- Generated share images that render Arabic correctly
+
+## Status of the live site
+
+Some features depend on external services and stay off until their keys are set.
+
+| Feature | In the code | On the live site |
+|---|:---:|---|
+| Reading, search, RSS, sign-in, editor, image upload | ✅ | Live |
+| AI writing assistant | ✅ | Coming soon: not enabled yet |
+| Email: invite codes, account recovery, newsletter | ✅ | Not enabled yet: needs Brevo SMTP |
+| Public demo account | ✅ | Not enabled |
+| Error monitoring (Sentry) | ✅ | Not enabled |
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  Browser["Browser<br/>React 19 · Tailwind v4 · Tiptap"]
+  Browser["Browser<br/>React 19 · Tailwind 4 · Tiptap"]
   subgraph Vercel
-    Next["Next.js 16 App Router<br/>Server Components · Server Actions<br/>Cache Components"]
     Proxy["proxy.ts<br/>route gate"]
-    Cron["Cron<br/>daily demo reset"]
+    Next["Next.js 16 App Router<br/>Server Components · Server Actions<br/>Cache Components"]
   end
-  Supabase[("Supabase<br/>PostgreSQL · Storage<br/>RLS: server only")]
-  Claude["Claude API<br/>writing assistant"]
-  Brevo["Brevo SMTP<br/>React Email"]
-  Sentry["Sentry<br/>errors"]
+  Supabase[("Supabase<br/>PostgreSQL · Storage")]
+  AI["AI writing assistant<br/>optional"]
+  Brevo["Brevo SMTP<br/>optional"]
+  Sentry["Sentry<br/>optional"]
 
   Browser --> Proxy --> Next
-  Next -- "service-role key" --> Supabase
-  Next --> Claude
-  Next --> Brevo
-  Next --> Sentry
-  Cron --> Next
+  Next -- "server-only key" --> Supabase
+  Next -.-> AI
+  Next -.-> Brevo
+  Next -.-> Sentry
 ```
 
-- **All data access is server-side.** The browser never holds a database
-  key; row level security blocks the public key on every table.
-- **Every Server Action re-checks** the signed-in user, and the role is read
-  from the database on each request, not trusted from the cookie.
-- **Post HTML is sanitized** with an allowlist when saved and again when
-  rendered.
-- **Rate limits** (login, registration, account recovery, comments, uploads,
-  the writing assistant) are stored in Postgres, so they hold on serverless.
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Cache Components), React 19, TypeScript |
+| Interface | Tailwind CSS 4, Tiptap 3, Lucide icons, Canvas 2D |
+| Data | Supabase: PostgreSQL and Storage |
+| Auth | Signed HTTP-only cookie (jose), bcrypt |
+| Validation | Zod, sanitize-html |
+| Images | sharp, next/image |
+| Email | React Email, Nodemailer, Brevo |
+| AI | Language-model API with structured outputs |
+| Quality | ESLint, Vitest, Playwright, GitHub Actions |
+| Hosting | Vercel, Vercel Analytics |
 
-## Stack
+## Security
 
-Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Supabase (PostgreSQL,
-Storage) · Tiptap 3 · Zod · Claude API (Anthropic SDK) · React Email + Brevo ·
-sharp · Sentry · Vercel Analytics · Vitest · Playwright · GitHub Actions
+- **Data access is server-side.** The browser holds no database key, and row
+  level security gives the public key no access to the tables.
+- **Protected actions re-check the user.** The role is read from the database
+  on each request instead of being trusted from the cookie.
+- **Post HTML is sanitized** with an allowlist when saved and when rendered.
+- **Rate limits live in Postgres**, so they hold across serverless instances:
+  sign-in, registration, account recovery, comments, uploads and the assistant.
+- **Uploads are validated and re-encoded**, except animated GIFs, which are
+  checked and stored as they are.
 
 ## Getting started
 
+You need Node.js 20.9 or newer (CI uses 22) and a Supabase project.
+
+> [!IMPORTANT]
+> The SQL in `supabase/migrations/` upgrades an existing Afaq database. It does
+> not create the base tables (`users`, `posts`, `settings`, `blog_requests`,
+> `invite_codes`, `notifications`), so it will not work on an empty project.
+
 ```bash
+git clone https://github.com/Eqbal-eo/Blog.git
+cd Blog
 npm install
-cp .env.example .env   # then fill it in
-npm run dev            # http://localhost:3000
+cp .env.example .env
+npm run dev
 ```
 
-Run the SQL files in `supabase/migrations/` once, in order, in
-**Supabase → SQL Editor**:
+Fill in `.env` before starting, then open http://localhost:3000.
 
-| File | Adds |
+| Variable | Needed for |
 |---|---|
-| `20261116000000_lock_down_public_tables.sql` | Row level security on every table; the public key can read nothing |
-| `20261117000000_rate_limits.sql` | `rate_limits` table and `hit_rate_limit()` |
-| `20261118000000_reader_features.sql` | Image bucket, view counts, Arabic search, comments, newsletter |
-| `20261120000000_post_summary.sql` | Optional per-post summary (search and link previews) |
+| `SUPABASE_URL` | **Required** |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Required.** Use a server-only `sb_secret_…` key |
+| `JWT_SECRET` | **Required.** A long random string that signs sessions |
+| `WEBSITE_URL` | Correct links in email, feeds and metadata |
+| `BREVO_USER`, `BREVO_SMTP_KEY`, `BREVO_SENDER_EMAIL` | Sending email |
+| `ADMIN_EMAIL` | Alerts about new writer applications |
+| `ANTHROPIC_API_KEY` | The writing assistant |
+| `CRON_SECRET` | The daily reset of the demo account |
+| `SENTRY_*` | Error monitoring |
 
-Create the public demo account (optional):
+The optional demo account is described in [`.env.example`](.env.example).
 
-```bash
-node --env-file=.env scripts/create-demo-account.mjs
-```
+For an existing database, run these once, in order, in the Supabase SQL Editor:
 
-## Scripts
+| Migration | Adds |
+|---|---|
+| `20261116000000_lock_down_public_tables.sql` | Row level security on the public tables |
+| `20261117000000_rate_limits.sql` | Rate-limit storage |
+| `20261118000000_reader_features.sql` | Image bucket, views, Arabic search, comments, newsletter |
+| `20261120000000_post_summary.sql` | An optional description for each post |
+
+## Testing
 
 | Command | Does |
 |---|---|
-| `npm run dev` | Development server |
-| `npm run build` / `npm start` | Production build and server |
-| `npm run lint` / `npm run typecheck` | ESLint / TypeScript |
-| `npm test` | Unit tests (Vitest) |
-| `npm run test:e2e` | End-to-end tests (Playwright) against a production build; read-only |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript |
+| `npm test` | Unit tests |
+| `npm run build` | Production build |
+| `npm run test:e2e` | Browser tests against the production build |
 
-CI runs lint, types and unit tests on every push. The end-to-end job runs
-when the repository has the `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and
-`JWT_SECRET` secrets.
+> [!WARNING]
+> The browser tests use the configured database. Opening a post increases its
+> view count and submitting forms increases rate-limit counters, so point them
+> at a test database.
 
-## Deploying to Vercel
+CI runs lint, type checks and unit tests on pull requests and on `main`. Browser
+tests run there only when the repository secrets for a database are set.
 
-1. Import the repository (framework: Next.js).
-2. Add the variables from `.env.example` under **Settings → Environment
-   Variables**. Required: the Supabase, JWT, Brevo and `WEBSITE_URL` values.
-   Optional: `ANTHROPIC_API_KEY` (writing assistant), `DEMO_PASSWORD` and
-   `CRON_SECRET` (demo account), `SENTRY_*` (error monitoring).
-3. Enable **Analytics**. The daily demo reset is scheduled in `vercel.json`.
+## Deployment
+
+1. Import the repository in Vercel. `vercel.json` already selects Next.js.
+2. Add the variables above to both **Production** and **Preview**.
+3. Keep **Standard Protection** on, so old and preview deployments stay private.
+4. Redeploy after changing a variable: existing deployments keep the old values.
+
+Uploads are capped at 4 MB on the server because Vercel rejects request bodies
+over 4.5 MB.
 
 ## Project layout
 
-```
+```text
 src/
   app/
-    (auth)/        login, register, blog request, account recovery
-    dashboard/     writer area: overview, posts, editor, notifications, settings
-    admin/         review of posts, writer applications and comments
-    article/ articles/ category/ search/ author/ blogs/   public pages
-    api/cron/      scheduled jobs
-  components/      header, dashboard shell, editor and writing assistant, forms
-  lib/             data access, auth, AI, email, media, newsletter, search
-  proxy.ts         sends signed-out visitors from /dashboard and /admin to login
-supabase/migrations/   SQL to run once in Supabase
-tests/             unit (Vitest) and end-to-end (Playwright) tests
+    (auth)/       sign-in, registration, writer application, account recovery
+    dashboard/    overview, posts, editor, notifications, settings
+    admin/        review of posts, applications and comments
+    article/  articles/  category/  search/  author/  blogs/
+    api/cron/     scheduled jobs
+  assets/         fonts and artwork
+  components/     header, editor, hero, banner, forms
+  lib/            data, auth, AI, email, media, search
+  proxy.ts        gate for the dashboard and admin areas
+supabase/
+  migrations/     database upgrades
+tests/            unit and browser tests
+docs/
+  screenshots/    images used in this README
 ```
+
+## Acknowledgements
+
+Sincere thanks to **Ömer Teknoloji** for the internship opportunity and for their trust.
+
+<div dir="rtl">
+
+جزيل الشكر والتقدير إلى شركة **Ömer Teknoloji** على فرصة التدريب وعلى ثقتهم.
+
+</div>
