@@ -3,8 +3,12 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import { PostGrid, PostGridSkeleton } from "@/components/post-card";
 import { SubscribeForm } from "@/components/subscribe-form";
+import { HeroHorizon } from "@/components/hero-horizon";
+import { JoinBanner } from "@/components/join-banner";
 import { getLatestPosts, getMostReadPosts } from "@/lib/data";
-import { categoryLabel, formatNumber } from "@/lib/format";
+import { categoryLabel, formatNumber, POST_CATEGORIES } from "@/lib/format";
+
+const HERO_WORDS = POST_CATEGORIES.map(([, label]) => label);
 
 const STEPS = [
   {
@@ -24,26 +28,29 @@ const STEPS = [
 export default function HomePage() {
   return (
     <>
-      <section className="mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
-        <h1 className="text-5xl font-bold sm:text-6xl">
-          مدونات <span className="text-brand">آفاق</span>
-        </h1>
-        <p className="mt-6 text-lg leading-relaxed text-muted">
-          منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link
-            href="/blog-request"
-            className="rounded-lg bg-brand px-6 py-3 font-medium text-white transition hover:bg-brand/90"
-          >
-            ابدأ مدونتك الآن
-          </Link>
-          <Link
-            href="/blogs"
-            className="rounded-lg border border-ink/80 px-6 py-3 font-medium transition hover:bg-ink hover:text-white"
-          >
-            تصفح المدونات
-          </Link>
+      <section className="relative isolate overflow-hidden">
+        <HeroHorizon words={HERO_WORDS} />
+        <div className="mx-auto max-w-3xl px-4 pt-16 pb-48 text-center sm:pt-24 sm:pb-60">
+          <h1 className="text-5xl font-bold sm:text-6xl">
+            مدونات <span className="text-brand">آفاق</span>
+          </h1>
+          <p className="mt-6 text-lg leading-relaxed text-muted">
+            منصة للتدوين الفكري والثقافي والسياسي تجمع أصواتًا متعددة في مكان واحد
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/blog-request"
+              className="rounded-lg bg-brand px-6 py-3 font-medium text-white transition hover:bg-brand/90"
+            >
+              ابدأ مدونتك الآن
+            </Link>
+            <Link
+              href="/blogs"
+              className="rounded-lg border border-ink/80 bg-paper px-6 py-3 font-medium transition hover:bg-ink hover:text-paper"
+            >
+              تصفح المدونات
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -91,18 +98,7 @@ export default function HomePage() {
         />
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h2 className="text-2xl font-bold">انضم إلى مجتمع الكتّاب والمفكرين</h2>
-        <p className="mt-3 leading-relaxed text-muted">
-          شارك أفكارك وآرائك مع العالم وانضم إلى نقاشات فكرية وثقافية عميقة
-        </p>
-        <Link
-          href="/blog-request"
-          className="mt-6 inline-block rounded-lg bg-brand px-6 py-3 font-medium text-white transition hover:bg-brand/90"
-        >
-          سجّل الآن
-        </Link>
-      </section>
+      <JoinBanner />
     </>
   );
 }
