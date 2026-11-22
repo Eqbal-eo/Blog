@@ -5,41 +5,50 @@ import { redirect } from "next/navigation";
 import { AuthCard } from "@/components/ui/auth-card";
 import { getCurrentUser } from "@/lib/auth";
 import { LoginForm } from "./login-form";
+import { LoginIllustration } from "./login-illustration";
 
 export const metadata: Metadata = { title: "تسجيل الدخول" };
 
 export default function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
-    <AuthCard
-      title="تسجيل الدخول"
-      subtitle="مرحباً بعودتك إلى مدونات آفاق"
-      footer={
-        <>
-          <p>
-            <Link href="/forgot-password" className="font-medium text-brand hover:underline">
-              نسيت كلمة المرور؟
-            </Link>
-          </p>
-          <p>
-            ليس لديك حساب؟{" "}
-            <Link href="/blog-request" className="font-medium text-brand hover:underline">
-              اطلب إنشاء مدونة
-            </Link>
-          </p>
-          <p>
-            لديك كود تفعيل؟{" "}
-            <Link href="/register" className="font-medium text-brand hover:underline">
-              أكمل التسجيل
-            </Link>
-          </p>
-        </>
-      }
-    >
-      <Suspense fallback={<LoginForm />}>
-        <LoginFormWithRedirect searchParams={searchParams} />
-      </Suspense>
-      <DemoHint />
-    </AuthCard>
+    // In RTL the first column is the right one: form right, illustration left
+    <div className="mx-auto grid max-w-6xl grid-cols-1 items-center lg:grid-cols-2 lg:gap-8 lg:py-6">
+      <div>
+        <AuthCard
+          title="تسجيل الدخول"
+          subtitle="مرحباً بعودتك إلى مدونات آفاق"
+          footer={
+            <>
+              <p>
+                <Link href="/forgot-password" className="font-medium text-brand hover:underline">
+                  نسيت كلمة المرور؟
+                </Link>
+              </p>
+              <p>
+                ليس لديك حساب؟{" "}
+                <Link href="/blog-request" className="font-medium text-brand hover:underline">
+                  اطلب إنشاء مدونة
+                </Link>
+              </p>
+              <p>
+                لديك كود تفعيل؟{" "}
+                <Link href="/register" className="font-medium text-brand hover:underline">
+                  أكمل التسجيل
+                </Link>
+              </p>
+            </>
+          }
+        >
+          <Suspense fallback={<LoginForm />}>
+            <LoginFormWithRedirect searchParams={searchParams} />
+          </Suspense>
+          <DemoHint />
+        </AuthCard>
+      </div>
+      <div className="hidden px-4 lg:block">
+        <LoginIllustration />
+      </div>
+    </div>
   );
 }
 
