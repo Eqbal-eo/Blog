@@ -63,6 +63,14 @@ export async function confirmSubscription(token: string) {
       .is("confirmed_at", null)
       .select("id");
     if (data && data.length > 0) redirect("/newsletter/confirm?done=1");
+
+    // Pressing twice or opening the link again is still a success
+    const { data: existing } = await supabase
+      .from("subscribers")
+      .select("confirmed_at")
+      .eq("token", parsed.data)
+      .maybeSingle();
+    if (existing?.confirmed_at) redirect("/newsletter/confirm?done=1");
   }
   redirect("/newsletter/confirm?done=0");
 }
