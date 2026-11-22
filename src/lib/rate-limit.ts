@@ -16,11 +16,13 @@ export async function clientIp(): Promise<string> {
  * Counts one attempt for `key` and returns false once `max` attempts were
  * made within `windowSeconds`. Backed by the hit_rate_limit() function in
  * Postgres (supabase/migrations/20261117000000_rate_limits.sql).
+ * With `failClosed` an error refuses the attempt: use it where attempts cost money.
  */
 export async function rateLimit(
   key: string,
   max: number,
   windowSeconds: number,
+  { failClosed = false }: { failClosed?: boolean } = {},
 ): Promise<boolean> {
   const { data, error } = await supabase.rpc("hit_rate_limit", {
     p_key: key,
@@ -32,7 +34,7 @@ export async function rateLimit(
     // Fail open so a missing migration doesn't lock everyone out,
     // but make it loud.
     console.error("Rate limiter unavailable:", error.message);
-    return true;
+    return !failClosed;
   }
   return data === true;
 }
