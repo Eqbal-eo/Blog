@@ -41,11 +41,6 @@ An Arabic-first publishing platform for intellectual, cultural and political wri
 | **Writer dashboard** | **Post management** |
 | ![Writer dashboard](docs/screenshots/dashboard.png) | ![Post management](docs/screenshots/posts.png) |
 
-<p align="center">
-  <img src="docs/screenshots/mobile-home.png" width="280" alt="Home page on a phone">
-  &nbsp;&nbsp;
-  <img src="docs/screenshots/mobile-article.png" width="280" alt="Article on a phone">
-</p>
 
 ![Call to join the writers](docs/screenshots/join-banner.png)
 
