@@ -7,7 +7,7 @@ import { useLocalSetting, writeLocalSetting } from "@/lib/local-setting";
 
 type Theme = "light" | "dark" | "system";
 
-const ORDER: Theme[] = ["system", "light", "dark"];
+const ORDER: Theme[] = ["light", "dark", "system"];
 const LABELS: Record<Theme, string> = {
   system: "المظهر: حسب الجهاز",
   light: "المظهر: فاتح",
@@ -24,7 +24,7 @@ function apply(theme: Theme) {
 export function ThemeToggle() {
   // null until hydrated; the inline head script already set the class on load
   const stored = useLocalSetting("theme");
-  const theme: Theme = stored === "light" || stored === "dark" ? stored : "system";
+  const theme: Theme = stored === "dark" || stored === "system" ? stored : "light";
 
   // While on "system", follow OS changes live
   useEffect(() => {
@@ -37,7 +37,7 @@ export function ThemeToggle() {
 
   const cycle = () => {
     const next = ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length];
-    writeLocalSetting("theme", next === "system" ? null : next);
+    writeLocalSetting("theme", next);
     apply(next);
   };
 

@@ -44,17 +44,37 @@ test.describe("public pages", () => {
     expect(await res.text()).toContain("التدوينة غير موجودة");
   });
 
-  test("dark mode toggle switches the theme", async ({ page }) => {
+  test("a first visit is light even on a dark device", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/");
+    await expect(page.locator("html")).not.toHaveClass(/dark/);
+    await expect(page.getByRole("button", { name: "المظهر: فاتح" })).toBeVisible();
+  });
+
+  test("theme toggle cycles light, dark and device", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
     await page.goto("/about");
     const html = page.locator("html");
     const toggle = page.getByRole("button", { name: /المظهر/ });
-    // system -> light -> dark
-    await toggle.click();
     await expect(html).not.toHaveClass(/dark/);
     await toggle.click();
     await expect(html).toHaveClass(/dark/);
     await page.reload();
     await expect(html).toHaveClass(/dark/); // remembered, applied before paint
+
+    await expect(toggle).toHaveAccessibleName("المظهر: داكن"); // hydrated
+    await toggle.click();
+    await expect(toggle).toHaveAccessibleName("المظهر: حسب الجهاز");
+    await expect(html).toHaveClass(/dark/);
+    await page.emulateMedia({ colorScheme: "light" });
+    await expect(html).not.toHaveClass(/dark/);
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.reload();
+    await expect(html).toHaveClass(/dark/);
+
+    await expect(toggle).toHaveAccessibleName("المظهر: حسب الجهاز");
+    await toggle.click();
+    await expect(html).not.toHaveClass(/dark/);
   });
 
   test("no horizontal scrolling", async ({ page }) => {
