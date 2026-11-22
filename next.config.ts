@@ -34,8 +34,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      // Image uploads are capped at 5 MB in lib/media.ts
-      bodySizeLimit: "6mb",
+      // Same as Vercel's request limit. Images are capped lower, in lib/image-upload.ts
+      bodySizeLimit: "4.5mb",
     },
   },
   async headers() {

@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { uploadPostImage } from "@/app/dashboard/media-actions";
+import { prepareImage } from "@/lib/image-upload";
 
 /**
  * Rich text editor for posts. Stores HTML in a hidden input named `name`,
@@ -62,18 +63,29 @@ export function RichTextEditor({
     setUploadError(null);
     setUploading((n) => n + images.length);
     for (const file of images) {
-      const data = new FormData();
-      data.append("file", file);
-      const result = await uploadPostImage(data);
-      setUploading((n) => n - 1);
-      const editor = editorRef.current;
-      if (!result.ok) {
-        setUploadError(result.message);
-        continue;
+      try {
+        const prepared = await prepareImage(file, 1600);
+        if (!prepared.ok) {
+          setUploadError(prepared.message);
+          continue;
+        }
+        const data = new FormData();
+        data.append("file", prepared.file);
+        const result = await uploadPostImage(data);
+        if (!result.ok) {
+          setUploadError(result.message);
+          continue;
+        }
+        const editor = editorRef.current;
+        if (!editor) continue;
+        const chain = editor.chain().focus();
+        (pos !== undefined ? chain.insertContentAt(pos, { type: "image", attrs: { src: result.url } }) : chain.setImage({ src: result.url })).run();
+      } catch {
+        // The request itself failed (connection, platform limit, expired page)
+        setUploadError("تعذّر رفع الصورة، تحقق من الاتصال ثم أعد المحاولة");
+      } finally {
+        setUploading((n) => n - 1);
       }
-      if (!editor) continue;
-      const chain = editor.chain().focus();
-      (pos !== undefined ? chain.insertContentAt(pos, { type: "image", attrs: { src: result.url } }) : chain.setImage({ src: result.url })).run();
     }
     return true;
   };
