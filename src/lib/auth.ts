@@ -3,6 +3,7 @@ import { cache } from "react";
 import { notFound, redirect } from "next/navigation";
 import { supabase } from "./supabase";
 import { getSession } from "./session";
+import { isClosedDemoAccount } from "./demo";
 
 export type CurrentUser = {
   id: string;
@@ -28,7 +29,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
     .eq("id", session.id)
     .maybeSingle();
 
-  if (!data) return null;
+  if (!data || isClosedDemoAccount(data)) return null;
 
   return {
     id: String(data.id),
