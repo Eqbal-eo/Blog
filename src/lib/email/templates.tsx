@@ -14,6 +14,10 @@ import type { ReactNode } from "react";
 
 const BRAND = "#8c4a21";
 
+// Gmail drops the attributes of <html> and <body>, so the direction is
+// repeated on the container and the alignment on every text block.
+const RIGHT = "right" as const;
+
 const styles = {
   body: {
     backgroundColor: "#f9f7f0",
@@ -24,14 +28,16 @@ const styles = {
   container: {
     backgroundColor: "#ffffff",
     border: "1px solid #e2ddd0",
+    direction: "rtl" as const,
+    textAlign: RIGHT,
     borderRadius: "12px",
     margin: "0 auto",
     maxWidth: "560px",
     padding: "32px",
   },
-  brand: { color: BRAND, fontSize: "22px", fontWeight: 700, margin: "0 0 24px" },
-  heading: { color: "#222222", fontSize: "20px", margin: "0 0 16px" },
-  text: { color: "#333333", fontSize: "15px", lineHeight: "1.9", margin: "0 0 12px" },
+  brand: { color: BRAND, fontSize: "22px", fontWeight: 700, margin: "0 0 24px", textAlign: RIGHT },
+  heading: { color: "#222222", fontSize: "20px", margin: "0 0 16px", textAlign: RIGHT },
+  text: { color: "#333333", fontSize: "15px", lineHeight: "1.9", margin: "0 0 12px", textAlign: RIGHT },
   box: {
     backgroundColor: "#f1e6dc",
     borderRadius: "8px",
@@ -40,6 +46,7 @@ const styles = {
   },
   code: {
     color: BRAND,
+    direction: "ltr" as const,
     fontFamily: "Consolas, monospace",
     fontSize: "28px",
     fontWeight: 700,
@@ -57,7 +64,7 @@ const styles = {
     padding: "12px 24px",
     textDecoration: "none",
   },
-  footer: { color: "#6a6969", fontSize: "12px", margin: 0 },
+  footer: { color: "#6a6969", fontSize: "12px", margin: 0, textAlign: RIGHT },
 };
 
 function Layout({ preview, children }: { preview: string; children: ReactNode }) {
@@ -66,7 +73,7 @@ function Layout({ preview, children }: { preview: string; children: ReactNode })
       <Head />
       <Preview>{preview}</Preview>
       <Body style={styles.body}>
-        <Container style={styles.container}>
+        <Container dir="rtl" style={styles.container}>
           <Text style={styles.brand}>مدونات آفاق</Text>
           {children}
           <Hr style={{ borderColor: "#e2ddd0", margin: "24px 0" }} />
@@ -138,7 +145,7 @@ export function NewRequestEmail(props: {
         <Text style={{ ...styles.text, margin: 0 }}>
           الاسم: {props.fullName}
           <br />
-          البريد الإلكتروني: {props.email}
+          البريد الإلكتروني: <span dir="ltr">{props.email}</span>
           <br />
           التخصص: {props.specialty}
           <br />
