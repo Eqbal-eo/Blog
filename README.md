@@ -223,12 +223,4 @@ docs/
   screenshots/    images used in this README
 ```
 
-## Acknowledgements
 
-Sincere thanks to **Ömer Teknoloji** for the internship opportunity and for their trust.
-
-<div dir="rtl">
-
-جزيل الشكر والتقدير إلى شركة **Ömer Teknoloji** على فرصة التدريب وعلى ثقتهم.
-
-</div>
