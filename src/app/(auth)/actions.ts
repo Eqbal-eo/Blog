@@ -12,7 +12,7 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
 import { notifyAdminNewRequest, sendLoginCredentials } from "@/lib/email";
 import { REQUEST_CATEGORIES, wordCount } from "@/lib/format";
-import { DEMO_USERNAME } from "@/lib/demo";
+import { DEMO_USERNAME, isClosedDemoAccount } from "@/lib/demo";
 
 // ---------------------------------------------------------------- login
 
@@ -61,7 +61,7 @@ export async function login(_prev: FormState, formData: FormData): Promise<FormS
 
   // Compare even when the user doesn't exist, so timing doesn't reveal it
   const valid = await bcrypt.compare(password, user?.password ?? (await dummyHash()));
-  if (!user || !valid) {
+  if (!user || !valid || isClosedDemoAccount(user)) {
     return errorState("اسم المستخدم أو كلمة المرور غير صحيحة", values);
   }
 
