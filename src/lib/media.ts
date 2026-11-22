@@ -2,9 +2,9 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { supabase } from "./supabase";
+import { MAX_UPLOAD_BYTES } from "./image-upload";
 
 const BUCKET = "media";
-const MAX_BYTES = 5 * 1024 * 1024;
 const ACCEPTED = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 
 export type UploadResult = { ok: true; url: string } | { ok: false; message: string };
@@ -25,8 +25,8 @@ export async function uploadImage(
   if (!ACCEPTED.has(file.type)) {
     return { ok: false, message: "صيغة غير مدعومة. استخدم JPG أو PNG أو WebP أو GIF" };
   }
-  if (file.size > MAX_BYTES) {
-    return { ok: false, message: "حجم الصورة أكبر من 5 ميغابايت" };
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return { ok: false, message: "حجم الصورة أكبر من 4 ميغابايت" };
   }
 
   const input = Buffer.from(await file.arrayBuffer());

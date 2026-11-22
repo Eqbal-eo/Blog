@@ -10,6 +10,7 @@ import {
   updateProfileImage,
 } from "./actions";
 import { initialFormState } from "@/lib/forms";
+import { prepareImage } from "@/lib/image-upload";
 import { FormMessage, SubmitButton, TextAreaField, TextField } from "@/components/ui/form";
 import { button, card } from "@/components/ui/styles";
 
@@ -27,6 +28,7 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
   const [state, action, pending] = useActionState(updateProfileImage, initialFormState);
   const form = useRef<HTMLFormElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   // Ignore old relative "/uploads/…" paths from the Express app (files are gone)
   const shown = preview ?? (image?.startsWith("https://") ? image : null);
 
@@ -56,10 +58,24 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
               name="image"
               accept="image/jpeg,image/png,image/webp"
               className="sr-only"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
+              onChange={async (event) => {
+                const field = event.currentTarget;
+                const file = field.files?.[0];
                 if (!file) return;
-                setPreview(URL.createObjectURL(file));
+                setFileError(null);
+                const prepared = await prepareImage(file, 800);
+                if (!prepared.ok) {
+                  field.value = "";
+                  setFileError(prepared.message);
+                  return;
+                }
+                if (prepared.file !== file) {
+                  // The form sends the input's file, so swap in the smaller one
+                  const transfer = new DataTransfer();
+                  transfer.items.add(prepared.file);
+                  field.files = transfer.files;
+                }
+                setPreview(URL.createObjectURL(prepared.file));
                 form.current?.requestSubmit();
               }}
             />
@@ -77,8 +93,12 @@ function ProfileImageForm({ image, name }: { image: string | null; name: string 
             </button>
           )}
         </div>
-        <p className="text-sm text-muted">صورة مربعة بحجم 5 ميغابايت كحد أقصى</p>
-        {state.status !== "idle" && <FormMessage state={state} />}
+        <p className="text-sm text-muted">صورة مربعة، ونصغّر الصور الكبيرة تلقائياً</p>
+        {fileError ? (
+          <p role="alert" className="text-sm text-red-700">{fileError}</p>
+        ) : (
+          state.status !== "idle" && <FormMessage state={state} />
+        )}
       </div>
     </form>
   );
