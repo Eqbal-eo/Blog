@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react";
 import { recordView, submitComment } from "./actions";
 import { initialFormState } from "@/lib/forms";
 import { FormMessage, SubmitButton, TextAreaField, TextField } from "@/components/ui/form";
+import { Honeypot } from "@/components/honeypot";
 
 /** Records one view after the article has rendered in a real browser. */
 export function ViewBeacon({ postId }: { postId: string }) {
@@ -41,8 +42,7 @@ export function CommentForm({ postId, defaultName }: { postId: string; defaultNa
         />
       </div>
       <TextAreaField name="body" label="التعليق" rows={4} state={state} maxLength={3000} required />
-      {/* Honeypot, hidden from people */}
-      <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
+      <Honeypot />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-muted">تظهر التعليقات بعد مراجعة المشرف.</p>
         <SubmitButton pendingText="جارٍ الإرسال…">إرسال التعليق</SubmitButton>
