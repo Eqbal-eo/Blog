@@ -7,6 +7,7 @@ import { rateLimit } from "@/lib/rate-limit";
 import { visitorKey } from "@/lib/visitor";
 import { subscribe } from "@/lib/newsletter";
 import { errorState, formValues, type FormState } from "@/lib/forms";
+import { HONEYPOT_MESSAGE, honeypotFilled } from "@/lib/honeypot";
 
 const emailSchema = z.email("أدخل بريداً إلكترونياً صحيحاً").trim().toLowerCase().max(200);
 
@@ -18,7 +19,7 @@ export async function subscribeToNewsletter(
   const values = formValues(formData);
   const email = emailSchema.safeParse(formData.get("email"));
   if (!email.success) return errorState(email.error.issues[0].message, values);
-  if (formData.get("website")) return { status: "success", message: "تحقق من بريدك لتأكيد الاشتراك." };
+  if (honeypotFilled(formData)) return errorState(HONEYPOT_MESSAGE, values);
 
   if (!(await rateLimit(`subscribe:${await visitorKey()}`, 5, 60 * 60))) {
     return errorState("محاولات كثيرة، حاول بعد ساعة.", values);

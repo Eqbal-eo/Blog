@@ -6,6 +6,7 @@ import { subscribeToNewsletter } from "@/app/newsletter/actions";
 import { initialFormState } from "@/lib/forms";
 import { FormMessage, SubmitButton } from "@/components/ui/form";
 import { input } from "@/components/ui/styles";
+import { Honeypot } from "@/components/honeypot";
 
 /**
  * Email signup. With an `authorId` it follows one writer; without, every
@@ -60,8 +61,7 @@ export function SubscribeForm({
               required
               className={`${input} min-w-0 flex-1 py-2`}
             />
-            {/* Honeypot, hidden from people */}
-            <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
+            <Honeypot />
             <SubmitButton className="py-2" pendingText="…">
               اشترك
             </SubmitButton>

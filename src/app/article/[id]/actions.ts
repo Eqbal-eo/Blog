@@ -8,6 +8,7 @@ import { DEMO_BLOCKED_MESSAGE, isDemoUser } from "@/lib/demo";
 import { rateLimit } from "@/lib/rate-limit";
 import { isBot, visitorKey } from "@/lib/visitor";
 import { errorState, fieldErrors, formValues, type FormState } from "@/lib/forms";
+import { HONEYPOT_MESSAGE, honeypotFilled } from "@/lib/honeypot";
 
 /** Counts one view of a post (at most once per visitor every 6 hours). */
 export async function recordView(postId: string): Promise<void> {
@@ -27,20 +28,16 @@ const commentSchema = z.object({
     .optional()
     .default(""),
   body: z.string().trim().min(2, "اكتب تعليقك").max(3000, "التعليق أطول من 3000 حرف"),
-  // Honeypot: hidden from people, filled in by naive bots
-  website: z.string().max(0).optional(),
 });
 
 export async function submitComment(postId: string, _prev: FormState, formData: FormData): Promise<FormState> {
   const values = formValues(formData);
   if (!/^\d{1,12}$/.test(postId)) return errorState("التدوينة غير موجودة");
 
+  if (honeypotFilled(formData)) return errorState(HONEYPOT_MESSAGE, values);
+
   const parsed = commentSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    // A filled honeypot gets a fake success so bots learn nothing
-    if (parsed.error.issues.some((i) => i.path[0] === "website")) {
-      return { status: "success", message: "شكراً! سيظهر تعليقك بعد مراجعته." };
-    }
     return errorState("يرجى مراجعة الحقول المظللة", values, fieldErrors(parsed.error));
   }
 
